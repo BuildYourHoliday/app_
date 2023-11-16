@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:orderInCategory="1"
+        android:enabled="true"
+        android:icon="@drawable/icon_home"
+        android:title="@string/item_home" />
+
+    <item
+        android:id="@+id/mapFragment"
+        android:orderInCategory="2"
+        android:enabled="true"
+        android:icon="@drawable/icon_map"
+        android:title="@string/item_map" />
+
+    <item
+        android:id="@+id/bookedFragment"
+        android:orderInCategory="3"
+        android:enabled="true"
+        android:icon="@drawable/icon_bag"
+        android:title="@string/item_bookedPlaces" />
+
+    <item
+        android:id="@+id/savedFragment"
+        android:orderInCategory="4"
+        android:enabled="true"
+        android:icon="@drawable/icon_star"
+        android:title="@string/item_savedPlaces" />
+
+</menu>
