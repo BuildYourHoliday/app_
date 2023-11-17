@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Build Your Holiday</string>
+    <string name="item_map">Mappa</string>
+    <string name="item_bookedPlaces">Prenotati</string>
+    <string name="item_savedPlaces">Preferiti</string>
+    <string name="login">Accedi</string>
+    <string name="need_register">Non sei ancora iscritto? Registrati</string>
+</resources>

@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Build Your Holiday</string>
 
-    <string name="item_home">Home</string>
-    <string name="item_map">Mappa</string>
-    <string name="item_bookedPlaces">Prenotati</string>
-    <string name="item_savedPlaces">Preferiti</string>
+    <string name="item_home" translatable="false">Home</string>
+    <string name="item_map">Map</string>
+    <string name="item_bookedPlaces">Booked</string>
+    <string name="item_savedPlaces">Saved</string>
+
+    <string name="login">Login</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="email" translatable="false">E-Mail</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="need_register">Not subscribed yet? Register</string>
 </resources>
