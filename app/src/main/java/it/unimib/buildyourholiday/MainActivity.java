@@ -1,8 +1,15 @@
 package it.unimib.buildyourholiday;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,5 +20,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // gestione collegamento fragment menu bar
+       NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.homeFragment, R.id.mapFragment, R.id.bookedFragment, R.id.savedFragment)
+                .build();
+
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 }
