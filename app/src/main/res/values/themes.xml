@@ -1,8 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.BuildYourHoliday" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryVariant">#303F9F</item>
+        <item name="colorOnPrimary">#FFFFFFFF</item>
+
+        <item name="colorSecondary">#C5CAE9</item>              <!-- TODO: cambiare /-->
+        <item name="colorSecondaryVariant">#BDBDBD</item>
+        <item name="colorOnSecondary">#757575</item>
+
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
     </style>
 
     <style name="Theme.BuildYourHoliday" parent="Base.Theme.BuildYourHoliday" />
