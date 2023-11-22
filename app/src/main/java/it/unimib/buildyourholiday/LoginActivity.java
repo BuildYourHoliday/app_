@@ -1,5 +1,10 @@
 package it.unimib.buildyourholiday;
 
+import static it.unimib.buildyourholiday.util.Constants.EMAIL_ADDRESS;
+import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.buildyourholiday.util.Constants.PASSWORD;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +31,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+import it.unimib.buildyourholiday.util.DataEncryptionUtil;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -34,11 +41,15 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
 
+    private DataEncryptionUtil dataEncryptionUtil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
 
         textInputLayoutEmail = findViewById(R.id.textInputLayout_email);
         textInputLayoutPassword = findViewById(R.id.textInputLayout_password);
@@ -49,16 +60,45 @@ public class LoginActivity extends AppCompatActivity {
             String email = textInputLayoutEmail.getEditText().getText().toString();
             String password = textInputLayoutPassword.getEditText().getText().toString();
 
+            dataEncryptionUtil = new DataEncryptionUtil(this);
+            try {
+                Log.d(TAG, "Email address from encrypted SharedPref: " + dataEncryptionUtil.
+                        readSecretDataWithEncryptedSharedPreferences(
+                                ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS));
+                Log.d(TAG, "Password from encrypted SharedPref: " + dataEncryptionUtil.
+                        readSecretDataWithEncryptedSharedPreferences(
+                                ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD));
+                Log.d(TAG, "Login data from encrypted file: " + dataEncryptionUtil.
+                        readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME));
+            } catch (GeneralSecurityException | IOException e) {
+                e.printStackTrace();
+            }
+
             // Start login if email and password are ok
             if (isEmailOk(email) & isPasswordOk(password)) {
                 Log.d(TAG, "Email and password are ok");
-                //saveLoginData(email, password);
+                saveLoginData(email, password);
             } else {
                 Snackbar.make(findViewById(android.R.id.content),
                         "Check your data", Snackbar.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+
+    private void saveLoginData(String email, String password) {
+        try {
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
+
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
+                    email.concat(":").concat(password));
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
