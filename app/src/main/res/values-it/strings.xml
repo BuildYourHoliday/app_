@@ -8,4 +8,5 @@
     <string name="need_register">Non sei ancora iscritto? Registrati</string>
     <string name="error_email">Mail non corretta</string>
     <string name="error_password">Password non corretta</string>
+    <string name="item_profile">Profilo</string>
 </resources>

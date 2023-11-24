@@ -15,17 +15,12 @@
         android:title="@string/item_map" />
 
     <item
-        android:id="@+id/bookedFragment"
+        android:id="@+id/profileFragment"
         android:orderInCategory="3"
         android:enabled="true"
-        android:icon="@drawable/icon_bag"
-        android:title="@string/item_bookedPlaces" />
+        android:icon="@drawable/icon_profile"
+        android:title="@string/item_profile" />
 
-    <item
-        android:id="@+id/savedFragment"
-        android:orderInCategory="4"
-        android:enabled="true"
-        android:icon="@drawable/icon_star"
-        android:title="@string/item_savedPlaces" />
+
 
 </menu>

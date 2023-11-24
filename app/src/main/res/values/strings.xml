@@ -14,4 +14,5 @@
     <string name="need_register">Not subscribed yet? Register</string>
     <string name="error_email">The mail is not correct</string>
     <string name="error_password">The password is not correct</string>
+    <string name="item_profile">Profile</string>
 </resources>
