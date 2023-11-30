@@ -15,4 +15,8 @@
     <string name="error_email">The mail is not correct</string>
     <string name="error_password">The password is not correct</string>
     <string name="item_profile">Profile</string>
+
+    <string name="mapbox_access_token" translatable="false">
+        pk.eyJ1IjoiY2hvcHBhZGVidWciLCJhIjoiY2xwbGc1Nzh6MDRjMzJqb3RnYWt1dmN5cCJ9.t8v24xXETiXI0wIyYa7OSw
+    </string>
 </resources>
