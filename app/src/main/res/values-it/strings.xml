@@ -9,4 +9,11 @@
     <string name="error_email">Mail non corretta</string>
     <string name="error_password">Password non corretta</string>
     <string name="item_profile">Profilo</string>
+    <string name="account">Account</string>
+    <string name="language">Lingua</string>
+    <string name="dark_mode">Modalità notte</string>
+    <string name="about_us">Informazioni</string>
+    <string name="logout">Esci</string>
+    <string name="lgoin">Accedi</string>
+    <string name="sign_in">Registrati</string>
 </resources>
