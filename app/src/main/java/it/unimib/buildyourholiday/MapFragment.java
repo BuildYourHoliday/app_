@@ -24,6 +24,12 @@ import com.mapbox.maps.Style;
 import com.mapbox.maps.loader.MapboxMaps;
 import com.mapbox.maps.loader.MapboxMapsInitializer;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+
+import kotlin.jvm.JvmOverloads;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MapFragment#newInstance} factory method to
@@ -82,13 +88,18 @@ public class MapFragment extends Fragment {
 
         ResourceOptionsManager.Companion.getDefault(getContext().getApplicationContext(),
                 getString(R.string.mapbox_access_token));
-        Log.d("MMMMMMMMMMMMMM","dopo GETINSTANCE() + "+getString(R.string.mapbox_access_token));
+        Log.d("MapFragment","dopo GETINSTANCE() + "+getString(R.string.mapbox_access_token));
 
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
 
         mapView = view.findViewById(R.id.map_view);
-        mapView.getMapboxMap().loadStyleUri(Style.LIGHT);
+        //mapView.getMapboxMap().loadStyleUri(Style.LIGHT);
+
+        //mapView.getMapboxMap().loadStyleUri("asset://map_style.json");
+        //mapView.getMapboxMap().loadStyleJson("asset://map_style.json");
+        //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clplsfl1a00ty01qt1pjsfphc");
+        mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clppp4jot013501o9bowr9776/draft");
 
         // Inflate the layout for this fragment
         return view;
