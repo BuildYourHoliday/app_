@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.BuildYourHoliday" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#3F51B5</item>
-        <item name="colorPrimaryVariant">#303F9F</item>
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryVariant">@color/accent</item>
         <item name="colorOnPrimary">#FFFFFFFF</item>
 
         <item name="colorSecondary">#C5CAE9</item>              <!-- TODO: cambiare /-->
@@ -13,5 +13,13 @@
 
     </style>
 
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#00DEFF</item>
+        <item name="colorSwitchThumbNormal">#38FFFF</item>
+        <item name="android:colorForeground">#909090</item>
+    </style>
+
+    <style name="ScreenBackground"><item name="android:background">@color/white</item></style>
+    <style name="TextBackground"><item name="android:textColor">@color/black</item></style>
     <style name="Theme.BuildYourHoliday" parent="Base.Theme.BuildYourHoliday" />
 </resources>

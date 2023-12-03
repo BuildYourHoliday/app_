@@ -1,3 +1,4 @@
+/*  cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 package it.unimib.buildyourholiday;
 
 import android.content.Context;
@@ -29,6 +30,8 @@ import com.mapbox.maps.loader.MapboxMapsInitializer;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+/* cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 public class MapFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -55,6 +58,7 @@ public class MapFragment extends Fragment {
      * @return A new instance of fragment MapFragment.
      */
     // TODO: Rename and change types and number of parameters
+/* ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
     public static MapFragment newInstance(String param1, String param2) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
@@ -92,6 +96,8 @@ public class MapFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+
+
     }
 
     @Override
@@ -118,3 +124,4 @@ public class MapFragment extends Fragment {
         mapView.onDestroy();
     }
 }
+*/

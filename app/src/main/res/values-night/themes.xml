@@ -3,5 +3,17 @@
     <style name="Base.Theme.BuildYourHoliday" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryVariant">@color/accent</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
+
+    <style name="ScreenBackground"><item name="android:background">@color/black</item></style>
+    <style name="TextBackground"><item name="android:textColor">@color/grey</item></style>
 </resources>
