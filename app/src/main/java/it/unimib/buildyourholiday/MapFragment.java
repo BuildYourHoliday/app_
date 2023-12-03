@@ -102,7 +102,19 @@ public class MapFragment extends Fragment {
         //mapView.getMapboxMap().loadStyleUri("asset://map_style.json");
         //mapView.getMapboxMap().loadStyleJson("asset://map_style.json");
         //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clplsfl1a00ty01qt1pjsfphc");
-        mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clppp4jot013501o9bowr9776/draft");
+        //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clppp4jot013501o9bowr9776/draft");
+
+        try {
+            InputStream is = getActivity().getAssets().open("map_style.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String styleJson = new String(buffer, "UTF-8");
+            mapView.getMapboxMap().loadStyleJson(styleJson);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
         // Inflate the layout for this fragment
         return view;
