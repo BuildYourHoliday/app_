@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<androidx.constraintlayout.widget.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,7 +99,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
         app:layout_constraintTop_toBottomOf="@id/linearLayout_loginData"
-        android:layout_marginRight="-5dp"/>
+        android:layout_marginEnd="-5dp"/>
 
     <Button
         android:id="@+id/button_login"
@@ -106,22 +107,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/login"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintTop_toBottomOf="@id/button_needRegister"
         app:layout_constraintLeft_toLeftOf="@id/left_guideline"
-        app:layout_constraintRight_toRightOf="@id/right_guideline"/>-->
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/login_nav" />
+        app:layout_constraintRight_toRightOf="@id/right_guideline"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

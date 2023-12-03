@@ -26,4 +26,5 @@
     <string name="logout">Logout</string>
     <string name="lgoin">Login</string>
     <string name="sign_in">Sign in</string>
+    <string name="check_login_data_message">Check the data inserted</string>
 </resources>
