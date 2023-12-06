@@ -10,12 +10,13 @@
         pk.eyJ1IjoiY2hvcHBhZGVidWciLCJhIjoiY2xwbGc1Nzh6MDRjMzJqb3RnYWt1dmN5cCJ9.t8v24xXETiXI0wIyYa7OSw
     </string>
 
-    <string name="login">Login</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="email" translatable="false">E-Mail</string>
     <string name="password" translatable="false">Password</string>
+    <string name="password_again">Confirm password</string>
     <string name="need_register">Not subscribed yet? Register</string>
+    <string name="need_login">Already subscribed? Login</string>
     <string name="error_email">The mail is not correct</string>
     <string name="error_password">The password is not correct</string>
     <string name="item_profile">Profile</string>
@@ -24,8 +25,9 @@
     <string name="dark_mode">Dark mode</string>
     <string name="about_us">About us</string>
     <string name="logout">Logout</string>
-    <string name="lgoin">Login</string>
-    <string name="sign_in">Sign in</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
     <string name="check_login_data_message">Check the data inserted</string>
     <string name="settings" translatable="false">settings</string>
+
 </resources>

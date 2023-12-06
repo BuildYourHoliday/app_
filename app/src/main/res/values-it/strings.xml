@@ -4,7 +4,6 @@
     <string name="item_map">Mappa</string>
     <string name="item_bookedPlaces">Prenotati</string>
     <string name="item_savedPlaces">Preferiti</string>
-    <string name="login">Accedi</string>
     <string name="need_register">Non sei ancora iscritto? Registrati</string>
     <string name="error_email">Mail non corretta</string>
     <string name="error_password">Password non corretta</string>
@@ -15,6 +14,8 @@
     <string name="dark_mode">Modalità notte</string>
     <string name="about_us">Informazioni</string>
     <string name="logout">Esci</string>
-    <string name="lgoin">Accedi</string>
-    <string name="sign_in">Registrati</string>
+    <string name="login">Accedi</string>
+    <string name="sign_up">Registrati</string>
+    <string name="password_again">Ripeti la password</string>
+    <string name="need_login">Sei già iscritto? Accedi</string>
 </resources>
