@@ -22,9 +22,9 @@
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="it.unimib.buildyourholiday.ProfileFragment"
+        android:name="it.unimib.buildyourholiday.MyFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_my" />
     <activity
         android:id="@+id/profileActivity"
         android:name="it.unimib.buildyourholiday.ProfileActivity"
