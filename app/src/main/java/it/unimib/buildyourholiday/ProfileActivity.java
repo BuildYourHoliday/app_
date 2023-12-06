@@ -12,18 +12,18 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
 public class ProfileActivity extends AppCompatActivity {
-    Switch darkModeSwitch;
+    /*Switch darkModeSwitch;
     boolean darkMode;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private static final String TAG = ProfileActivity.class.getSimpleName();
+    private static final String TAG = ProfileActivity.class.getSimpleName();*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        darkModeSwitch = findViewById(R.id.dark_mode_switch);
+        /*darkModeSwitch = findViewById(R.id.dark_mode_switch);
 
         sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE);
         darkMode = sharedPreferences.getBoolean("darkMode", false);
@@ -48,6 +48,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
                 editor.apply();
             }
-        });
+        });*/
     }
 }
