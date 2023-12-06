@@ -50,15 +50,12 @@ public class LoginFragment extends Fragment {
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
-                        if (intent != null) {
-                            String resultFromActivity = intent.getStringExtra("ACTIVITY_FOR_RESULT");
-                            Log.d(TAG, "Result: " + resultFromActivity);
-                        }
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    if (intent != null) {
+                        String resultFromActivity = intent.getStringExtra("ACTIVITY_FOR_RESULT");
+                        Log.d(TAG, "Result: " + resultFromActivity);
                     }
                 }
             }
@@ -126,8 +123,8 @@ public class LoginFragment extends Fragment {
                 Log.d(TAG, "Email and password are ok");
                 saveLoginData(email, password);
 
-                startActivityBasedOnCondition(MainActivity.class,
-                        R.id.login_nav);
+                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainActivity);
+
 
             } else {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content),

@@ -8,6 +8,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,5 +33,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.homeFragment, R.id.mapFragment, R.id.profileFragment).build();
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        
     }
 }
