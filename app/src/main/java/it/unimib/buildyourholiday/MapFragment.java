@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -16,16 +18,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.JsonObject;
+import com.mapbox.bindgen.Expected;
+import com.mapbox.bindgen.Value;
 import com.mapbox.common.ResourceLoadOptions;
+import com.mapbox.common.TileStore;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Point;
 import com.mapbox.maps.*;
 import com.mapbox.maps.ResourceOptions;
 import com.mapbox.maps.ResourceOptionsManager;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.loader.MapboxMaps;
 import com.mapbox.maps.loader.MapboxMapsInitializer;
+import com.mapbox.maps.plugin.Plugin;
+import com.mapbox.maps.plugin.gestures.GesturesPlugin;
+import com.mapbox.maps.plugin.gestures.GesturesUtils;
+import com.mapbox.maps.plugin.gestures.OnMapClickListener;
+
+
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import kotlin.jvm.JvmOverloads;
@@ -115,6 +131,56 @@ public class MapFragment extends Fragment {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
+        gesturesPlugin.addOnMapClickListener(new OnMapClickListener() {
+            @Override
+            public boolean onMapClick(@NonNull Point point) {
+
+                ArrayList<String> layers = new ArrayList<>();
+                layers.add("country-non-visited");
+
+                mapView.getMapboxMap().queryRenderedFeatures(
+                        new RenderedQueryGeometry(mapView.getMapboxMap().pixelForCoordinate(point)),
+                        new RenderedQueryOptions(layers, null),
+                        new QueryFeaturesCallback() {
+                            @Override
+                            public void run(@NonNull Expected<String, List<QueriedFeature>> features) {
+                                Log.d("PRINT-FROM-CALLBACK", "response received");
+                                List<QueriedFeature> queriedFeatures = features.getValue();
+                                Log.d("PRINT-FROM-CALLBACK", "data fetched");
+                                if (queriedFeatures != null) {
+                                    Log.d("PRINT-FROM-CALLBACK", "not null");
+                                    for (QueriedFeature queriedFeature : queriedFeatures) {
+                                        Feature feature = queriedFeature.getFeature();
+                                        Log.d("PRINT-FROM-CALLBACK", "got feature");
+                                        JsonObject properties = feature.properties();
+                                        Log.d("PRINT-FROM-CALLBACK", "got properties");
+
+                                        if (properties != null) {
+                                            Log.d("PRINT-FROM-CALLBACK", properties.toString());
+
+                                            String countryName = properties.get("name_en").toString();
+                                            String countryCode = properties.get("iso_3166_1").toString();
+                                            if (countryName != null && countryCode != null) {
+                                                Log.d("PRINT-FROM-CALLBACK", "name: " + countryName +
+                                                        " code: " + countryCode);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Log.d("PRINT-FROM-CALLBACK","ended");
+                            }
+                            }
+
+                );
+
+                return false;
+
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
