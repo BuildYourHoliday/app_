@@ -28,6 +28,14 @@
     <string name="login">Login</string>
     <string name="sign_up">Sign up</string>
     <string name="check_login_data_message">Check the data inserted</string>
-    <string name="settings" translatable="false">settings</string>
+    <string name="settings">Settings</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="welcome">Welcome!</string>
+    <string name="make_account">Create your account</string>
+    <string name="username">Username</string>
+    <string name="invalid_email">Email is not valid</string>
+    <string name="invalid_password">Password needs to be at least 8-characters long</string>
+    <string name="invalid_passwordAgain">Password doesn\'t match</string>
+    <string name="error_message">This email is already associated with an account</string>
 
 </resources>

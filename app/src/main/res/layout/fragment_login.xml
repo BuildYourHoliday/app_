@@ -10,14 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="67dp" />
+        app:layout_constraintGuide_begin="60dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/right_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="65dp" />
+        app:layout_constraintGuide_end="60dp" />
 
     <TextView
         android:id="@+id/textView_login"
@@ -91,15 +91,14 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_needRegister"
+        android:id="@+id/button_forgotPassword"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/need_register"
+        android:text="@string/forgot_password"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout_loginData"
-        android:layout_marginEnd="-5dp"/>
+        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout_loginData" />
 
     <Button
         android:id="@+id/button_login"
@@ -108,9 +107,19 @@
         android:layout_marginTop="10dp"
         android:text="@string/login"
         android:textSize="25sp"
-        app:layout_constraintTop_toBottomOf="@id/button_needRegister"
         app:layout_constraintLeft_toLeftOf="@id/left_guideline"
-        app:layout_constraintRight_toRightOf="@id/right_guideline"/>
+        app:layout_constraintRight_toRightOf="@id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/button_forgotPassword" />
 
+    <Button
+        android:id="@+id/button_needRegister"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/need_register"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

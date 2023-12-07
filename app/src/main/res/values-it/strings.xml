@@ -18,4 +18,13 @@
     <string name="sign_up">Registrati</string>
     <string name="password_again">Ripeti la password</string>
     <string name="need_login">Sei già iscritto? Accedi</string>
+    <string name="settings">Impostazioni</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="make_account">Crea il tuo account</string>
+    <string name="username">Nome</string>
+    <string name="invalid_email">Email non valida</string>
+    <string name="invalid_password">La passaword deve contenere almeno 8 caratteri</string>
+    <string name="invalid_passwordAgain">Le password non combaciano</string>
+    <string name="error_message">Questa mail ha già un account associato</string>
 </resources>
