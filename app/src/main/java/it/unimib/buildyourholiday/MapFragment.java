@@ -1,6 +1,7 @@
 package it.unimib.buildyourholiday;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -13,37 +14,47 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
+import android.util.JsonReader;
 import android.util.Log;
+import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mapbox.bindgen.Expected;
 import com.mapbox.bindgen.Value;
 import com.mapbox.common.ResourceLoadOptions;
 import com.mapbox.common.TileStore;
+import com.mapbox.common.ValueConverter;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.*;
 import com.mapbox.maps.ResourceOptions;
 import com.mapbox.maps.ResourceOptionsManager;
 import com.mapbox.maps.Style;
+import com.mapbox.maps.extension.observable.eventdata.StyleLoadedEventData;
 import com.mapbox.maps.loader.MapboxMaps;
 import com.mapbox.maps.loader.MapboxMapsInitializer;
 import com.mapbox.maps.plugin.Plugin;
+import com.mapbox.maps.plugin.delegates.listeners.OnStyleLoadedListener;
 import com.mapbox.maps.plugin.gestures.GesturesPlugin;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 
 
-
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import it.unimib.buildyourholiday.util.JsonFileReader;
 import kotlin.jvm.JvmOverloads;
 
 /**
@@ -63,6 +74,10 @@ public class MapFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    SharedPreferences sharedPreferences;
+    String mapStyle = "map_style.json";
+    JsonFileReader jsonFileReader;
 
     private MapView mapView = null;
 
@@ -109,18 +124,62 @@ public class MapFragment extends Fragment {
                 getString(R.string.mapbox_access_token));
         Log.d("MapFragment","dopo GETINSTANCE() + "+getString(R.string.mapbox_access_token));
 
+        jsonFileReader = new JsonFileReader();
+
+
+
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
 
         mapView = view.findViewById(R.id.map_view);
         //mapView.getMapboxMap().loadStyleUri(Style.LIGHT);
 
+        mapView.getMapboxMap().loadStyleJson(jsonFileReader.readJsonFromAssets(getContext(), mapStyle));
+
+        sharedPreferences = getActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE);
+        //if(sharedPreferences.getBoolean("darkMode", false)) {
+        //mapView.getMapboxMap().getStyle().getStyleJSON();
+        mapView.getMapboxMap().addOnStyleLoadedListener(new OnStyleLoadedListener() {
+            @Override
+            public void onStyleLoaded(@NonNull StyleLoadedEventData styleLoadedEventData) {
+                /*Expected<String,Value> styleLayerProperties =
+                mapView.getMapboxMap().getStyle().getStyleLayerProperties("background");
+
+                Log.d("STYLE-SET", "dopo getStyle " + styleLayerProperties.getValue().toString());
+
+                Value stringValueExpected =
+                mapView.getMapboxMap().getStyle().getStyleLayerProperty("background","background-color").getValue();
+
+                Log.d("STYLE-SET", "dopo getStyle " + stringValueExpected.toString());
+
+                Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 0%)\"");
+                if(conv != null)
+                Log.d("STYLE-SET","DAJEEE");
+                if(conv.getValue()!=null){
+                    Log.d("STYLE-SET", "prima setStyle ");
+                mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
+                Log.d("STYLE-SET", "dopo setStyle ");}*/
+                if(sharedPreferences.getBoolean("darkMode", true)) {
+                    Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 0%)\"");
+                    mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
+                }
+            }
+        });
+
+//        mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","paint",new Property<>("hsl(0, 0%, 0%"));
+
+//            mapView.getMapboxMap().getStyle().getStyleLayerProperties("background").toString());
+        // }
+
+
+        TextView debugText = view.findViewById(R.id.debug_country);
+
         //mapView.getMapboxMap().loadStyleUri("asset://map_style.json");
         //mapView.getMapboxMap().loadStyleJson("asset://map_style.json");
         //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clplsfl1a00ty01qt1pjsfphc");
         //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clppp4jot013501o9bowr9776/draft");
 
-        try {
+        /*try {
             InputStream is = getActivity().getAssets().open("map_style.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -130,7 +189,9 @@ public class MapFragment extends Fragment {
             mapView.getMapboxMap().loadStyleJson(styleJson);
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
+
+
 
         GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
         gesturesPlugin.addOnMapClickListener(new OnMapClickListener() {
@@ -165,6 +226,8 @@ public class MapFragment extends Fragment {
                                             if (countryName != null && countryCode != null) {
                                                 Log.d("PRINT-FROM-CALLBACK", "name: " + countryName +
                                                         " code: " + countryCode);
+                                                debugText.setText("Country name: " + countryName +
+                                                        "\ncountry code: " + countryCode);
                                                 break;
                                             }
                                         }

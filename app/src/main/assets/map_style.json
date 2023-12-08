@@ -28,6 +28,13 @@
   "projection": {"name": "naturalEarth"},
   "layers": [
     {
+      "id": "background",
+      "type": "background",
+      "slot": "",
+      "layout": {},
+      "paint": {"background-color": "hsl(0, 0%, 100%)"}
+    },
+    {
       "id": "country-non-visited",
       "type": "fill",
       "source": "composite",
