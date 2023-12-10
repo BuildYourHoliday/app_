@@ -162,6 +162,11 @@ public class MapFragment extends Fragment {
                 if(sharedPreferences.getBoolean("darkMode", true)) {
                     Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 0%)\"");
                     mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
+                    Log.d("STYLE-SET", conv.getValue().toString());
+                }
+                else {
+                    Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 100%)\"");
+                    mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
                 }
             }
         });
@@ -210,6 +215,8 @@ public class MapFragment extends Fragment {
                                 Log.d("PRINT-FROM-CALLBACK", "response received");
                                 List<QueriedFeature> queriedFeatures = features.getValue();
                                 Log.d("PRINT-FROM-CALLBACK", "data fetched");
+
+                                String countryName = "", countryCode = "";
                                 if (queriedFeatures != null) {
                                     Log.d("PRINT-FROM-CALLBACK", "not null");
                                     for (QueriedFeature queriedFeature : queriedFeatures) {
@@ -221,18 +228,39 @@ public class MapFragment extends Fragment {
                                         if (properties != null) {
                                             Log.d("PRINT-FROM-CALLBACK", properties.toString());
 
-                                            String countryName = properties.get("name_en").toString();
-                                            String countryCode = properties.get("iso_3166_1").toString();
+                                            countryName = properties.get("name_en").toString();
+                                            countryCode = properties.get("iso_3166_1").toString();
                                             if (countryName != null && countryCode != null) {
                                                 Log.d("PRINT-FROM-CALLBACK", "name: " + countryName +
                                                         " code: " + countryCode);
                                                 debugText.setText("Country name: " + countryName +
                                                         "\ncountry code: " + countryCode);
+
+                                                // set border on selected
+                                                Expected<String,Value> conv = ValueConverter.fromJson(
+                                                        "[\"match\", [\"get\", \"iso_3166_1\"], ["+countryCode+"], true, false]");
+                                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(
+                                                        "country-selected","filter",conv.getValue());
+
+                                                // set zoom on selected
+                                                CameraOptions cameraOptions =
+                                                        new CameraOptions.Builder().center(point).zoom(3.0).build();
+                                                mapView.getMapboxMap().setCamera(cameraOptions);
+
                                                 break;
                                             }
                                         }
                                     }
                                 }
+                                Value stringValueExpected =
+                                        mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-selected","filter").getValue();
+
+                                Log.d("STYLE-SET", "dopo getStyle " + stringValueExpected.toString());
+                               /* Expected<String,Value> conv = ValueConverter.fromJson(
+                                        "[\"match\", [\"get\", \"iso_3166_1\"], [\""+countryCode+"\"], true, false]");
+                                        "[\"match\", [\"get\", \"iso_3166_1\"], [\"IT\"], true, false]");
+                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(
+                                        "country-selected","filter",conv.getValue());*/
 
                                 Log.d("PRINT-FROM-CALLBACK","ended");
                             }

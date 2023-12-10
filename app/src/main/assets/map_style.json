@@ -77,6 +77,16 @@
       "slot": "",
       "layout": {},
       "paint": {"line-color": "hsla(0, 0%, 0%, 0.19)", "line-width": 0.3}
+    },
+    {
+      "id": "country-selected",
+      "type": "line",
+      "source": "composite",
+      "source-layer": "country_boundaries",
+      "slot": "",
+      "filter": ["match", ["get", "iso_3166_1"], [""], true, false],
+      "layout": {},
+      "paint": {"line-color": "hsl(0, 0%, 0%)", "line-width": 0.6}
     }
   ],
   "created": "2023-12-03T16:27:41.357Z",
