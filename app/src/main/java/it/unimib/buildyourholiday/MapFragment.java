@@ -244,7 +244,7 @@ public class MapFragment extends Fragment {
 
                                                 // set zoom on selected
                                                 CameraOptions cameraOptions =
-                                                        new CameraOptions.Builder().center(point).zoom(3.0).build();
+                                                        new CameraOptions.Builder().center(point).zoom(2.0).build();
                                                 mapView.getMapboxMap().setCamera(cameraOptions);
 
                                                 break;
