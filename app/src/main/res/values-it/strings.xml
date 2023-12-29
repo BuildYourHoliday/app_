@@ -11,9 +11,22 @@
     <string name="item_profile">Profilo</string>
     <string name="account">Account</string>
     <string name="language">Lingua</string>
-    <string name="dark_mode">Modalità notte</string>
+    <string name="dark_mode">Tema scuro</string>
     <string name="about_us">Informazioni</string>
     <string name="logout">Esci</string>
-    <string name="lgoin">Accedi</string>
-    <string name="sign_in">Registrati</string>
+    <string name="loginSignIn">Accedi / Registrati</string>
+    <string name="italian">Italiano</string>
+    <string name="english">Inglese</string>
+    <string name="areYouSure">Sei sicuro di volere uscire?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="quit">Esci</string>
+    <string name="cancel">Annulla</string>
+    <string name="chooseOption">Scegli un opzione</string>
+    <string name="remove">Rimuovi foto</string>
+    <string name="setPhoto">Scegli foto profilo</string>
+    <string-array name="language_array">
+        <item>Inglese</item>
+        <item>Italiano</item>
+    </string-array>
 </resources>

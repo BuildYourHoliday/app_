@@ -16,4 +16,5 @@
 
     <style name="ScreenBackground"><item name="android:background">@color/black</item></style>
     <style name="TextBackground"><item name="android:textColor">@color/grey</item></style>
+    <style name="ScreenBottomSheetBackground"><item name="android:background">@color/darkGrey</item></style>
 </resources>

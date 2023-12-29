@@ -20,6 +20,19 @@
     <string name="dark_mode">Dark mode</string>
     <string name="about_us">About us</string>
     <string name="logout">Logout</string>
-    <string name="lgoin">Login</string>
-    <string name="sign_in">Sign in</string>
+    <string name="loginSignIn">Login / Sign in</string>
+    <string name="italian">Italian</string>
+    <string name="english">English</string>
+    <string name="areYouSure">Are you sure to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="quit">Quit</string>
+    <string name="cancel">Cancel</string>
+    <string name="chooseOption">Choose an option</string>
+    <string name="remove">Remove photo</string>
+    <string name="setPhoto">Choose profile photo</string>
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Italian</item>
+    </string-array>
 </resources>

@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private DataEncryptionUtil dataEncryptionUtil;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,12 @@ public class LoginActivity extends AppCompatActivity {
             if (isEmailOk(email) & isPasswordOk(password)) {
                 Log.d(TAG, "Email and password are ok");
                 saveLoginData(email, password);
+                sharedPreferences = getSharedPreferences("Log", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putBoolean("Login",true);
+                editor.apply();
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
             } else {
                 Snackbar.make(findViewById(android.R.id.content),
                         "Check your data", Snackbar.LENGTH_SHORT).show();
