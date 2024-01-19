@@ -33,6 +33,9 @@ public class ProfileFragment extends Fragment {
 
 
     ImageButton back_button;
+
+    Button login_button;
+    Button register_button;
     Switch darkModeSwitch;
     boolean darkMode;
     SharedPreferences sharedPreferences;
@@ -103,6 +106,18 @@ public class ProfileFragment extends Fragment {
         back_button.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_mainActivity);
         });
+
+        login_button = view.findViewById(R.id.login_bottom);
+        login_button.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_loginActivity);
+        });
+
+        register_button = view.findViewById(R.id.sign_in);
+        register_button.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_registerActivity);
+        });
+
+
         return view;
     }
 }

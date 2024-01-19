@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,6 +48,8 @@ public class LoginFragment extends Fragment {
     private TextInputLayout textInputLayoutPassword;
 
     private DataEncryptionUtil dataEncryptionUtil;
+
+    private ImageButton backArrow;
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -131,6 +134,13 @@ public class LoginFragment extends Fragment {
                         R.string.check_login_data_message, Snackbar.LENGTH_SHORT).show();
             }
         });
+
+        backArrow = view.findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainActivity);
+        });
+
+
 
     }
 
