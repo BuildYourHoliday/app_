@@ -4,10 +4,12 @@ import android.content.Context;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 public class JsonFileReader {
 
-    public String readJsonFromAssets(Context context, String filename) {
+    public static String readJsonFromAssets(Context context, String filename) {
         String styleJson = "";
 
         try {
@@ -22,5 +24,20 @@ public class JsonFileReader {
         }
 
         return styleJson;
+    }
+
+    public static boolean saveJsonIntoAssets(Context context, String filename, String json) {
+        try {
+            OutputStream outputStream = context.getAssets().openFd(filename).createOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+            writer.write(json);
+            writer.flush();
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

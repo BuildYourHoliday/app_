@@ -37,6 +37,14 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.5")
     implementation("commons-validator:commons-validator:1.7")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+  //  implementation("com.squareup.retrofit2:retrofit:2.9.0")
+  //  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //implementation("com.amadeus:amadeus-android:1.3.1")
+    implementation("com.amadeus:amadeus-java:8.0.0")
+
+    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
 
     implementation("com.mapbox.maps:android:10.16.2")
     testImplementation("junit:junit:4.13.2")

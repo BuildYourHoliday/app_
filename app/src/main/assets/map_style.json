@@ -47,7 +47,7 @@
       "type": "fill",
       "source": "composite",
       "source-layer": "country_boundaries",
-      "filter": ["match", ["get", "name"], ["Italia"], true, false],
+      "filter": ["match", ["get", "iso_3166_1"], ["GGGG","IT"], true, false],
       "layout": {},
       "paint": {"fill-color": "hsla(88, 100%, 40%, 0.33)"}
     },
@@ -56,7 +56,7 @@
       "type": "fill",
       "source": "composite",
       "source-layer": "country_boundaries",
-      "filter": ["match", ["get", "name_en"], ["Spain"], true, false],
+      "filter": ["match", ["get", "iso_3166_1"], ["BBBB","ES"], true, false],
       "layout": {},
       "paint": {"fill-color": "hsla(187, 100%, 40%, 0.33)"}
     },
@@ -65,7 +65,7 @@
       "type": "fill",
       "source": "composite",
       "source-layer": "country_boundaries",
-      "filter": ["match", ["get", "name_en"], ["Germany"], true, false],
+      "filter": ["match", ["get", "iso_3166_1"], ["YYYY","DE"], true, false],
       "layout": {},
       "paint": {"fill-color": "hsla(58, 100%, 50%, 0.33)"}
     },

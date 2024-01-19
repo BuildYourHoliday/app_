@@ -77,7 +77,7 @@ public class MapFragment extends Fragment {
 
     SharedPreferences sharedPreferences;
     String mapStyle = "map_style.json";
-    JsonFileReader jsonFileReader;
+ //   JsonFileReader jsonFileReader;
 
     private MapView mapView = null;
 
@@ -124,7 +124,7 @@ public class MapFragment extends Fragment {
                 getString(R.string.mapbox_access_token));
         Log.d("MapFragment","dopo GETINSTANCE() + "+getString(R.string.mapbox_access_token));
 
-        jsonFileReader = new JsonFileReader();
+      //  jsonFileReader = new JsonFileReader();
 
 
 
@@ -134,7 +134,7 @@ public class MapFragment extends Fragment {
         mapView = view.findViewById(R.id.map_view);
         //mapView.getMapboxMap().loadStyleUri(Style.LIGHT);
 
-        mapView.getMapboxMap().loadStyleJson(jsonFileReader.readJsonFromAssets(getContext(), mapStyle));
+        mapView.getMapboxMap().loadStyleJson(JsonFileReader.readJsonFromAssets(getContext(), mapStyle));
 
         sharedPreferences = getActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE);
         //if(sharedPreferences.getBoolean("darkMode", false)) {
@@ -246,6 +246,7 @@ public class MapFragment extends Fragment {
                                                 CameraOptions cameraOptions =
                                                         new CameraOptions.Builder().center(point).zoom(2.0).build();
                                                 mapView.getMapboxMap().setCamera(cameraOptions);
+
 
                                                 break;
                                             }
