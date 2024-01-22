@@ -8,6 +8,7 @@ import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
 import com.amadeus.resources.Hotel;
 
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
@@ -68,10 +69,10 @@ public class AmadeusService {
         return (hotels);
     }
 
-    public Observable<HotelOfferSearch[]> fetchRoomsAsync(String hotelCode, int adults) {
+    public Observable<HotelOfferSearch[]> fetchRoomsAsync(String hotelCode, int adults, String checkIn, String checkOut) {
         return Observable.create((ObservableOnSubscribe<HotelOfferSearch[]>) emitter -> {
             // Effettua la tua chiamata in background qui
-            HotelOfferSearch[] result = getRooms(hotelCode, adults);
+            HotelOfferSearch[] result = getRooms(hotelCode, adults, checkIn, checkOut);
 
             // Invia il risultato all'emitter
             emitter.onNext(result);
@@ -81,10 +82,11 @@ public class AmadeusService {
         });
     }
 
-    public HotelOfferSearch[] getRooms(String hotelCode, int adults) throws ResponseException {
+    public HotelOfferSearch[] getRooms(String hotelCode, int adults, String checkIn, String checkOut) throws ResponseException {
         //get a list of hotels in a given city
         HotelOfferSearch[] rooms = amadeus.shopping.hotelOffersSearch.get(
-                Params.with("hotelIds", hotelCode).and("adults",adults));
+                Params.with("hotelIds", hotelCode).and("adults",adults).and("checkInDate", checkIn)
+                        .and("checkOutDate", checkOut));
 
         if (rooms[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
