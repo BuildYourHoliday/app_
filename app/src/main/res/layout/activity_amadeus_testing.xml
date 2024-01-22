@@ -6,13 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".AmadeusTesting">
 
+    <!--
+    <EditText
+        android:id="@+id/serachCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="foo" />
+
+    <Button
+        android:id="@+id/buttonCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="submitCity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serachCity" />
+
+       -->
+
+    <AutoCompleteTextView
+        android:id="@+id/autoComplete"
+        style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:completionThreshold="1"
+        android:dropDownAnchor="@id/autoComplete"
+        android:dropDownWidth="match_parent"
+        android:hint="digit here"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
     <TextView
         android:id="@+id/debugging"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
         android:hint="none"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/autoComplete" />
 
     <EditText
         android:id="@+id/hotelsFor"
@@ -24,15 +61,16 @@
         android:text="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/debugging" />
+    -->
 
     <Button
         android:id="@+id/buttonHotel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:text="Button"
+        android:layout_marginStart="16dp"
+        android:text="Trova Hotel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hotelsFor" />
+        app:layout_constraintTop_toBottomOf="@+id/autoComplete" />
 
     <TextView
         android:id="@+id/hotelResults"

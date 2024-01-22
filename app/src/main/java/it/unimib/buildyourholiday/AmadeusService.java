@@ -4,6 +4,7 @@ import com.amadeus.Amadeus;
 import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.referencedata.Locations;
+import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
 import com.amadeus.resources.Hotel;
 
@@ -65,6 +66,32 @@ public class AmadeusService {
         }
 
         return (hotels);
+    }
+
+    public Observable<HotelOfferSearch[]> fetchRoomsAsync(String hotelCode, int adults) {
+        return Observable.create((ObservableOnSubscribe<HotelOfferSearch[]>) emitter -> {
+            // Effettua la tua chiamata in background qui
+            HotelOfferSearch[] result = getRooms(hotelCode, adults);
+
+            // Invia il risultato all'emitter
+            emitter.onNext(result);
+
+            // Completa l'observable
+            emitter.onComplete();
+        });
+    }
+
+    public HotelOfferSearch[] getRooms(String hotelCode, int adults) throws ResponseException {
+        //get a list of hotels in a given city
+        HotelOfferSearch[] rooms = amadeus.shopping.hotelOffersSearch.get(
+                Params.with("hotelIds", hotelCode).and("adults",adults));
+
+        if (rooms[0].getResponse().getStatusCode() != 200) {
+            System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
+            System.exit(-1);
+        }
+
+        return (rooms);
     }
 
 }
