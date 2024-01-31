@@ -8,7 +8,7 @@ public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        if (this instanceof NewsResponseSuccess || this instanceof UserResponseSuccess) {
+        if (this instanceof UserResponseSuccess) {
             return true;
         } else {
             return false;
@@ -19,15 +19,6 @@ public abstract class Result {
      * Class that represents a successful action during the interaction
      * with a Web Service or a local database.
      */
-    public static final class NewsResponseSuccess extends Result {
-        private final NewsResponse newsResponse;
-        public NewsResponseSuccess(NewsResponse newsResponse) {
-            this.newsResponse = newsResponse;
-        }
-        public NewsResponse getData() {
-            return newsResponse;
-        }
-    }
 
     /**
      * Class that represents a successful action during the interaction
