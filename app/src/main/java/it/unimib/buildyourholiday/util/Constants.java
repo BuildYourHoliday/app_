@@ -13,4 +13,14 @@ public class Constants {
 
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.worldnews.encrypted_file.txt";
+
+
+    // Constants for errors
+    public static final String GENERIC_ERROR = "unexpected_error";
+    public static final String INVALID_USER_ERROR = "invalidUserError";
+    public static final String INVALID_CREDENTIALS_ERROR = "invalidCredentials";
+    public static final String USER_COLLISION_ERROR = "userCollisionError";
+    public static final String WEAK_PASSWORD_ERROR = "passwordIsWeak";
+
+
 }
