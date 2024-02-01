@@ -10,6 +10,7 @@ public class Constants {
     public static final String ENCRYPTED_SHARED_PREFERENCES_FILE_NAME = "it.unimib.worldnews.encrypted_preferences";
     public static final String EMAIL_ADDRESS = "email_address";
     public static final String PASSWORD = "password";
+    public static final String ID_TOKEN = "google_token";
 
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.worldnews.encrypted_file.txt";
@@ -21,6 +22,10 @@ public class Constants {
     public static final String INVALID_CREDENTIALS_ERROR = "invalidCredentials";
     public static final String USER_COLLISION_ERROR = "userCollisionError";
     public static final String WEAK_PASSWORD_ERROR = "passwordIsWeak";
+
+    // Constants for Firebase Realtime Database
+    public static final String FIREBASE_REALTIME_DATABASE = "https://buildyourholiday-default-rtdb.europe-west1.firebasedatabase.app/";
+    public static final String FIREBASE_USERS_COLLECTION = "users";
 
 
 }

@@ -53,17 +53,23 @@ public class UserRepository implements IUserRepository, UserResponseCallback {
         return userMutableLiveData;
     }
 
+    /*
     @Override
     public MutableLiveData<Result> getUserFavoriteNews(String idToken) {
         userDataRemoteDataSource.getUserFavoriteNews(idToken);
         return userFavoriteNewsMutableLiveData;
     }
 
+     */
+
+    /*
     @Override
     public MutableLiveData<Result> getUserPreferences(String idToken) {
         userDataRemoteDataSource.getUserPreferences(idToken);
         return userPreferencesMutableLiveData;
     }
+
+     */
 
     @Override
     public User getLoggedUser() {
@@ -91,10 +97,13 @@ public class UserRepository implements IUserRepository, UserResponseCallback {
         userRemoteDataSource.signInWithGoogle(token);
     }
 
+    /*
     @Override
     public void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken) {
         userDataRemoteDataSource.saveUserPreferences(favoriteCountry, favoriteTopics, idToken);
     }
+
+     */
 
     @Override
     public void onSuccessFromAuthentication(User user) {

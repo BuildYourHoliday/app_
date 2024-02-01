@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "942853710082",
+    "firebase_url": "https://buildyourholiday-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "buildyourholiday",
     "storage_bucket": "buildyourholiday.appspot.com"
   },

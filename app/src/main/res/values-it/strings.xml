@@ -27,4 +27,5 @@
     <string name="invalid_password">La passaword deve contenere almeno 8 caratteri</string>
     <string name="invalid_passwordAgain">Le password non combaciano</string>
     <string name="error_message">Questa mail ha già un account associato</string>
+    <string name="googleLogin">Entra con Google</string>
 </resources>
