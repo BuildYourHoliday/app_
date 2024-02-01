@@ -19,7 +19,7 @@
             app:destination="@id/loginActivity" />
         <action
             android:id="@+id/action_profileFragment_to_registerActivity"
-            app:destination="@id/registerActivity" />
+            app:destination="@id/registerFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
@@ -31,10 +31,10 @@
         android:name="it.unimib.buildyourholiday.LoginActivity"
         android:label="LoginActivity"
         tools:layout="@layout/activity_login"/>
-    <activity
-        android:id="@+id/registerActivity"
-        android:name="it.unimib.buildyourholiday.RegisterActivity"
-        android:label="RegisterActivity"
-        tools:layout="@layout/activity_register"/>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="it.unimib.buildyourholiday.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register"/>
 
 </navigation>

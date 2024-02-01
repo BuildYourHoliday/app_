@@ -95,6 +95,7 @@ public class LoginFragment extends Fragment {
     private BeginSignInRequest signInRequest;
     private UserViewModel userViewModel;
     private LinearProgressIndicator progressIndicator;
+    private Button buttonRegister;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -196,6 +197,7 @@ public class LoginFragment extends Fragment {
 
         textInputLayoutEmail = view.findViewById(R.id.textInputLayout_email);
         textInputLayoutPassword = view.findViewById(R.id.textInputLayout_password);
+        buttonRegister = view.findViewById(R.id.button_needRegister);
         buttonLogin = view.findViewById(R.id.button_login);
         buttonGoogleLogin = view.findViewById(R.id.button_googleLogin);
         progressIndicator = view.findViewById(R.id.progress_bar);
@@ -222,12 +224,27 @@ public class LoginFragment extends Fragment {
 
             // Start login if email and password are ok
             if (isEmailOk(email) & isPasswordOk(password)) {
-                Log.d(TAG, "Email and password are ok");
-                saveLoginData(email, password);
-
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainActivity);
-
-
+                if (!userViewModel.isAuthenticationError()) {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    userViewModel.getUserMutableLiveData(email,password,true).observe(
+                            getViewLifecycleOwner(), result -> {
+                                if (result.isSuccess()) {
+                                    User user = ((Result.UserResponseSuccess) result).getData();
+                                    saveLoginData(email,password,user.getIdToken());
+                                    userViewModel.setAuthenticationError(false);
+                                    retrieveUserInformationAndStartActivity(user,R.id.action_loginFragment_to_mainActivity);
+                                } else {
+                                    userViewModel.setAuthenticationError(true);
+                                    progressIndicator.setVisibility(View.GONE);
+                                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                            getErrorMessage(((Result.Error) result).getMessage()),
+                                            Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+                } else {
+                    userViewModel.getUser(email,password,true);
+                }
             } else {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                         R.string.check_login_data_message, Snackbar.LENGTH_SHORT).show();
@@ -265,6 +282,10 @@ public class LoginFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainActivity);
         });
 
+        buttonRegister = view.findViewById(R.id.button_needRegister);
+        buttonRegister.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment);
+        });
 
 
     }
@@ -338,7 +359,7 @@ public class LoginFragment extends Fragment {
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID_TOKEN, idToken);
 
             if(password != null)
-            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
+              dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
                     email.concat(":").concat(password));
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();

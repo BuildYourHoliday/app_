@@ -28,4 +28,10 @@
     <string name="invalid_passwordAgain">Le password non combaciano</string>
     <string name="error_message">Questa mail ha già un account associato</string>
     <string name="googleLogin">Entra con Google</string>
+    <string name="generic_error">Errore inaspettato</string>
+    <string name="error_no_google_account_found">Nessun account Google trovato</string>
+    <string name="error_login_password_message">Credenziali di accesso non valide</string>
+    <string name="error_login_user_message">Utente non valido</string>
+    <string name="error_registration_password_message">Password non valida</string>
+    <string name="error_collision_user_message">Utente già associato ad un account esistente</string>
 </resources>

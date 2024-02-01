@@ -42,5 +42,9 @@
     <string name="error_no_google_account_found">No Google accounts found</string>
     <string name="error_login_password_message">Invalid login credentials</string>
     <string name="error_login_user_message">User not valid</string>
+    <string name="error_registration_password_message">Password not valid</string>
+    <string name="error_collision_user_message">User already associated with account</string>
+    <string name="error_form_message">Please insert your information</string>
+    <string name="error_check_password">Please check your password</string>
 
 </resources>
