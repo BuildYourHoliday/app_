@@ -1,10 +1,16 @@
 package it.unimib.buildyourholiday.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Hotel {
     private String hotel;
+    @PrimaryKey @NonNull
     private String hotelCode;
     private String cityCode;
-    private String city;
+    private String hotelCity;
     private String checkinDate;
     private String checkoutDate;
     private int adults;
@@ -14,11 +20,11 @@ public class Hotel {
 
     }
 
-    public Hotel(String hotel, String hotelCode, String cityCode, String city, String checkinDate, String checkoutDate, int adults, double total) {
+    public Hotel(String hotel, String hotelCode, String cityCode, String hotelCity, String checkinDate, String checkoutDate, int adults, double total) {
         this.hotel = hotel;
         this.hotelCode = hotelCode;
         this.cityCode = cityCode;
-        this.city = city;
+        this.hotelCity = hotelCity;
         this.checkinDate = checkinDate;
         this.checkoutDate = checkoutDate;
         this.adults = adults;
@@ -49,12 +55,12 @@ public class Hotel {
         this.cityCode = cityCode;
     }
 
-    public String getCity() {
-        return city;
+    public String getHotelCity() {
+        return hotelCity;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setHotelCity(String hotelCity) {
+        this.hotelCity = hotelCity;
     }
 
     public String getCheckinDate() {

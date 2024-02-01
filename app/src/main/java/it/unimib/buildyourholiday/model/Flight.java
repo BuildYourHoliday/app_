@@ -1,6 +1,13 @@
 package it.unimib.buildyourholiday.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Flight {
+    @PrimaryKey @NonNull
+    private String code;
     private String departureDate;
     private String departureTime;
     private String departureAirport;
@@ -13,7 +20,8 @@ public class Flight {
 
     }
 
-    public Flight(String departureDate, String departureTime, String departureAirport, String returnalDate, String returnalTime, String arrivalAirport, double price) {
+    public Flight(String code, String departureDate, String departureTime, String departureAirport, String returnalDate, String returnalTime, String arrivalAirport, double price) {
+        this.code = code;
         this.departureDate = departureDate;
         this.departureTime = departureTime;
         this.departureAirport = departureAirport;
@@ -23,12 +31,21 @@ public class Flight {
         this.price = price;
     }
 
-    public Flight(String departureDate, String departureTime, String departureAirport, String arrivalAirport, double price) {
+    public Flight(String code, String departureDate, String departureTime, String departureAirport, String arrivalAirport, double price) {
+        this.code = code;
         this.departureDate = departureDate;
         this.departureTime = departureTime;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.price = price;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getDepartureDate() {

@@ -39,7 +39,7 @@ import java.security.GeneralSecurityException;
 
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.User;
-import it.unimib.buildyourholiday.data.repository.user.user.IUserRepository;
+import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.util.DataEncryptionUtil;
 import it.unimib.buildyourholiday.util.ServiceLocator;
 

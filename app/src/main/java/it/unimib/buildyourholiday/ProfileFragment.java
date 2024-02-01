@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
 
         register_button = view.findViewById(R.id.sign_in);
         register_button.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_registerActivity);
+            Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_registerFragment);
         });
 
 

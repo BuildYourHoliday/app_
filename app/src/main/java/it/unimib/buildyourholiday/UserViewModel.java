@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.User;
-import it.unimib.buildyourholiday.data.repository.user.user.IUserRepository;
+import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 
 public class UserViewModel extends ViewModel {
     private static final String TAG = UserViewModel.class.getSimpleName();

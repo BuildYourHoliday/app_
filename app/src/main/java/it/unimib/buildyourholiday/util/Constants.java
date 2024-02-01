@@ -12,6 +12,9 @@ public class Constants {
     public static final String PASSWORD = "password";
     public static final String ID_TOKEN = "google_token";
 
+    // Dao Database
+    public static final String TRAVELS_DATABASE_NAME = "travel_db";
+
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.worldnews.encrypted_file.txt";
 

@@ -41,6 +41,9 @@ dependencies {
   //  implementation("com.squareup.retrofit2:retrofit:2.9.0")
   //  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
     //implementation("com.amadeus:amadeus-android:1.3.1")
     implementation("com.amadeus:amadeus-java:8.0.0")
 

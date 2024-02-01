@@ -18,7 +18,7 @@
             android:id="@+id/action_profileFragment_to_loginActivity"
             app:destination="@id/loginActivity" />
         <action
-            android:id="@+id/action_profileFragment_to_registerActivity"
+            android:id="@+id/action_profileFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
     </fragment>
     <activity

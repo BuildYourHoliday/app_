@@ -2,8 +2,8 @@ package it.unimib.buildyourholiday.util;
 
 import android.app.Application;
 
-import it.unimib.buildyourholiday.data.repository.user.user.IUserRepository;
-import it.unimib.buildyourholiday.data.repository.user.user.UserRepository;
+import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
+import it.unimib.buildyourholiday.data.repository.user.UserRepository;
 import it.unimib.buildyourholiday.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.buildyourholiday.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.buildyourholiday.data.source.user.UserAuthenticationRemoteDataSource;
