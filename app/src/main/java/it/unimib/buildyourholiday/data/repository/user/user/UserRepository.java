@@ -1,14 +1,11 @@
-package it.unimib.buildyourholiday.source.data.repository.user;
+package it.unimib.buildyourholiday.data.repository.user.user;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
-import java.util.Set;
-
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.User;
-import it.unimib.buildyourholiday.source.data.user.BaseUserAuthenticationRemoteDataSource;
-import it.unimib.buildyourholiday.source.data.user.BaseUserDataRemoteDataSource;
+import it.unimib.buildyourholiday.data.source.user.BaseUserAuthenticationRemoteDataSource;
+import it.unimib.buildyourholiday.data.source.user.BaseUserDataRemoteDataSource;
 
 
 /**

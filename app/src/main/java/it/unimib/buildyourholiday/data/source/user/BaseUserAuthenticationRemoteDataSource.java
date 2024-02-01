@@ -1,7 +1,7 @@
-package it.unimib.buildyourholiday.source.data.user;
+package it.unimib.buildyourholiday.data.source.user;
 
 import it.unimib.buildyourholiday.model.User;
-import it.unimib.buildyourholiday.source.data.repository.user.UserResponseCallback;
+import it.unimib.buildyourholiday.data.repository.user.user.UserResponseCallback;
 /**
  * Base class to manage the user authentication.
  */

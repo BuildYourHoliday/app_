@@ -1,9 +1,8 @@
-package it.unimib.buildyourholiday.source.data.user;
+package it.unimib.buildyourholiday.data.source.user;
 
-import java.util.Set;
-
+import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.User;
-import it.unimib.buildyourholiday.source.data.repository.user.UserResponseCallback;
+import it.unimib.buildyourholiday.data.repository.user.user.UserResponseCallback;
 
 /**
  * Base class to get the user data from a remote source.
@@ -18,5 +17,5 @@ public abstract class BaseUserDataRemoteDataSource {
     public abstract void saveUserData(User user);
   //  public abstract void getUserFavoriteNews(String idToken);
   //  public abstract void getUserPreferences(String idToken);
-   // public abstract void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken);
+  //  public abstract void saveUserTravel(Travel travel, String idToken);
 }

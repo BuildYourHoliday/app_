@@ -47,6 +47,7 @@ public class RegisterFragment extends Fragment {
     private ProgressBar progressBar;
     private UserViewModel userViewModel;
     private DataEncryptionUtil dataEncryptionUtil;
+    private TextInputLayout nameTextInputLayout;
 
     public RegisterFragment() {
         //
@@ -75,6 +76,7 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        nameTextInputLayout = view.findViewById(R.id.textInputLayout_username);
         emailTextInputLayout = view.findViewById(R.id.textInputLayout_email);
         passwordTextInputLayout = view.findViewById(R.id.textInputLayout_password);
         passwordAgainTextInputLayout = view.findViewById(R.id.textInputLayout_passwordAgain);
@@ -84,10 +86,12 @@ public class RegisterFragment extends Fragment {
 
         registerButton.setOnClickListener(item -> {
             Log.d(TAG, "Bottone cliccato");
+            String name = nameTextInputLayout.getEditText().getText().toString();
             String email = emailTextInputLayout.getEditText().getText().toString();
             String password = passwordTextInputLayout.getEditText().getText().toString();
             String passwordAgain = passwordAgainTextInputLayout.getEditText().getText().toString();
 
+            Log.d(TAG, "Nome: " + name);
             Log.d(TAG, "Email: "+email);
             Log.d(TAG, "Password: "+password);
 

@@ -1,4 +1,4 @@
-package it.unimib.buildyourholiday.source.data.repository.user;
+package it.unimib.buildyourholiday.data.repository.user.user;
 
 import java.util.List;
 

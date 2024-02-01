@@ -9,14 +9,10 @@ import static it.unimib.buildyourholiday.util.Constants.INVALID_USER_ERROR;
 import static it.unimib.buildyourholiday.util.Constants.PASSWORD;
 
 import android.app.Activity;
-import android.app.MediaRouteButton;
 import android.content.Intent;
 import android.os.Bundle;
 
 
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -43,10 +39,9 @@ import java.security.GeneralSecurityException;
 
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.User;
-import it.unimib.buildyourholiday.source.data.repository.user.IUserRepository;
+import it.unimib.buildyourholiday.data.repository.user.user.IUserRepository;
 import it.unimib.buildyourholiday.util.DataEncryptionUtil;
 import it.unimib.buildyourholiday.util.ServiceLocator;
-import it.unimib.buildyourholiday.util.SharedPreferencesUtil;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
@@ -57,8 +52,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * Fragment that allows user to login.

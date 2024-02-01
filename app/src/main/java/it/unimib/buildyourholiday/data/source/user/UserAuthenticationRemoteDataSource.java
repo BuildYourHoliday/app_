@@ -1,4 +1,4 @@
-package it.unimib.buildyourholiday.source.data.user;
+package it.unimib.buildyourholiday.data.source.user;
 
 import static it.unimib.buildyourholiday.util.Constants.GENERIC_ERROR;
 import static it.unimib.buildyourholiday.util.Constants.INVALID_CREDENTIALS_ERROR;

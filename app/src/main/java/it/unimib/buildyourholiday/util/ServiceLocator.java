@@ -2,15 +2,12 @@ package it.unimib.buildyourholiday.util;
 
 import android.app.Application;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import it.unimib.buildyourholiday.source.data.repository.user.IUserRepository;
-import it.unimib.buildyourholiday.source.data.repository.user.UserRepository;
-import it.unimib.buildyourholiday.source.data.user.BaseUserAuthenticationRemoteDataSource;
-import it.unimib.buildyourholiday.source.data.user.BaseUserDataRemoteDataSource;
-import it.unimib.buildyourholiday.source.data.user.UserAuthenticationRemoteDataSource;
-import it.unimib.buildyourholiday.source.data.user.UserDataRemoteDataSource;
+import it.unimib.buildyourholiday.data.repository.user.user.IUserRepository;
+import it.unimib.buildyourholiday.data.repository.user.user.UserRepository;
+import it.unimib.buildyourholiday.data.source.user.BaseUserAuthenticationRemoteDataSource;
+import it.unimib.buildyourholiday.data.source.user.BaseUserDataRemoteDataSource;
+import it.unimib.buildyourholiday.data.source.user.UserAuthenticationRemoteDataSource;
+import it.unimib.buildyourholiday.data.source.user.UserDataRemoteDataSource;
 
 /**
  *  Registry to provide the dependencies for the classes
