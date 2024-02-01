@@ -36,10 +36,24 @@
         android:completionThreshold="1"
         android:dropDownAnchor="@id/autoComplete"
         android:dropDownWidth="match_parent"
-        android:hint="digit here"
+        android:hint="Origin city - digit here"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoComplete2"
+        style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:completionThreshold="1"
+        android:dropDownAnchor="@id/autoComplete"
+        android:dropDownWidth="match_parent"
+        android:hint="Destination city - digit here"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autoComplete" />
 
     <!--
     <TextView
@@ -70,7 +84,7 @@
         android:layout_marginStart="16dp"
         android:text="Trova Hotel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoComplete" />
+        app:layout_constraintTop_toBottomOf="@+id/autoComplete2" />
 
     <TextView
         android:id="@+id/hotelResults"

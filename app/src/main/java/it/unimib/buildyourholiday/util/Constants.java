@@ -15,6 +15,8 @@ public class Constants {
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.worldnews.encrypted_file.txt";
 
+    // Constants for Amadeus API
+    public static final int TOTAL_FLIGHTS_RESULTS = 3;
 
     // Constants for errors
     public static final String GENERIC_ERROR = "unexpected_error";

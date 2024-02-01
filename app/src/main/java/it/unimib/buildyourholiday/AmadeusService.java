@@ -1,12 +1,18 @@
 package it.unimib.buildyourholiday;
 
+import static it.unimib.buildyourholiday.util.Constants.TOTAL_FLIGHTS_RESULTS;
+
+import androidx.annotation.Nullable;
+
 import com.amadeus.Amadeus;
 import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.referencedata.Locations;
+import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
 import com.amadeus.resources.Hotel;
+import com.amadeus.shopping.FlightOffersSearch;
 
 
 import io.reactivex.rxjava3.core.Observable;
@@ -16,6 +22,7 @@ public class AmadeusService {
     private Amadeus amadeus = Amadeus
             .builder("UWAFKYZec0REMjNs6agWEur2IpEnZ78H","D9AZ2ZHEW8CkgYBH")
             .build();
+
     public Observable<Location[]> fetchLocationAsync(String hint) {
         return Observable.create((ObservableOnSubscribe<Location[]>) emitter -> {
             // Effettua la tua chiamata in background qui
@@ -94,6 +101,44 @@ public class AmadeusService {
         }
 
         return (rooms);
+    }
+
+    public Observable<FlightOfferSearch[]> fetchFlightsAsync(String originCityCode, String destinationCityCode, String departureDate, @Nullable String returnDate, int adults) {
+        return Observable.create((ObservableOnSubscribe<FlightOfferSearch[]>) emitter -> {
+            // Effettua la tua chiamata in background qui
+            FlightOfferSearch[] result = getFlights(originCityCode, destinationCityCode, departureDate,
+                    returnDate, adults);
+
+            // Invia il risultato all'emitter
+            emitter.onNext(result);
+
+            // Completa l'observable
+            emitter.onComplete();
+        });
+    }
+
+    public FlightOfferSearch[] getFlights(String originCityCode, String destinationCityCode, String departureDate, @Nullable String returnDate, int adults) throws ResponseException {
+        FlightOfferSearch[] flights = null;
+
+        //get a list of hotels in a given city
+        if(returnDate.isEmpty()) {
+             flights = amadeus.shopping.flightOffersSearch.get(
+                    Params.with("originLocationCode", originCityCode).and("destinationLocationCode", destinationCityCode)
+                            .and("departureDate", departureDate).and("adults", adults)
+                            .and("max", TOTAL_FLIGHTS_RESULTS));
+        } else {
+            flights = amadeus.shopping.flightOffersSearch.get(
+                    Params.with("originLocationCode", originCityCode).and("destinationLocationCode", destinationCityCode)
+                            .and("departureDate", departureDate).and("returnDate", returnDate).and("adults", adults)
+                            .and("max", TOTAL_FLIGHTS_RESULTS));
+        }
+
+        if (flights[0].getResponse().getStatusCode() != 200) {
+            System.out.println("Wrong status code: " + flights[0].getResponse().getStatusCode());
+            System.exit(-1);
+        }
+
+        return (flights);
     }
 
 }
