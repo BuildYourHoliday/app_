@@ -3,13 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeFragment" >
+
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="it.unimib.buildyourholiday.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_profileActivity"
+            app:destination="@id/profileActivity" />
+    </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="it.unimib.buildyourholiday.MapFragment"
@@ -17,7 +22,13 @@
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="it.unimib.buildyourholiday.ProfileFragment"
+        android:name="it.unimib.buildyourholiday.MyFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_my" />
+    <activity
+        android:id="@+id/profileActivity"
+        android:name="it.unimib.buildyourholiday.ProfileActivity"
+        android:label="activity_profile"
+        tools:layout="@layout/activity_profile" />
+
 </navigation>

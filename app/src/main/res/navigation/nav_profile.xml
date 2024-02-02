@@ -4,9 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_profile"
     app:startDestination="@id/profileFragment">
+
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="it.unimib.buildyourholiday.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
+        <action
+            android:id="@+id/action_profileFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="it.unimib.buildyourholiday.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="it.unimib.buildyourholiday.LoginActivity"
+        android:label="LoginActivity"
+        tools:layout="@layout/activity_login"/>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="it.unimib.buildyourholiday.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register"/>
+
 </navigation>

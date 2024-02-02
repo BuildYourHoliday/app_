@@ -7,7 +7,7 @@
 
         <item name="colorSecondary">#C5CAE9</item>              <!-- TODO: cambiare /-->
         <item name="colorSecondaryVariant">#BDBDBD</item>
-        <item name="colorOnSecondary">#757575</item>
+        <item name="colorOnSecondary">@color/black</item>
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
 

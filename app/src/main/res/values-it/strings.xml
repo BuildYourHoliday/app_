@@ -4,10 +4,10 @@
     <string name="item_map">Mappa</string>
     <string name="item_bookedPlaces">Prenotati</string>
     <string name="item_savedPlaces">Preferiti</string>
-    <string name="login">Accedi</string>
     <string name="need_register">Non sei ancora iscritto? Registrati</string>
     <string name="error_email">Mail non corretta</string>
     <string name="error_password">Password non corretta</string>
+    <string name="check_login_data_message">Controlla i dati inseriti</string>
     <string name="item_profile">Profilo</string>
     <string name="account">Account</string>
     <string name="language">Lingua</string>
@@ -29,4 +29,24 @@
         <item>Inglese</item>
         <item>Italiano</item>
     </string-array>
+    <string name="login">Accedi</string>
+    <string name="sign_up">Registrati</string>
+    <string name="password_again">Ripeti la password</string>
+    <string name="need_login">Sei già iscritto? Accedi</string>
+    <string name="settings">Impostazioni</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="make_account">Crea il tuo account</string>
+    <string name="username">Nome</string>
+    <string name="invalid_email">Email non valida</string>
+    <string name="invalid_password">La passaword deve contenere almeno 8 caratteri</string>
+    <string name="invalid_passwordAgain">Le password non combaciano</string>
+    <string name="error_message">Questa mail ha già un account associato</string>
+    <string name="googleLogin">Entra con Google</string>
+    <string name="generic_error">Errore inaspettato</string>
+    <string name="error_no_google_account_found">Nessun account Google trovato</string>
+    <string name="error_login_password_message">Credenziali di accesso non valide</string>
+    <string name="error_login_user_message">Utente non valido</string>
+    <string name="error_registration_password_message">Password non valida</string>
+    <string name="error_collision_user_message">Utente già associato ad un account esistente</string>
 </resources>

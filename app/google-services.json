@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "942853710082",
+    "firebase_url": "https://buildyourholiday-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "buildyourholiday",
+    "storage_bucket": "buildyourholiday.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942853710082:android:92ecf5b178e4ecc492621b",
+        "android_client_info": {
+          "package_name": "it.unimib.buildyourholiday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942853710082-10e06u2rg1vj730amjjkc6iset81v5pt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.unimib.buildyourholiday",
+            "certificate_hash": "954fd3a9803eb0844787c3e7e5ed58faea3bd3fe"
+          }
+        },
+        {
+          "client_id": "942853710082-dt9oqmnhas64gr8ckqa1vsd9oabddb4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBStTTvmD1SG4KNNFVenkAwjs4uYec-QRw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942853710082-dt9oqmnhas64gr8ckqa1vsd9oabddb4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

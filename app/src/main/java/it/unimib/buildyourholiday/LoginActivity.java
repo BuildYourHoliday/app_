@@ -1,51 +1,13 @@
 package it.unimib.buildyourholiday;
 
-import static it.unimib.buildyourholiday.util.Constants.EMAIL_ADDRESS;
-import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_DATA_FILE_NAME;
-import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
-import static it.unimib.buildyourholiday.util.Constants.PASSWORD;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
-
-import org.apache.commons.validator.routines.EmailValidator;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import it.unimib.buildyourholiday.util.DataEncryptionUtil;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
 
 
-    private TextInputLayout textInputLayoutEmail;
-    private TextInputLayout textInputLayoutPassword;
-
-    private DataEncryptionUtil dataEncryptionUtil;
-
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        textInputLayoutEmail = findViewById(R.id.textInputLayout_email);
+        /*textInputLayoutEmail = findViewById(R.id.textInputLayout_email);
         textInputLayoutPassword = findViewById(R.id.textInputLayout_password);
         final Button buttonLogin = findViewById(R.id.button_login);
 
@@ -81,12 +43,6 @@ public class LoginActivity extends AppCompatActivity {
             if (isEmailOk(email) & isPasswordOk(password)) {
                 Log.d(TAG, "Email and password are ok");
                 saveLoginData(email, password);
-                sharedPreferences = getSharedPreferences("Log", MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putBoolean("Login",true);
-                editor.apply();
-                Intent intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
             } else {
                 Snackbar.make(findViewById(android.R.id.content),
                         "Check your data", Snackbar.LENGTH_SHORT).show();
@@ -124,11 +80,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
+    *//**
      * Checks if the password is not empty.
      * @param password The password to be checked
      * @return True if the password is not empty, false otherwise
-     */
+     *//*
     private boolean isPasswordOk(String password) {
         // Check if the password length is correct
         if (password.isEmpty() || password.length() < 8) {
@@ -137,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             textInputLayoutPassword.setError(null);
             return true;
-        }
+        }*/
     }
 
 

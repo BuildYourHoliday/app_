@@ -6,12 +6,17 @@
     <string name="item_bookedPlaces">Booked</string>
     <string name="item_savedPlaces">Saved</string>
 
-    <string name="login">Login</string>
+    <string name="mapbox_access_token" translatable="false">
+        pk.eyJ1IjoiY2hvcHBhZGVidWciLCJhIjoiY2xwbGc1Nzh6MDRjMzJqb3RnYWt1dmN5cCJ9.t8v24xXETiXI0wIyYa7OSw
+    </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="email" translatable="false">E-Mail</string>
     <string name="password" translatable="false">Password</string>
+    <string name="password_again">Confirm password</string>
     <string name="need_register">Not subscribed yet? Register</string>
+    <string name="need_login">Already subscribed? Login</string>
     <string name="error_email">The mail is not correct</string>
     <string name="error_password">The password is not correct</string>
     <string name="item_profile">Profile</string>
@@ -35,4 +40,26 @@
         <item>English</item>
         <item>Italian</item>
     </string-array>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="check_login_data_message">Check the data inserted</string>
+    <string name="settings">Settings</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="welcome">Welcome!</string>
+    <string name="make_account">Create your account</string>
+    <string name="username">Username</string>
+    <string name="invalid_email">Email is not valid</string>
+    <string name="invalid_password">Password needs to be at least 8-characters long</string>
+    <string name="invalid_passwordAgain">Password doesn\'t match</string>
+    <string name="error_message">This email is already associated with an account</string>
+    <string name="googleLogin">Login with Google</string>
+    <string name="generic_error">Unexpected error</string>
+    <string name="error_no_google_account_found">No Google accounts found</string>
+    <string name="error_login_password_message">Invalid login credentials</string>
+    <string name="error_login_user_message">User not valid</string>
+    <string name="error_registration_password_message">Password not valid</string>
+    <string name="error_collision_user_message">User already associated with account</string>
+    <string name="error_form_message">Please insert your information</string>
+    <string name="error_check_password">Please check your password</string>
+
 </resources>
