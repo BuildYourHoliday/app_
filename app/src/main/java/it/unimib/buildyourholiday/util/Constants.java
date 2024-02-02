@@ -20,7 +20,7 @@ public class Constants {
 
     // Constants for Amadeus API
     public static final int TOTAL_FLIGHTS_RESULTS = 3;
-    public static final int RATE_LIMIT_TIME = 1000;
+    public static final int RATE_LIMIT_TIME = 3000;
 
     // Constants for errors
     public static final String GENERIC_ERROR = "unexpected_error";
