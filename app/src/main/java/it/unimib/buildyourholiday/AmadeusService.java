@@ -1,5 +1,7 @@
 package it.unimib.buildyourholiday;
 
+import static android.graphics.Insets.add;
+import static it.unimib.buildyourholiday.util.Constants.RATE_LIMIT_TIME;
 import static it.unimib.buildyourholiday.util.Constants.TOTAL_FLIGHTS_RESULTS;
 
 import androidx.annotation.Nullable;
@@ -14,6 +16,8 @@ import com.amadeus.resources.Location;
 import com.amadeus.resources.Hotel;
 import com.amadeus.shopping.FlightOffersSearch;
 
+
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
@@ -52,6 +56,8 @@ public class AmadeusService {
 
     public Observable<Hotel[]> fetchHotelAsync(String cityCode) {
         return Observable.create((ObservableOnSubscribe<Hotel[]>) emitter -> {
+            // to not exceed api rate-limit
+            Thread.sleep(RATE_LIMIT_TIME);
             // Effettua la tua chiamata in background qui
             Hotel[] result = getHotels(cityCode);
 
@@ -66,7 +72,7 @@ public class AmadeusService {
     public Hotel[] getHotels(String cityCode) throws ResponseException {
         //get a list of hotels in a given city
         Hotel[] hotels = amadeus.referenceData.locations.hotels.byCity.get(
-                Params.with("cityCode", "PAR"));
+                Params.with("cityCode", "PAR").and("ratings",1).and("radius",3));
 
         if (hotels[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + hotels[0].getResponse().getStatusCode());
@@ -76,23 +82,27 @@ public class AmadeusService {
         return (hotels);
     }
 
-    public Observable<HotelOfferSearch[]> fetchRoomsAsync(String hotelCode, int adults, String checkIn, String checkOut) {
+    public Observable<HotelOfferSearch[]> fetchRoomsAsync(List<String> hotelCodes, int adults, String checkIn, String checkOut) {
         return Observable.create((ObservableOnSubscribe<HotelOfferSearch[]>) emitter -> {
+            // to not exceed api rate-limit
+            Thread.sleep(RATE_LIMIT_TIME);
             // Effettua la tua chiamata in background qui
-            HotelOfferSearch[] result = getRooms(hotelCode, adults, checkIn, checkOut);
+            HotelOfferSearch[] result = getRooms(hotelCodes, adults, checkIn, checkOut);
 
             // Invia il risultato all'emitter
             emitter.onNext(result);
 
             // Completa l'observable
             emitter.onComplete();
+
+           // emitter.onError(new Exception("No rooms found"));
         });
     }
 
-    public HotelOfferSearch[] getRooms(String hotelCode, int adults, String checkIn, String checkOut) throws ResponseException {
+    public HotelOfferSearch[] getRooms(List<String> hotelCodes, int adults, String checkIn, String checkOut) throws ResponseException {
         //get a list of hotels in a given city
         HotelOfferSearch[] rooms = amadeus.shopping.hotelOffersSearch.get(
-                Params.with("hotelIds", hotelCode).and("adults",adults).and("checkInDate", checkIn)
+                Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
                         .and("checkOutDate", checkOut));
 
         if (rooms[0].getResponse().getStatusCode() != 200) {
@@ -140,5 +150,6 @@ public class AmadeusService {
 
         return (flights);
     }
+
 
 }

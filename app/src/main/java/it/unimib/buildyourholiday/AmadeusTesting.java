@@ -1,6 +1,8 @@
 package it.unimib.buildyourholiday;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,12 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.amadeus.resources.FlightOfferSearch;
-import com.amadeus.resources.Hotel;
+import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
-import com.amadeus.schedule.Flights;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import it.unimib.buildyourholiday.model.Travel;
 
 public class AmadeusTesting extends AppCompatActivity {
 
@@ -32,7 +37,6 @@ public class AmadeusTesting extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
     private String originCityCode = "BKK";
     private String destinationCityCode = "SYD";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +48,22 @@ public class AmadeusTesting extends AppCompatActivity {
         hotelResults = findViewById(R.id.hotelResults);
 
 
+        // <---------------- QUESTO
+        TravelViewModel model = new ViewModelProvider(this).get(TravelViewModel.class);
+        model.getAllTravel().observe(this, new Observer<List<Travel>>() {
+                    @Override
+                    public void onChanged(List<Travel> travels) {
+                        // hotelResults è una textview
+                        hotelResults.setText(travels.get(0).toString());
+                    }
+                });
 
-        // WORKING ORIGIN CITY
-        multiAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
+         //
+
+
+
+                // WORKING ORIGIN CITY
+                multiAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
         String[] DEFAULT = new String[] {"foo","example","foolio"};
         //ArrayAdapter<String> luoghiAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, DEFAULT);
             LuoghiAdapter luoghiAdapter = new LuoghiAdapter(this,android.R.layout.simple_spinner_dropdown_item);
@@ -176,9 +193,9 @@ public class AmadeusTesting extends AppCompatActivity {
 
         // WORKING, retrieves hotels from a given city name
         submitHotel.setOnClickListener(new View.OnClickListener() {
-            @Override
+          @Override
             public void onClick(View v) {
-                service.fetchFlightsAsync(originCityCode, destinationCityCode, "2024-03-01", "2024-03-08", 2)
+                  service.fetchFlightsAsync(originCityCode, destinationCityCode, "2024-03-01", "2024-03-08", 2)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(
@@ -205,23 +222,74 @@ public class AmadeusTesting extends AppCompatActivity {
                                             hotelResults.append("\n\n\n");
                                         }
                         );
-/*
+
+              List<String> listaId = new ArrayList<>();
                 service.fetchHotelAsync(destinationCityCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 result -> {
-                                    for (Hotel h : result) {
-                                        hotelResults.append(h.toString() + "\n\n");
+
+                                    String[] ids = new String[10];
+                                    for(int k=0;k<ids.length && k<result.length;k++) {
+                                        Log.d("VOLO", "Hotel: " + result[k].toString() + "\n\n");
+                                        ids[k] = result[k].getHotelId();
+                                        listaId.add(result[k].getHotelId());
+                                        Log.d("VOLO","ID salvato: "+ids[k]);
                                     }
+                                  //  for (Hotel h : result) {
+
+                                 //   }
                                 },
                                 error -> {
                                     // Gestisci gli errori qui
                                     Log.e("RxJava", "Errore: " + error.getMessage());
                                 }
                         );
+                listaId.add("HNPARKGU");
+             // try {
 
- */
+                  service.fetchRoomsAsync(listaId,2,"2024-03-01","2024-03-08")
+                          .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                          .subscribe(
+                                  roomsResult -> {
+                                      Log.d("VOLO","RISULTATO APERTO, totale risultati: " + roomsResult.length);
+                                      for(int i=0;i<5 && i<roomsResult.length;i++) {
+                                          Log.d("VOLO","Offerta "+i+": ");
+                                          HotelOfferSearch.Offer[] offers = roomsResult[i].getOffers();
+                                          for(int j=0;i<5 && j<offers.length;j++) {
+                                              Log.d("VOLO",offers[j].getRoom().getDescription().toString());
+                                              Log.d("VOLO", "Prezzo: " + offers[j].getPrice());
+                                              Log.d("VOLO","Descrizione"+offers[j].getDescription());
+                                              hotelResults.append("Prezzo: " + offers[j].getPrice());
+                                              hotelResults.append("Descrizione"+offers[j].getDescription());
+                                              hotelResults.append(offers[j].getRoom().getDescription().toString());
+                                          }
+                                      }
+                                                            /*
+                                                            for (HotelOfferSearch room : roomsResult) {
+                                                                HotelOfferSearch.Offer[] offers = room.getOffers();
+                                                                for (HotelOfferSearch.Offer o : offers) {
+                                                                    Log.d("VOLO", "Prezzo: " + o.getPrice());
+                                                                    Log.d("VOLO","Descrizione"+o.getDescription());
+                                                                    hotelResults.append("Prezzo: " + o.getPrice());
+                                                                    hotelResults.append("Descrizione"+o.getDescription());
+                                                                }
+                                                            }
+
+                                                             */
+
+
+
+                                  }, error -> {
+                                      Log.e("RxJava", "Errore: " + error.getMessage());
+                                  });
+       /*       } catch (Exception e) {
+
+              }
+
+        */
+
 
 
             }

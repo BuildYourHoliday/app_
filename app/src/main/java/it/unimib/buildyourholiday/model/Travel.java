@@ -123,4 +123,17 @@ public class Travel {
     public int hashCode() {
         return Objects.hash(flight, hotel, city, country, beginDate, finishDate, totalPrice);
     }
+
+    @Override
+    public String toString() {
+        return "Travel{" +
+                "flight=" + flight +
+                ", hotel=" + hotel +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", beginDate='" + beginDate + '\'' +
+                ", finishDate='" + finishDate + '\'' +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

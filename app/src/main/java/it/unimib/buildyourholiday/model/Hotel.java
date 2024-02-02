@@ -94,4 +94,8 @@ public class Hotel {
     public void setTotal(double total) {
         this.total = total;
     }
+
+    public String toString() {
+        return getHotel();
+    }
 }

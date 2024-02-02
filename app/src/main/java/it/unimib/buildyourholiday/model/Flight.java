@@ -103,4 +103,8 @@ public class Flight {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public String toString() {
+        return getCode();
+    }
 }
