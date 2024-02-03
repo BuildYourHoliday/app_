@@ -103,7 +103,7 @@ public class AmadeusService {
         //get a list of hotels in a given city
         HotelOfferSearch[] rooms = amadeus.shopping.hotelOffersSearch.get(
                 Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
-                        .and("checkOutDate", checkOut));
+                        .and("checkOutDate", checkOut).and("bestRateOnly",true));
 
         if (rooms[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
@@ -115,6 +115,8 @@ public class AmadeusService {
 
     public Observable<FlightOfferSearch[]> fetchFlightsAsync(String originCityCode, String destinationCityCode, String departureDate, @Nullable String returnDate, int adults) {
         return Observable.create((ObservableOnSubscribe<FlightOfferSearch[]>) emitter -> {
+            // to not exceed api rate-limit
+            Thread.sleep(RATE_LIMIT_TIME);
             // Effettua la tua chiamata in background qui
             FlightOfferSearch[] result = getFlights(originCityCode, destinationCityCode, departureDate,
                     returnDate, adults);

@@ -1,221 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     style="@style/ScreenBackground">
-    
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_profile" />
 
-
-
-    <!--<ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_keyboard_backspace_24"
-        android:scaleY="1.5"
-        android:scaleX="1.5"
-        android:layout_marginStart="35sp"
-        android:layout_marginTop="35sp"
-        android:contentDescription="@string/account"/>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30sp"
-        android:src="@drawable/no_profile_pic"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="0dp" />
-
-    <ImageButton
-        android:id="@+id/add_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile_image"
-        android:layout_marginStart="-57dp"
-        android:layout_marginTop="-55dp"
-        android:layout_toEndOf="@+id/profile_image"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
-        android:src="@drawable/baseline_add_box_24"
-        android:visibility="visible"
-        android:contentDescription="@string/account"/>
-
-    <Button
-        android:id="@+id/login_bottom"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_image"
-        android:layout_marginStart="100sp"
-        android:text="@string/login"
-        android:textSize="30sp"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/slash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_image"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="12dp"
-        android:layout_toEndOf="@+id/login_bottom"
-        android:text="/"
-        style="@style/TextBackground"
-        android:textSize="30sp"
-        android:visibility="visible" />
-
-    <Button
-        android:id="@+id/sign_in"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_image"
-        android:layout_toEndOf="@+id/slash"
-        android:text="@string/sign_in"
-        android:textSize="30sp"
-        android:visibility="visible" />
-
-    <Button
-        android:id="@+id/accountButton"
-        android:background="@android:color/transparent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_bottom"
-        android:layout_marginTop="18dp"
-        android:text="text"
-        android:textColor="@color/black"
-        android:textSize="0sp"
-        app:strokeColor="#1C1515"
-        android:visibility="visible"/>
-
-    <TextView
-        android:id="@+id/account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_bottom"
-        android:layout_marginStart="35sp"
-        android:layout_marginTop="15dp"
-        android:text="@string/account"
-        android:textSize="35sp"
-        style="@style/TextBackground"
-        android:visibility="visible" />
-
-    <Button
-        android:id="@+id/languageButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/accountButton"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/transparent"
-        android:text="text"
-        android:textColor="@color/black"
-        android:textSize="0sp"
-        app:strokeColor="#1C1515" />
-
-    <TextView
-        android:id="@+id/language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/account"
-        android:layout_marginStart="35sp"
-        android:layout_marginTop="5dp"
-        android:text="@string/language"
-        android:textSize="35sp"
-        style="@style/TextBackground"/>
-
-    <TextView
-        android:id="@+id/dark_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/language"
-        android:layout_marginStart="35sp"
-        android:layout_marginTop="5dp"
-        android:text="@string/dark_mode"
-        android:textSize="35sp"
-        style="@style/TextBackground"/>
 
     <FrameLayout
         android:id="@+id/FrameLayout_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <Switch
-        android:id="@+id/dark_mode_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/language"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="12dp"
-        android:layout_toEndOf="@+id/dark_mode"
-        android:checked="false"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        android:theme="@style/SCBSwitch"
-        android:thumb="@drawable/thumb"
-        app:track="@drawable/track" />
-
-    <Button
-        android:id="@+id/aboutUsButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dark_mode"
-        android:layout_marginTop="6dp"
-        android:background="@android:color/transparent"
-        android:text="text"
-        android:textColor="@color/black"
-        android:textSize="0sp"
-        app:strokeColor="#1C1515" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/about_us"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dark_mode"
-        android:layout_marginStart="35sp"
-        android:layout_marginTop="5dp"
-        android:text="@string/about_us"
-        android:textSize="35sp"
-        style="@style/TextBackground"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/no_profile_pic"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/aboutUsButton"
-        android:layout_marginTop="7dp"
-        android:background="@android:color/transparent"
-        android:text="text"
-        android:textColor="@color/black"
-        android:textSize="0sp"
-        app:strokeColor="#1C1515"
-        android:visibility="visible"/>
+        <ImageButton
+            android:id="@+id/add_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_image"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@+id/profile_image"
+            android:contentDescription="@string/account"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/photo_camera"
+            android:background="@android:color/transparent"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toEndOf="@+id/profile_image" />
 
-    <TextView
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_us"
-        android:layout_marginStart="35sp"
-        android:layout_marginTop="5dp"
-        android:text="@string/logout"
-        android:textSize="35sp"
-        style="@style/TextBackground"
-        android:visibility="visible" />-->
+        <ImageButton
+            android:id="@+id/back_buttom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/account"
+            android:background="@android:color/transparent"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/baseline_keyboard_backspace_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/login_bottom"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_image"
+            android:layout_marginTop="-5dp"
+            android:text="@string/loginSignIn"
+            android:textSize="30sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+        <Button
+            android:id="@+id/accountButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:text="text"
+            android:textColor="@color/black"
+            android:textSize="0sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/account"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_bottom"
+            app:strokeColor="#1C1515" />
+
+        <TextView
+            android:id="@+id/account"
+            style="@style/TextBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/account"
+            android:textSize="35sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_bottom" />
+
+        <Button
+            android:id="@+id/languageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:text="text"
+            android:textColor="@color/black"
+            android:textSize="0sp"
+            app:layout_constraintBottom_toBottomOf="@+id/language"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountButton"
+            app:strokeColor="#1C1515" />
+
+        <TextView
+            android:id="@+id/language"
+            style="@style/TextBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/language"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/account" />
+
+        <TextView
+            android:id="@+id/dark_mode"
+            style="@style/TextBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/dark_mode"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/language" />
+
+
+        <Switch
+            android:id="@+id/dark_mode_switch"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="50dp"
+            android:checked="false"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:theme="@style/SCBSwitch"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintBottom_toTopOf="@+id/aboutUsButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/dark_mode"
+            app:layout_constraintTop_toTopOf="@+id/dark_mode"
+            app:layout_constraintVertical_bias="0.388"
+            app:track="@drawable/track" />
+
+        <Button
+            android:id="@+id/aboutUsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:layout_marginBottom="1dp"
+            android:background="@android:color/transparent"
+            android:text="text"
+            android:textColor="@color/black"
+            android:textSize="0sp"
+            app:layout_constraintBottom_toBottomOf="@+id/about_us"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/languageButton"
+            app:strokeColor="#1C1515" />
+
+        <TextView
+            android:id="@+id/about_us"
+            style="@style/TextBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/about_us"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dark_mode" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:text="text"
+            android:textColor="@color/black"
+            android:textSize="0sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/logout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutUsButton"
+            app:strokeColor="#1C1515" />
+
+        <TextView
+            android:id="@+id/logout"
+            style="@style/TextBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/logout"
+            android:textSize="35sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/about_us" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -21,5 +21,6 @@
 
     <style name="ScreenBackground"><item name="android:background">@color/white</item></style>
     <style name="TextBackground"><item name="android:textColor">@color/black</item></style>
+    <style name="ScreenBottomSheetBackground"><item name="android:background">@color/white</item></style>
     <style name="Theme.BuildYourHoliday" parent="Base.Theme.BuildYourHoliday" />
 </resources>
