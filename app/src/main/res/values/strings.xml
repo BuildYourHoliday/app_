@@ -21,6 +21,7 @@
     <string name="error_password">The password is not correct</string>
     <string name="item_profile">Profile</string>
     <string name="account">Account</string>
+    <string name="booked">Booked</string>
     <string name="language">Language</string>
     <string name="dark_mode">Dark mode</string>
     <string name="about_us">About us</string>
@@ -61,5 +62,10 @@
     <string name="error_collision_user_message">User already associated with account</string>
     <string name="error_form_message">Please insert your information</string>
     <string name="error_check_password">Please check your password</string>
+    <string name="saved">Saved</string>
+    <string name="booked_list_item_dest" translatable="false">Barcelona</string>
+    <string name="booked_list_item_date" translatable="false">27-02-24</string>
+    <string name="info_content_description">expand</string>
+    <string name="booked_price_item" translatable="false">100$</string>
 
 </resources>

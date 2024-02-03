@@ -49,4 +49,12 @@
     <string name="error_login_user_message">Utente non valido</string>
     <string name="error_registration_password_message">Password non valida</string>
     <string name="error_collision_user_message">Utente già associato ad un account esistente</string>
+    <string name="booked">Prenotati</string>
+<!--
+    <string name="favorite">Preferiti</string>
+-->
+    <string name="saved">Salvati</string>
+    <string name="error_form_message">Prego inserisci le tue informazioni</string>
+    <string name="error_check_password">Controlli la sua password</string>
+    <string name="info_content_description">espandi</string>
 </resources>

@@ -3,62 +3,58 @@ package it.unimib.buildyourholiday;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.buildyourholiday.data.TravelListAdapter;
+import it.unimib.buildyourholiday.model.Travel;
+
 public class BookedFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private List<Travel> bookedList;
+    //    private TravelListAdapter travelListAdapter;
+    private ProgressBar progressBar;
+    //private TravelViewModel travelViewModel;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView recyclerView;
 
     public BookedFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BookedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BookedFragment newInstance(String param1, String param2) {
-        BookedFragment fragment = new BookedFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_booked, container, false);
+        View v = inflater.inflate(R.layout.fragment_booked, container, false);
+        initData();
+
+        recyclerView = v.findViewById(R.id.recyclerview_booked);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //recyclerView.setHasFixedSize(true);
+        TravelListAdapter travelListAdapter = new TravelListAdapter(bookedList);
+        recyclerView.setAdapter(travelListAdapter);
+
+        return v;
+    }
+
+    private void initData(){
+        bookedList = new ArrayList<>();
+
+        bookedList.add(new Travel("Roma", "12-02-25", "24-02-24", 120.00));
+        bookedList.add(new Travel("Parigi", "15-04-24", "24-04-24", 620.50));
+        bookedList.add(new Travel("Londra", "14-05-24", "23-05-24", 150.50));
+        bookedList.add(new Travel("Mosca", "19-06-24", "26-06-24", 1200.00));
+        bookedList.add(new Travel("Los Angeles", "17-07-24", "30-07-24", 1820.50));
+        bookedList.add(new Travel("Tokio", "15-08-26", "30-08-26", 2020.50));
     }
 }
