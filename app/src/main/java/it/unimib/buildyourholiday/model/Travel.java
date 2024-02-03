@@ -5,6 +5,7 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -20,11 +21,28 @@ public class Travel {
     private String country;
     private String beginDate;
     private String finishDate;
+
+    private boolean expandable;
     private double totalPrice;
     @ColumnInfo(name = "is_synchronized")
     private boolean isSynchronized;
 
+    @ColumnInfo(name = "is_saved")
+    private boolean isSaved;
+
+    @ColumnInfo(name = "is_booked")
+    private boolean isBooked;
+
+
     public Travel() {}
+
+    public boolean isExpandable() {
+        return expandable;
+    }
+
+    public void setExpandable(boolean expandable) {
+        this.expandable = expandable;
+    }
 
     public Travel(Flight flight, Hotel hotel) {
         this.flight = flight;
@@ -36,7 +54,15 @@ public class Travel {
         else
             this.finishDate = hotel.getCheckoutDate();
         this.totalPrice = flight.getPrice() + hotel.getTotal();
+        //this.expandable = false;
 
+    }
+
+    public Travel(String city, String beginDate, String finishDate, double totalPrice){
+        this.city = city;
+        this.beginDate = beginDate;
+        this.finishDate = finishDate;
+        this.totalPrice = totalPrice;
     }
 
     public long getId() {
@@ -101,6 +127,22 @@ public class Travel {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
 
     public boolean isSynchronized() {
