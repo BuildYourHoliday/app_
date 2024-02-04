@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity
 public class Flight {
     @PrimaryKey @NonNull
@@ -106,5 +108,18 @@ public class Flight {
 
     public String toString() {
         return getCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Flight flight = (Flight) o;
+        return code.equals(flight.code) && Objects.equals(departureDate, flight.departureDate) && Objects.equals(departureTime, flight.departureTime) && Objects.equals(departureAirport, flight.departureAirport) && Objects.equals(returnalDate, flight.returnalDate) && Objects.equals(returnalTime, flight.returnalTime) && Objects.equals(arrivalAirport, flight.arrivalAirport);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, departureDate, departureTime, departureAirport, returnalDate, returnalTime, arrivalAirport);
     }
 }

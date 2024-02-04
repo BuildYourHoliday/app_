@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -36,8 +37,12 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
+import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
+import it.unimib.buildyourholiday.data.source.travel.SavedTravelDataSource;
 import it.unimib.buildyourholiday.model.Result;
+import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.User;
 import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.util.DataEncryptionUtil;
@@ -69,6 +74,7 @@ public class LoginFragment extends Fragment {
     private DataEncryptionUtil dataEncryptionUtil;
     private Button buttonLogin;
     private Button buttonGoogleLogin;
+    private SavedTravelDataSource travelDataSource;
 
     private ImageButton backArrow;
 
@@ -87,6 +93,8 @@ public class LoginFragment extends Fragment {
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
     private UserViewModel userViewModel;
+    private MockTravelViewModel mockTravelViewModel;
+    private TravelViewModel travelViewModel;
     private LinearProgressIndicator progressIndicator;
     private Button buttonRegister;
 
@@ -107,6 +115,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ITravelRepository travelRepository = ServiceLocator.getInstance()
+                .getTravelRepository(requireActivity().getApplication());
+        travelViewModel = new ViewModelProvider(
+                requireActivity(),
+                new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
 
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
@@ -149,8 +163,10 @@ public class LoginFragment extends Fragment {
                                 userViewModel.setAuthenticationError(false);
                                 Log.d(TAG,"bono");
 
-                                startActivityBasedOnCondition(MainActivity.class,R.id.action_loginFragment_to_mainActivity);
-                               // retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
+
+
+                                //startActivityBasedOnCondition(MainActivity.class,R.id.action_loginFragment_to_mainActivity);
+                                retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
                             } else {
                                 Log.d(TAG,"NAH "+authenticationResult.toString());
                                 if(authenticationResult instanceof Result.Error) {
@@ -243,8 +259,6 @@ public class LoginFragment extends Fragment {
                         R.string.check_login_data_message, Snackbar.LENGTH_SHORT).show();
             }
         });
-
-        // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 
         buttonGoogleLogin.setOnClickListener(v -> oneTapClient.beginSignIn(signInRequest)
@@ -392,11 +406,39 @@ public class LoginFragment extends Fragment {
     private void retrieveUserInformationAndStartActivity(User user, int destination) {
         progressIndicator.setVisibility(View.VISIBLE);
 
-       // userViewModel.getUserFavoriteNewsMutableLiveData(user.getIdToken()).observe(
-            //    getViewLifecycleOwner(), userFavoriteNewsRetrievalResult -> {
-                    progressIndicator.setVisibility(View.GONE);
-                    startActivityBasedOnCondition(MainActivity.class, destination);
-          //      }
-        //);
+        /*
+        MockTravelViewModel model = new ViewModelProvider(this).get(MockTravelViewModel.class);
+        model.getAllTravel().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
+                    @Override
+                    public void onChanged(List<Travel> travels) {
+                        travelViewModel.saveUserSavedTravel(travels.get(0),user.getIdToken());
+
+                        Log.d(TAG,"might have been sent");
+                    }
+                });
+
+         */
+
+
+        userViewModel.getUserSavedTravelsMutableLiveData(user.getIdToken()).observe(
+                getViewLifecycleOwner(), userSavedTravelsRetrievalResult -> {
+                    /*
+                    if (userSavedTravelsRetrievalResult.isSuccess()) {
+                        if(((Result.TravelResponseSuccess) userSavedTravelsRetrievalResult).getData().getTravelList().size() != 0) {
+                            Log.d(TAG,"response received");
+                            TravelsRoomDatabase db = TravelsRoomDatabase.getDatabase(requireContext());
+                            db.travelDao().insertTravelList(((Result.TravelResponseSuccess) userSavedTravelsRetrievalResult)
+                                    .getData().getTravelList());
+                            Log.d(TAG,"response might be saved");
+                        }
+                    } else {
+                        Log.d(TAG,"insuccess response");
+                    }
+
+                     */
+
+                });
+        progressIndicator.setVisibility(View.GONE);
+        startActivityBasedOnCondition(MainActivity.class, destination);
     }
 }

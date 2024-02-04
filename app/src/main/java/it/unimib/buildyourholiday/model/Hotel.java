@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity
 public class Hotel {
     private String hotel;
@@ -97,5 +99,18 @@ public class Hotel {
 
     public String toString() {
         return getHotel();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hotel hotel = (Hotel) o;
+        return adults == hotel.adults && hotelCode.equals(hotel.hotelCode) && Objects.equals(checkinDate, hotel.checkinDate) && Objects.equals(checkoutDate, hotel.checkoutDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hotelCode, checkinDate, checkoutDate, adults);
     }
 }

@@ -30,10 +30,13 @@ public interface TravelDao {
     void insertAll(Travel... travel);
 
     @Update
-    int updateSingleFavoriteNews(Travel travel);
+    int updateSingleSavedTravel(Travel travel);
 
     @Delete
     void delete(Travel travel);
+
+    @Query("DELETE FROM travel")
+    int deleteAll();
 
 
 }

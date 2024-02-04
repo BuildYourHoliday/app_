@@ -1,11 +1,15 @@
 package it.unimib.buildyourholiday;
 
+import static android.app.PendingIntent.getActivity;
+import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.buildyourholiday.util.Constants.ID_TOKEN;
 import static it.unimib.buildyourholiday.util.Constants.RATE_LIMIT_TIME;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,14 +24,22 @@ import android.widget.TextView;
 import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
+import it.unimib.buildyourholiday.data.source.travel.SavedTravelDataSource;
+import it.unimib.buildyourholiday.model.Flight;
+import it.unimib.buildyourholiday.model.Hotel;
 import it.unimib.buildyourholiday.model.Travel;
+import it.unimib.buildyourholiday.util.DataEncryptionUtil;
 
 public class AmadeusAsync extends AppCompatActivity {
 
@@ -38,8 +50,19 @@ public class AmadeusAsync extends AppCompatActivity {
     private TextView hotelResults;
     private AutoCompleteTextView multiAutoCompleteTextView;
     private AutoCompleteTextView autoCompleteTextView;
+    private Button saveButton;
+    private Button loginButton;
     private String originCityCode = "MIL"; //= "BKK";
     private String destinationCityCode = "PAR"; // = "SYD";
+    private String departureDate = "2024-03-01";
+    private String returnDate = "2024-03-08";
+    private int adults = 2;
+    private Flight flight = null;
+    private Hotel hotel = null;
+    private Travel checkout = null;
+    private SavedTravelDataSource source = null;
+    private TravelsRoomDatabase db;
+    private DataEncryptionUtil dataEncryptionUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +72,10 @@ public class AmadeusAsync extends AppCompatActivity {
         //     searchHotel.setText("PAR");
         submitHotel = findViewById(R.id.buttonHotel);
         hotelResults = findViewById(R.id.hotelResults);
+        saveButton = findViewById(R.id.buttonSave);
+        loginButton = findViewById(R.id.buttonLogin);
+        db = TravelsRoomDatabase.getDatabase(getApplicationContext());
+        dataEncryptionUtil = new DataEncryptionUtil(getApplicationContext());
 
 
         // WORKING ORIGIN CITY
@@ -69,7 +96,7 @@ public class AmadeusAsync extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length() >= 3) {
+                if(s.toString().length() > 3) {
                     service.fetchLocationAsync(s.toString())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +148,7 @@ public class AmadeusAsync extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length() >= 3) {
+                if(s.toString().length() > 3) {
                     service.fetchLocationAsync(s.toString())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -166,23 +193,67 @@ public class AmadeusAsync extends AppCompatActivity {
             }
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToSaved(checkout);
+            }
+        });
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+    public boolean addToSaved(Travel travel) {
+        if(travel != null) {
+            try {
+                source = new SavedTravelDataSource(dataEncryptionUtil
+                        .readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID_TOKEN));
+                db.travelDao().insertTravel(travel);
+                source.addSavedTravel(travel);
+                return true;
+            } catch (GeneralSecurityException | IOException e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     public Disposable completeAsyncCalls() {
         Log.d("RxJava","before search: "+originCityCode+"->"+destinationCityCode);
+        Log.d("RxJava","Before search: "+departureDate+" - "+returnDate);
 
 
-        return service.fetchFlightsAsync(originCityCode, destinationCityCode, "2024-03-01", "2024-03-08", 2)
+        return service.fetchFlightsAsync(originCityCode, destinationCityCode, departureDate, returnDate, adults)
                 .flatMap(result -> {
-                        String out = "";
-                        for (FlightOfferSearch f : result) {
+                    Log.d("RxJava","result");
+                    int choiceId = 0;
+                    flight = new Flight(result[choiceId].getSource(),departureDate,"time","depAirport",
+                                returnDate,"rTime","arrivAirport",Double.valueOf(result[choiceId].getPrice().getGrandTotal()));
+
+                    String out = "";
+                    for (int i=0; i<result.length; i++) {       // TODO: gestire caso returnal null
+                        if(i==choiceId) {
+                            FlightOfferSearch.Itinerary[] itineraries = result[choiceId].getItineraries();
+                            flight.setDepartureTime(itineraries[0].getSegments()[0].getDeparture().getAt().substring(10));
+                            flight.setDepartureAirport(itineraries[0].getSegments()[0].getDeparture().getIataCode());
+                            int arrivalIndex = itineraries[0].getSegments().length;
+                            flight.setArrivalAirport(itineraries[0].getSegments()[arrivalIndex-1].getArrival().getIataCode());
+                            int lastIndex = itineraries[itineraries.length-1].getSegments().length;
+                            flight.setReturnalTime(itineraries[itineraries.length-1].getSegments()[lastIndex-1].getDeparture().getAt());
+                        }
+                        FlightOfferSearch f = result[i];
                             out += "Offerta " + f.getId() + "\n"
                                     + "Posti disponibili " + f.getNumberOfBookableSeats() + "\n"
                                     + "Prezzo " + f.getPrice().getGrandTotal() + "\n";
                             FlightOfferSearch.Itinerary itineraries[] = f.getItineraries();
-                            for (FlightOfferSearch.Itinerary i : itineraries) {
-                                FlightOfferSearch.SearchSegment segments[] = i.getSegments();
+                            for (FlightOfferSearch.Itinerary itin : itineraries) {
+                                FlightOfferSearch.SearchSegment segments[] = itin.getSegments();
                                 for (FlightOfferSearch.SearchSegment s : segments) {
                                     out += "volo num. " + s.getId() + " di " + s.getAircraft().getCode() + " scalo da: " + s.getDeparture().getIataCode() + " a " + s.getArrival().getIataCode()
                                             + " durata: " + s.getDuration();
@@ -212,6 +283,11 @@ public class AmadeusAsync extends AppCompatActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             roomsResult -> {
+                                int choiceId = 0;
+
+                                hotel = new Hotel(roomsResult[choiceId].getHotel().getName(),roomsResult[choiceId].getHotel().getHotelId(),
+                                        roomsResult[choiceId].getHotel().getCityCode(),"cityname",roomsResult[choiceId].getOffers()[0].getCheckInDate(),
+                                        roomsResult[choiceId].getOffers()[0].getCheckOutDate(),adults,Double.valueOf(roomsResult[choiceId].getOffers()[0].getPrice().getTotal()));
                                 Log.d("VOLO", "RISULTATO APERTO, totale risultati: " + roomsResult.length);
                                 for (int i = 0; i < 5 && i < roomsResult.length; i++) {
                                     Log.d("VOLO", "Offerta " + i + ": ");
@@ -225,6 +301,7 @@ public class AmadeusAsync extends AppCompatActivity {
                                         hotelResults.append(offers[j].getRoom().getDescription().toString());
                                     }
                                 }
+                                checkout = new Travel(flight,hotel);
                             },
                             throwable -> {
                                 // Gestisci gli errori qui
@@ -232,5 +309,9 @@ public class AmadeusAsync extends AppCompatActivity {
                             }
                     );
     }
+
+
+
+
 
 }

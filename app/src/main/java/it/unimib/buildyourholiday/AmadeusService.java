@@ -21,8 +21,9 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import it.unimib.buildyourholiday.data.source.travel.BaseTravelRemoteDataSource;
 
-public class AmadeusService {
+public class AmadeusService extends BaseTravelRemoteDataSource {
     private Amadeus amadeus = Amadeus
             .builder("UWAFKYZec0REMjNs6agWEur2IpEnZ78H","D9AZ2ZHEW8CkgYBH")
             .build();
@@ -133,7 +134,7 @@ public class AmadeusService {
         FlightOfferSearch[] flights = null;
 
         //get a list of hotels in a given city
-        if(returnDate.isEmpty()) {
+        if(returnDate==null || returnDate.isEmpty()) {
              flights = amadeus.shopping.flightOffersSearch.get(
                     Params.with("originLocationCode", originCityCode).and("destinationLocationCode", destinationCityCode)
                             .and("departureDate", departureDate).and("adults", adults)
