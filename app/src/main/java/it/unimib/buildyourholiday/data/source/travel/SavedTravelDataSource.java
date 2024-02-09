@@ -51,6 +51,29 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
     }
 
     @Override
+    public void getSavedTravels(String country) {
+        databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).get().addOnCompleteListener(task -> {
+                    if(!task.isSuccessful()) {
+                        Log.d(TAG, "Error retrieving data" + task.getException());
+                    } else {
+                        Log.d(TAG, "Success: " + task.getResult().getValue());
+
+                        List<Travel> travelList = new ArrayList<>();
+                        for (DataSnapshot ds: task.getResult().getChildren()) {
+                            Travel travel = ds.getValue(Travel.class);
+                            travel.setSynchronized(true);
+                            if(travel.getCountry().equals(country)) {
+
+                                travelList.add(travel);
+                            }
+                        }
+                        travelCallback.onSuccessFromCloudReading(travelList);
+                    }
+                });
+    }
+
+    @Override
     public void addSavedTravel(Travel travel) {
         databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
                 .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.hashCode())).setValue(travel)

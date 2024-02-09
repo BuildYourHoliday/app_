@@ -15,7 +15,7 @@ public abstract class BaseTravelLocalDataSource {
         this.travelCallback = travelCallback;
     }
 
-  //  public abstract void getTravel();
+    public abstract void getSavedTravels(String country);
     public abstract void getSavedTravels();
     public abstract void updateTravel(Travel travel);
     public abstract void deleteSavedTravels();

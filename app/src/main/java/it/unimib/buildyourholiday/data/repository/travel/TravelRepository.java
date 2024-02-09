@@ -63,7 +63,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
         if (currentTime - lastUpdate > FRESH_TIMEOUT) {
             travelRemoteDataSource.getTravels(country, page);
         } else {
-            travelLocalDataSource.getSavedTravels();
+            travelLocalDataSource.getSavedTravels(country);
         }
         return savedTravelsMutableLiveData;
     }
@@ -80,8 +80,9 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     }
 
     @Override
-    public void fetchSavedTravels(String country, int page) {
-        travelRemoteDataSource.getTravels(country, page);
+    public MutableLiveData<Result> fetchSavedTravels(String country) {
+        travelLocalDataSource.getSavedTravels(country);
+        return savedTravelsMutableLiveData;
     }
 
     @Override
@@ -136,7 +137,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void onTravelSavedStatusChanged(List<Travel> travelList) {
-        List<Travel> notSynchronized = new ArrayList<>();
+       List<Travel> notSynchronized = new ArrayList<>();
         for (Travel t:travelList) {
             if(!t.isSynchronized())
                 notSynchronized.add(t);
@@ -145,7 +146,9 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
         if(!notSynchronized.isEmpty()) {
             backupDataSource.synchronizeSavedTravels(notSynchronized);
         }
+
         savedTravelsMutableLiveData.postValue(new Result.TravelResponseSuccess(new TravelResponse(travelList)));
+
     }
 
     @Override

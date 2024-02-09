@@ -4,6 +4,9 @@ import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERE
 import static it.unimib.buildyourholiday.util.Constants.GENERIC_ERROR;
 import static it.unimib.buildyourholiday.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.buildyourholiday.data.database.TravelDao;
@@ -28,6 +31,20 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
         this.travelDao = travelsRoomDatabase.travelDao();
         this.sharedPreferencesUtil = sharedPreferencesUtil;
         this.dataEncryptionUtil = dataEncryptionUtil;
+    }
+
+    @Override
+    public void getSavedTravels(String country) {
+        TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Log.d("MapFragment","eseguo ricerca per: "+country);
+            List<Travel> debugAll = travelDao.getAll();
+            Log.d("MapFragment","presente nel db: "+debugAll.get(0).getCountry()+" ...");
+            //Travel tDebug = travelDao.getTravel(1);
+            //Log.d("MapFragment","id test: "+tDebug.toString());
+            List<Travel> savedTravels = travelDao.getTravels(country);
+            Log.d("MapFragment","in TravelLocalDataSource, dopo la query: "+ (savedTravels.size())+"");
+            travelCallback.onTravelSavedStatusChanged(savedTravels);
+        });
     }
 
     /**

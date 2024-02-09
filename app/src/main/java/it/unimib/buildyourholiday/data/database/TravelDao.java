@@ -39,4 +39,6 @@ public interface TravelDao {
     int deleteAll();
 
 
+    @Query("SELECT * FROM travel WHERE country = :countryCode")
+    List<Travel> getTravels(String countryCode);
 }

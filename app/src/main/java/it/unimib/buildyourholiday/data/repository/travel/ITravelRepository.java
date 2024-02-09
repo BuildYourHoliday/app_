@@ -2,8 +2,6 @@ package it.unimib.buildyourholiday.data.repository.travel;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
-
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
 
@@ -15,7 +13,7 @@ public interface ITravelRepository {
 
     void deleteSavedTravels();
 
-    void fetchSavedTravels(String country, int page);
+    MutableLiveData<Result> fetchSavedTravels(String country);
 
     void deleteSavedTravel(Travel travel);
 

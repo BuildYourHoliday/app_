@@ -18,7 +18,7 @@ public class TravelViewModel extends ViewModel {
     private boolean isLoading;
     private boolean firstLoading;
     private MutableLiveData<Result> travelListLiveData;
-    private MutableLiveData<Result> favoriteNewsListLiveData;
+  //  private MutableLiveData<Result> favoriteNewsListLiveData;
 
     public TravelViewModel(ITravelRepository travelRepository) {
         this.travelRepository = travelRepository;
@@ -32,10 +32,11 @@ public class TravelViewModel extends ViewModel {
      * news list to the Fragment/Activity.
      * @return The LiveData object associated with the news list.
      */
-    public MutableLiveData<Result> getNews(String country) {
+    public MutableLiveData<Result> getTravels(String country) {
         if (travelListLiveData == null) {
-            fetchSavedTravels(country);
-        }
+            travelListLiveData = new MutableLiveData<>();
+
+        } fetchSavedTravels(country);
         return travelListLiveData;
     }
 
@@ -44,11 +45,12 @@ public class TravelViewModel extends ViewModel {
      * list of favorite news to the Fragment/Activity.
      * @return The LiveData object associated with the list of favorite news.
      */
-    public MutableLiveData<Result> getFavoriteNewsLiveData(boolean isFirstLoading) {
-        if (favoriteNewsListLiveData == null) {
-            getFavoriteNews(isFirstLoading);
+    public MutableLiveData<Result> getSavedTravelsLiveData(boolean isFirstLoading) {
+        if (travelListLiveData == null) {
+            travelListLiveData = new MutableLiveData<>();
+            getSavedTravels(isFirstLoading);
         }
-        return favoriteNewsListLiveData;
+        return travelListLiveData;
     }
 
     /**
@@ -60,14 +62,14 @@ public class TravelViewModel extends ViewModel {
     }
 
     public void fetchSavedTravels(String country) {
-        travelRepository.fetchSavedTravels(country, page);
+        travelListLiveData = travelRepository.fetchSavedTravels(country);
     }
 
     /**
      * It uses the Repository to download the news list
      * and to associate it with the LiveData object.
      */
-    private void fetchNews(String country, long lastUpdate) {
+    private void fetchTravels(String country, long lastUpdate) {
         travelListLiveData = travelRepository.getSavedTravels(country, page, lastUpdate);
     }
 
@@ -77,8 +79,8 @@ public class TravelViewModel extends ViewModel {
      * It uses the Repository to get the list of favorite news
      * and to associate it with the LiveData object.
      */
-    private void getFavoriteNews(boolean firstLoading) {
-        favoriteNewsListLiveData = travelRepository.getSavedTravels(firstLoading);
+    private void getSavedTravels(boolean firstLoading) {
+        travelListLiveData = travelRepository.getSavedTravels(firstLoading);
     }
 
     /**
@@ -137,6 +139,13 @@ public class TravelViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getTravelResponseLiveData() {
+        if (travelListLiveData == null) {
+            travelListLiveData = new MutableLiveData<>();
+        }
         return travelListLiveData;
+    }
+
+    public void setTravelListLiveData(MutableLiveData<Result> travelListLiveData) {
+        this.travelListLiveData = travelListLiveData;
     }
 }

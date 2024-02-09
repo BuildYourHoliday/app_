@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
 import android.util.JsonReader;
@@ -22,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.Response;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -54,7 +59,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import it.unimib.buildyourholiday.data.TravelListAdapter;
+import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
+import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
+import it.unimib.buildyourholiday.model.Result;
+import it.unimib.buildyourholiday.model.TravelResponse;
 import it.unimib.buildyourholiday.util.JsonFileReader;
+import it.unimib.buildyourholiday.util.ServiceLocator;
 import kotlin.jvm.JvmOverloads;
 
 /**
@@ -78,7 +89,9 @@ public class MapFragment extends Fragment {
     SharedPreferences sharedPreferences;
     String mapStyle = "map_style.json";
  //   JsonFileReader jsonFileReader;
-
+    private RecyclerView recyclerView;
+    private TravelsRoomDatabase database;
+    TravelListAdapter travelListAdapter;
     private MapView mapView = null;
 
     public MapFragment() {
@@ -196,6 +209,17 @@ public class MapFragment extends Fragment {
             ex.printStackTrace();
         }*/
 
+       // database = TravelsRoomDatabase.getDatabase(requireContext());
+
+
+        recyclerView = view.findViewById(R.id.recyclerview_travels);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        ITravelRepository travelRepository = ServiceLocator.getInstance()
+                .getTravelRepository(requireActivity().getApplication());
+        TravelViewModel travelViewModel = new ViewModelProvider(
+                requireActivity(),
+                new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
 
 
         GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
@@ -235,6 +259,34 @@ public class MapFragment extends Fragment {
                                                         " code: " + countryCode);
                                                 debugText.setText("Country name: " + countryName +
                                                         "\ncountry code: " + countryCode);
+
+
+
+                                                // previous results
+                                                if(travelViewModel.getTravelResponseLiveData()!=null) {
+                                                   /* TravelResponse response = new TravelResponse();
+                                                    response.setTravelList(null);
+                                                    travelViewModel.getTravelResponseLiveData().postValue(new Result.TravelResponseSuccess(response));
+                                                    */
+                                                  //  travelViewModel.setTravelListLiveData(null);
+                                                   // recyclerView.setAdapter(null);
+                                                }
+
+
+                                                travelViewModel.getTravelResponseLiveData().observe(getViewLifecycleOwner(), new Observer<Result>() {
+                                                    @Override
+                                                    public void onChanged(Result result) {
+                                                        if(((Result.TravelResponseSuccess)result).getData().getTravelList()!=null) {
+                                                            Log.d("MapFragment","risultati: "+((Result.TravelResponseSuccess)result).getData().getTravelList().size());
+                                                        //    Log.d("MapFragment","results: "+((Result.TravelResponseSuccess)result).getData().getTravelList().get(0).getCountry());
+
+                                                        }travelListAdapter = new TravelListAdapter(((Result.TravelResponseSuccess)result).getData().getTravelList());
+                                                        recyclerView.setAdapter(travelListAdapter);
+                                                    }
+                                                });
+                                                String searchCode = countryCode.substring(1,countryCode.length()-1);
+                                                Log.d("MapFragment", "search: "+searchCode+" vs. ");
+                                                travelViewModel.fetchSavedTravels(searchCode);
 
                                                 // set border on selected
                                                 Expected<String,Value> conv = ValueConverter.fromJson(
