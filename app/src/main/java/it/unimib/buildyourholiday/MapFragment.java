@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Response;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -59,10 +60,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import it.unimib.buildyourholiday.data.TravelListAdapter;
+import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
 import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.model.Result;
+import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.TravelResponse;
 import it.unimib.buildyourholiday.util.JsonFileReader;
 import it.unimib.buildyourholiday.util.ServiceLocator;
@@ -282,8 +284,18 @@ public class MapFragment extends Fragment {
                                                         if(((Result.TravelResponseSuccess)result).getData().getTravelList()!=null) {
                                                             Log.d("MapFragment","risultati: "+((Result.TravelResponseSuccess)result).getData().getTravelList().size());
                                                         //    Log.d("MapFragment","results: "+((Result.TravelResponseSuccess)result).getData().getTravelList().get(0).getCountry());
+                                                        }
+                                                        List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
 
-                                                        }travelListAdapter = new TravelListAdapter(((Result.TravelResponseSuccess)result).getData().getTravelList());
+                                                        travelListAdapter = new TravelListAdapter(travelList,new TravelListAdapter.OnItemClickListener(){
+                                                            public void onTravelItemClick(Travel travel){
+                                                                Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                                            }
+
+                                                            public void onDeleteButtonPressed(int position){
+                                                                Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                         recyclerView.setAdapter(travelListAdapter);
                                                     }
                                                 });
