@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:textAppearance="?attr/textAppearanceTitleMedium"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
+        app:layout_constraintEnd_toStartOf="@+id/imageview_lock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/booked_list_item_dest" />
@@ -29,7 +29,7 @@
         android:layout_marginBottom="16dp"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
+        app:layout_constraintEnd_toStartOf="@+id/imageview_lock"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_destinatio"
@@ -43,7 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:textAppearance="?attr/textAppearanceTitleMedium"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
+        app:layout_constraintEnd_toStartOf="@+id/imageview_lock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/booked_list_item_dest" />
@@ -57,7 +57,7 @@
         android:layout_marginBottom="16dp"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
+        app:layout_constraintEnd_toStartOf="@+id/imageview_lock"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_dat"
@@ -66,19 +66,20 @@
 
 
     <ImageView
-        android:id="@+id/imageview_hote"
+        android:id="@+id/imageview_lock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:focusable="true"
         android:padding="12dp"
-        android:src="@drawable/baseline_hotel_24"
+        android:src="@drawable/baseline_lock_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.129" />
 
+<!--
     <Button
         android:id="@+id/button_collaps"
         android:layout_width="120dp"
@@ -90,6 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textview_dat"
         app:layout_constraintTop_toBottomOf="@+id/textview_pric" />
+-->
 
 
 

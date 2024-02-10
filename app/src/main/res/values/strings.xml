@@ -67,5 +67,6 @@
     <string name="booked_list_item_date" translatable="false">27-02-24</string>
     <string name="info_content_description">expand</string>
     <string name="booked_price_item" translatable="false">100$</string>
+    <string name="list_size_message" translatable="false">List:</string>
 
 </resources>

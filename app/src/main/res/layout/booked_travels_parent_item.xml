@@ -8,113 +8,112 @@
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground"
-    android:descendantFocusability="blocksDescendants"
-    android:padding="8sp"
-    android:id="@+id/constraint_layout">
-
-    <TextView
-        android:id="@+id/textview_destination"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:textAppearance="?attr/textAppearanceTitleMedium"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/booked_list_item_dest" />
-
-    <TextView
-        android:id="@+id/textview_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_destination"
-        app:layout_constraintVertical_bias="0.171"
-        tools:text="@string/booked_list_item_date" />
-
-    <ImageView
-        android:id="@+id/imageview_hotel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:focusable="true"
-        android:padding="12dp"
-        android:src="@drawable/baseline_hotel_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.129" />
-
-
-    <RelativeLayout
-        android:id="@+id/expandable_layout"
-        android:layout_width="381dp"
-        android:layout_height="149dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textview_destination"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_date"
-        app:layout_constraintVertical_bias="1.0">
+        android:background="?android:selectableItemBackground"
+        android:descendantFocusability="blocksDescendants"
+        android:padding="8sp">
 
         <TextView
-            android:id="@+id/textview_price"
-            android:layout_width="102dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="66dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="113dp"
-            android:layout_toEndOf="@+id/textview_endDate"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.229"
-            tools:text="$100" />
-
-        <TextView
-            android:id="@+id/textview_endDate"
-            android:layout_width="85dp"
+            android:id="@+id/textview_destination"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/booked_list_item_dest" />
+
+        <TextView
+            android:id="@+id/textview_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_hotel"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.229"
-            tools:text="01-03-24" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_destination"
+            app:layout_constraintVertical_bias="0.171"
+            tools:text="@string/booked_list_item_date" />
+
+        <ImageView
+            android:id="@+id/imageview_hotel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:focusable="true"
+            android:padding="12dp"
+            android:src="@drawable/baseline_hotel_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.129" />
 
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/expandable_layout"
+            android:layout_width="388dp"
+            android:layout_height="65dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textview_destination"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_date"
+            app:layout_constraintVertical_bias="1.0">
 
-    <Button
-        android:id="@+id/button_expand"
-        android:layout_width="138dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="expand"
-        android:textColor="#052230"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.641"
-        app:layout_constraintStart_toEndOf="@+id/textview_date"
-        app:layout_constraintTop_toBottomOf="@+id/imageview_hotel" />
+            <TextView
+                android:id="@+id/textview_price"
+                android:layout_width="102dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="66dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="113dp"
+                android:layout_toEndOf="@+id/textview_endDate"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.229"
+                tools:text="$100" />
+
+            <TextView
+                android:id="@+id/textview_endDate"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.229"
+                tools:text="01-03-24" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="138dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/transparent"
+            android:text="Delete"
+            android:textColor="#052230"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.641"
+            app:layout_constraintStart_toEndOf="@+id/textview_date"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_hotel" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

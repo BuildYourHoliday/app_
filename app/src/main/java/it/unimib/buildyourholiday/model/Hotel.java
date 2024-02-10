@@ -1,5 +1,8 @@
 package it.unimib.buildyourholiday.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,7 +10,7 @@ import androidx.room.PrimaryKey;
 import java.util.Objects;
 
 @Entity
-public class Hotel {
+public class Hotel implements Parcelable {
     private String hotel;
     @PrimaryKey @NonNull
     private String hotelCode;
@@ -113,4 +116,56 @@ public class Hotel {
     public int hashCode() {
         return Objects.hash(hotelCode, checkinDate, checkoutDate, adults);
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.hotel);
+        dest.writeString(this.hotelCode);
+        dest.writeString(this.cityCode);
+        dest.writeString(this.hotelCity);
+        dest.writeString(this.checkinDate);
+        dest.writeString(this.checkoutDate);
+        dest.writeInt(this.adults);
+        dest.writeDouble(this.total);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.hotel = source.readString();
+        this.hotelCode = source.readString();
+        this.cityCode = source.readString();
+        this.hotelCity = source.readString();
+        this.checkinDate = source.readString();
+        this.checkoutDate = source.readString();
+        this.adults = source.readInt();
+        this.total = source.readDouble();
+    }
+
+    protected Hotel(Parcel in) {
+        this.hotel = in.readString();
+        this.hotelCode = in.readString();
+        this.cityCode = in.readString();
+        this.hotelCity = in.readString();
+        this.checkinDate = in.readString();
+        this.checkoutDate = in.readString();
+        this.adults = in.readInt();
+        this.total = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<Hotel> CREATOR = new Parcelable.Creator<Hotel>() {
+        @Override
+        public Hotel createFromParcel(Parcel source) {
+            return new Hotel(source);
+        }
+
+        @Override
+        public Hotel[] newArray(int size) {
+            return new Hotel[size];
+        }
+    };
 }

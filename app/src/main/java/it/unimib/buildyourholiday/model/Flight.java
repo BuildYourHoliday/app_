@@ -1,5 +1,8 @@
 package it.unimib.buildyourholiday.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,7 +10,7 @@ import androidx.room.PrimaryKey;
 import java.util.Objects;
 
 @Entity
-public class Flight {
+public class Flight implements Parcelable {
     @PrimaryKey @NonNull
     private String code;
     private String departureDate;
@@ -122,4 +125,56 @@ public class Flight {
     public int hashCode() {
         return Objects.hash(code, departureDate, departureTime, departureAirport, returnalDate, returnalTime, arrivalAirport);
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.code);
+        dest.writeString(this.departureDate);
+        dest.writeString(this.departureTime);
+        dest.writeString(this.departureAirport);
+        dest.writeString(this.returnalDate);
+        dest.writeString(this.returnalTime);
+        dest.writeString(this.arrivalAirport);
+        dest.writeDouble(this.price);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.code = source.readString();
+        this.departureDate = source.readString();
+        this.departureTime = source.readString();
+        this.departureAirport = source.readString();
+        this.returnalDate = source.readString();
+        this.returnalTime = source.readString();
+        this.arrivalAirport = source.readString();
+        this.price = source.readDouble();
+    }
+
+    protected Flight(Parcel in) {
+        this.code = in.readString();
+        this.departureDate = in.readString();
+        this.departureTime = in.readString();
+        this.departureAirport = in.readString();
+        this.returnalDate = in.readString();
+        this.returnalTime = in.readString();
+        this.arrivalAirport = in.readString();
+        this.price = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<Flight> CREATOR = new Parcelable.Creator<Flight>() {
+        @Override
+        public Flight createFromParcel(Parcel source) {
+            return new Flight(source);
+        }
+
+        @Override
+        public Flight[] newArray(int size) {
+            return new Flight[size];
+        }
+    };
 }

@@ -5,22 +5,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
-//import it.unimib.buildyourholiday.data.TravelListAdapter;
-import it.unimib.buildyourholiday.data.TravelListAdapter;
+//import it.unimib.buildyourholiday.adapter.TravelListAdapter;
+import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.model.Travel;
 
 /**
@@ -70,7 +69,6 @@ public class SavedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_saved, container, false);
 
@@ -78,8 +76,16 @@ public class SavedFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview_saved_trip);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //recyclerView.setHasFixedSize(true);
-        TravelListAdapter travelListAdapter = new TravelListAdapter(newList);
+        TravelListAdapter travelListAdapter = new TravelListAdapter(newList,
+                new TravelListAdapter.OnItemClickListener(){
+                    public void onTravelItemClick(Travel travel){
+                        Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    public void onDeleteButtonPressed(int position){
+                        Snackbar.make(view, getString(R.string.list_size_message) + newList.size(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
         recyclerView.setAdapter(travelListAdapter);
 
         return view;
@@ -88,8 +94,6 @@ public class SavedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
         /*TravelViewModel model = new ViewModelProvider(this).get(TravelViewModel.class);
         model.getAllTravel().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
@@ -98,9 +102,6 @@ public class SavedFragment extends Fragment {
                 newList = travels;
             }
         });*/
-
-
-
     }
 
     private void initData(){
