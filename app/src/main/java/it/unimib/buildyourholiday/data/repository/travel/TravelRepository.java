@@ -95,6 +95,12 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
         backupDataSource.addSavedTravel(travel);
     }
 
+    @Override
+    public MutableLiveData<Result> fetchAllSavedTravels() {
+        travelLocalDataSource.getSavedTravels();
+        return savedTravelsMutableLiveData;
+    }
+
 
     @Override
     public void onSuccessFromRemote(List<Travel> travelList, long lastUpdate) {

@@ -14,8 +14,8 @@ import it.unimib.buildyourholiday.model.Travel;
 @Dao
 public interface TravelDao {
 
-    @Query("SELECT * from travel")
-    List<Travel> getAll();
+    @Query("SELECT * from travel WHERE is_saved = 1")
+    List<Travel> getAllSaved();
 
     @Query("SELECT * FROM travel WHERE id = :id")
     Travel getTravel(long id);

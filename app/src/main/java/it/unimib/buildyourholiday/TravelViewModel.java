@@ -148,4 +148,8 @@ public class TravelViewModel extends ViewModel {
     public void setTravelListLiveData(MutableLiveData<Result> travelListLiveData) {
         this.travelListLiveData = travelListLiveData;
     }
+
+    public void fetchAllSavedTravels() {
+        travelListLiveData = travelRepository.fetchAllSavedTravels();
+    }
 }

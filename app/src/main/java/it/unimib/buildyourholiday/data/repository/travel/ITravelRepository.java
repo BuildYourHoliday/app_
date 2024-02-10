@@ -18,4 +18,6 @@ public interface ITravelRepository {
     void deleteSavedTravel(Travel travel);
 
     void saveSavedTravel(Travel travel);
+
+    MutableLiveData<Result> fetchAllSavedTravels();
 }

@@ -1,12 +1,10 @@
 package it.unimib.buildyourholiday.data.source.travel;
 
-import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static it.unimib.buildyourholiday.util.Constants.GENERIC_ERROR;
 import static it.unimib.buildyourholiday.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.buildyourholiday.data.database.TravelDao;
@@ -37,7 +35,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     public void getSavedTravels(String country) {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
             Log.d("MapFragment","eseguo ricerca per: "+country);
-            List<Travel> debugAll = travelDao.getAll();
+            List<Travel> debugAll = travelDao.getAllSaved();
             Log.d("MapFragment","presente nel db: "+debugAll.get(0).getCountry()+" ...");
             //Travel tDebug = travelDao.getTravel(1);
             //Log.d("MapFragment","id test: "+tDebug.toString());
@@ -67,7 +65,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     @Override
     public void getSavedTravels() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Travel> savedTravels = travelDao.getAll();
+            List<Travel> savedTravels = travelDao.getAllSaved();
             travelCallback.onTravelSavedStatusChanged(savedTravels);
         });
     }
@@ -80,14 +78,14 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
                 // It means that the update succeeded because only one row had to be updated
                 if (rowUpdatedCounter == 1) {
                     Travel updatedTravel = travelDao.getTravel(travel.getId());
-                    travelCallback.onTravelSavedStatusChanged(updatedTravel, travelDao.getAll());
+                    travelCallback.onTravelSavedStatusChanged(updatedTravel, travelDao.getAllSaved());
                 } else {
                     travelCallback.onFailureFromLocal(new Exception(GENERIC_ERROR));
                 }
             } else {
                 // When the user deleted all favorite news from remote
                 //TODO Check if it works fine and there are not drawbacks
-                List<Travel> allTravels = travelDao.getAll();
+                List<Travel> allTravels = travelDao.getAllSaved();
                 for (Travel t : allTravels) {
                     t.setSynchronized(false);
                     travelDao.updateSingleSavedTravel(t);
@@ -99,7 +97,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     @Override
     public void deleteSavedTravels() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Travel> savedTravels = travelDao.getAll();
+            List<Travel> savedTravels = travelDao.getAllSaved();
             for (Travel travel : savedTravels) {
                 travelDao.delete(travel);      //TODO va bene???
             }
@@ -107,7 +105,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
 
             // It means that the update succeeded because the number of updated rows is
             // equal to the number of the original favorite news
-            if (travelDao.getAll().size()==0) {
+            if (travelDao.getAllSaved().size()==0) {
                 travelCallback.onDeleteFavoriteNewsSuccess(savedTravels);
             } else {
                 travelCallback.onFailureFromLocal(new Exception(GENERIC_ERROR));
@@ -125,7 +123,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     public void insertTravels(List<Travel> travelsList) {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
             // Reads the news from the database
-            List<Travel> allTravels = travelDao.getAll();
+            List<Travel> allTravels = travelDao.getAllSaved();
 
             if (travelsList != null) {
 
@@ -164,7 +162,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     @Override
     public void deleteAll() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            int travelsCounter = travelDao.getAll().size();
+            int travelsCounter = travelDao.getAllSaved().size();
             int travelsDeleted = travelDao.deleteAll();
 
             // It means that everything has been deleted
@@ -179,9 +177,9 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     @Override
     public void deleteSavedTravel(Travel travel) {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            int travelsCounter = travelDao.getAll().size();
+            int travelsCounter = travelDao.getAllSaved().size();
             travelDao.delete(travel);
-            List<Travel> travelList = travelDao.getAll();
+            List<Travel> travelList = travelDao.getAllSaved();
             int travelsDeleted = travelList.size();
 
             if (travelsCounter != travelsDeleted) {

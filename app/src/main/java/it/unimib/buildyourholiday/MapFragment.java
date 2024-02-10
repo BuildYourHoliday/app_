@@ -272,6 +272,9 @@ public class MapFragment extends Fragment {
                                                    // recyclerView.setAdapter(null);
                                                 }
 
+                                                String searchCode = countryCode.substring(1,countryCode.length()-1);
+                                                Log.d("MapFragment", "search: "+searchCode+" vs. ");
+                                                travelViewModel.fetchSavedTravels(searchCode);
 
                                                 travelViewModel.getTravelResponseLiveData().observe(getViewLifecycleOwner(), new Observer<Result>() {
                                                     @Override
@@ -284,9 +287,7 @@ public class MapFragment extends Fragment {
                                                         recyclerView.setAdapter(travelListAdapter);
                                                     }
                                                 });
-                                                String searchCode = countryCode.substring(1,countryCode.length()-1);
-                                                Log.d("MapFragment", "search: "+searchCode+" vs. ");
-                                                travelViewModel.fetchSavedTravels(searchCode);
+
 
                                                 // set border on selected
                                                 Expected<String,Value> conv = ValueConverter.fromJson(
