@@ -1,22 +1,16 @@
-package it.unimib.buildyourholiday.data;
+package it.unimib.buildyourholiday.adapter;
 
 
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -25,7 +19,14 @@ import it.unimib.buildyourholiday.model.Travel;
 
 public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.TravelViewHolder> {
 
-    private List<Travel> travelList;
+    public interface OnItemClickListener{
+        void onDeleteButtonPressed(int position);
+        void onTravelItemClick(Travel travel);
+    }
+    private final List<Travel> travelList;
+    private final OnItemClickListener onItemClickListener;
+
+
 
 
 /**
@@ -34,9 +35,15 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
      */
 
 
-    public TravelListAdapter(List<Travel> travelList) {
+    /*public TravelListAdapter(List<Travel> travelList, OnItemClickListener onItemClickListener) {
         this.travelList = travelList;
+        this.onItemClickListener = onItemClickListener;
 
+    }*/
+
+    public TravelListAdapter(List<Travel> travelList, OnItemClickListener onItemClickListener) {
+        this.travelList = travelList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -53,7 +60,9 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
     @Override
     public void onBindViewHolder(@NonNull TravelViewHolder holder, int position) {
 
-        Travel travel = travelList.get(position);
+        holder.bind(travelList.get(position));
+
+        /*Travel travel = travelList.get(position);
         if(travel.getCity() != null)
             holder.textViewDestination.setText(travel.getCity());
         else
@@ -73,7 +82,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
 
 
         boolean isExpandable = travelList.get(position).isExpandable();
-        holder.expandableLayout.setVisibility(isExpandable? View.VISIBLE : View.GONE);
+        holder.expandableLayout.setVisibility(isExpandable? View.VISIBLE : View.GONE);*/
 
 
 
@@ -95,12 +104,11 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         return 0;
     }
 
-    public class TravelViewHolder extends RecyclerView.ViewHolder{
+    public class TravelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView textViewDestination;
         private final TextView textViewDate, textViewPrice, textViewEndDate;
-        private final Button travelExpandButton;
-
+        private final Button buttonDelete;
         private final ConstraintLayout constraintLayout;
         private final RelativeLayout expandableLayout;
 
@@ -111,10 +119,13 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             textViewPrice = itemView.findViewById(R.id.textview_price);
             textViewEndDate = itemView.findViewById(R.id.textview_endDate);
 
-            travelExpandButton = itemView.findViewById(R.id.button_expand);
+            buttonDelete = itemView.findViewById(R.id.button_delete);
 
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
+
+            itemView.setOnClickListener(this);
+            buttonDelete.setOnClickListener(this);
 
             constraintLayout.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -133,25 +144,42 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         }
 
 
-        /*public void bind(Travel travel) {
-            textViewDestination.setText(travel.getFlight().getArrivalAirport());
-            textViewDate.setText(DateTimeUtil.getDate(travel.getBeginDate()));
-            boolean expanded = travel.isExpanded();
-            // Set the visibility based on state
-            subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        public void bind(Travel travel) {
+            if(travel.getCity() != null)
+                textViewDestination.setText(travel.getCity());
+            else
+                textViewDestination.setText("errorCity");
+            if(travel.getBeginDate() != null)
+                textViewDate.setText(travel.getBeginDate());
+            else
+                textViewDate.setText("errorDate");
+            if(travel.getTotalPrice() != 0)
+                textViewPrice.setText(String.valueOf(travel.getTotalPrice()));
+            else
+                textViewPrice.setText(String.valueOf(100.00));
+            if(travel.getFinishDate() != null)
+                textViewEndDate.setText(travel.getFinishDate());
+            else
+                textViewEndDate.setText("errorEndDate");
 
-            title.setText(movie.getTitle());
-            genre.setText("Genre: " + movie.getGenre());
-            year.setText("Year: " + movie.getYear());
+            boolean isExpandable = travel.isExpandable();
+            expandableLayout.setVisibility(isExpandable? View.VISIBLE : View.GONE);
         }
 
-
+        // Expand(better) e Delete da implementare
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.button_expand) {
-                onItemClickListener.onExpandButtonPressed(getAdapterPosition());
+            if (v.getId() == R.id.button_delete) {
+                travelList.remove(getAdapterPosition());
+                notifyItemRemoved(getAdapterPosition());
+                onItemClickListener.onDeleteButtonPressed(getAdapterPosition());
             }
-        }*/
+            else{
+                Travel travel = travelList.get(getAdapterPosition());
+                travel.setExpandable(!travel.isExpandable());
+                notifyItemChanged(getAdapterPosition());
+            }
+        }
     }
 }
 
