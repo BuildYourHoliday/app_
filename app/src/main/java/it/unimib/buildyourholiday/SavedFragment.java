@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,10 @@ import java.util.List;
 
 //import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
+import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
+import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
+import it.unimib.buildyourholiday.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +79,40 @@ public class SavedFragment extends Fragment {
 
         initData();
 
+        ITravelRepository travelRepository = ServiceLocator.getInstance()
+                .getTravelRepository(requireActivity().getApplication());
+        TravelViewModel travelViewModel = new ViewModelProvider(
+                requireActivity(),
+                new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
+
+        recyclerView = view.findViewById(R.id.recyclerview_saved_trip);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        travelViewModel.fetchAllSavedTravels();
+        travelViewModel.getSavedTravelsLiveData(false).observe(getViewLifecycleOwner(),
+                new Observer<Result>() {
+                    @Override
+                    public void onChanged(Result result) {
+                        List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
+                        TravelListAdapter travelListAdapter = new TravelListAdapter(travelList,
+                                new TravelListAdapter.OnItemClickListener(){
+                                    public void onTravelItemClick(Travel travel){
+                                        Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                    }
+
+                                    public void onDeleteButtonPressed(int position){
+                                        Snackbar.make(view, getString(R.string.list_size_message) + newList.size(), Snackbar.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        recyclerView.setAdapter(travelListAdapter);
+                    }
+                });
+
+
+        return view;
+        //////////////////////////
+
+        /*
         recyclerView = view.findViewById(R.id.recyclerview_saved_trip);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         TravelListAdapter travelListAdapter = new TravelListAdapter(newList,
@@ -89,6 +128,8 @@ public class SavedFragment extends Fragment {
         recyclerView.setAdapter(travelListAdapter);
 
         return view;
+
+         */
     }
 
     @Override
