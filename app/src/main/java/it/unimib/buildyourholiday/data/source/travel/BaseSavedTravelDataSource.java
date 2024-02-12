@@ -14,8 +14,10 @@ public abstract class BaseSavedTravelDataSource {
 
     public abstract void getSavedTravels();
     public abstract void getSavedTravels(String country);
-    public abstract void addSavedTravel(Travel travel);
+    public abstract void addTravel(Travel travel);
     public abstract void deleteSavedTravel(Travel travel);
     public abstract void deleteAllSavedTravels();
     public abstract void synchronizeSavedTravels(List<Travel> notSynchronizedTravelsList);
+
+    public abstract void getBookedTravels();
 }

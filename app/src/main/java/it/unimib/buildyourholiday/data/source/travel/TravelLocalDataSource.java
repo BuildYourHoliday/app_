@@ -190,4 +190,12 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
 
         });
     }
+
+    @Override
+    public void getBookedTravels() {
+        TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<Travel> bookedTravels = travelDao.getAllBooked();
+            travelCallback.onTravelSavedStatusChanged(bookedTravels);
+        });
+    }
 }

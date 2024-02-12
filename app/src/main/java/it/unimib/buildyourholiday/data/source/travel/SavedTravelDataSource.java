@@ -43,7 +43,8 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
                         for (DataSnapshot ds: task.getResult().getChildren()) {
                             Travel travel = ds.getValue(Travel.class);
                             travel.setSynchronized(true);
-                            travelList.add(travel);
+                            if(travel.isSaved())
+                                travelList.add(travel);
                         }
                         travelCallback.onSuccessFromCloudReading(travelList);
                     }
@@ -74,9 +75,9 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
     }
 
     @Override
-    public void addSavedTravel(Travel travel) {
+    public void addTravel(Travel travel) {
         databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
-                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.hashCode())).setValue(travel)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.getId())).setValue(travel)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -117,6 +118,27 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
                                             }
                                     );
                         }
+                    }
+                });
+    }
+
+    @Override
+    public void getBookedTravels() {
+        databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).get().addOnCompleteListener(task -> {
+                    if(!task.isSuccessful()) {
+                        Log.d(TAG, "Error retrieving data" + task.getException());
+                    } else {
+                        Log.d(TAG, "Success: " + task.getResult().getValue());
+
+                        List<Travel> travelList = new ArrayList<>();
+                        for (DataSnapshot ds: task.getResult().getChildren()) {
+                            Travel travel = ds.getValue(Travel.class);
+                            travel.setSynchronized(true);
+                            if(travel.isBooked())
+                                travelList.add(travel);
+                        }
+                        travelCallback.onSuccessFromBookedCloudReading(travelList);
                     }
                 });
     }

@@ -100,7 +100,7 @@ public class SavedFragment extends Fragment {
                                     }
 
                                     public void onDeleteButtonPressed(int position){
-                                        Snackbar.make(view, getString(R.string.list_size_message) + newList.size(), Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
 

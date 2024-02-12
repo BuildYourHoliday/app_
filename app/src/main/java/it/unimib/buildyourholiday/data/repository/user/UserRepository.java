@@ -210,4 +210,9 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
     public void onSuccessDeletion() {
 
     }
+
+    @Override
+    public void onSuccessFromBookedCloudReading(List<Travel> travelList) {
+
+    }
 }

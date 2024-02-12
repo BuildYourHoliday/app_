@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +72,41 @@ public class BookedFragment extends Fragment {
             }
         });*/
 
+        ITravelRepository travelRepository = ServiceLocator.getInstance()
+                .getTravelRepository(requireActivity().getApplication());
+        TravelViewModel travelViewModel = new ViewModelProvider(
+                requireActivity(),
+                new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
+
+        recyclerView = v.findViewById(R.id.recyclerview_booked);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
+                LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        travelViewModel.fetchAllBookedTravels();
+        travelViewModel.getBookedTravelsLiveData(false).observe(getViewLifecycleOwner(),
+                new Observer<Result>() {
+                    @Override
+                    public void onChanged(Result result) {
+                        List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
+                        TravelListAdapter travelListAdapter = new TravelListAdapter(travelList,
+                                new TravelListAdapter.OnItemClickListener(){
+                                    public void onTravelItemClick(Travel travel){
+                                        Snackbar.make(v, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                    }
+
+                                    public void onDeleteButtonPressed(int position){
+                                        Snackbar.make(v, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        recyclerView.setAdapter(travelListAdapter);
+                    }
+                });
+
+
+        return v;
+        /*
+
         recyclerView = v.findViewById(R.id.recyclerview_booked);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
@@ -96,6 +132,8 @@ public class BookedFragment extends Fragment {
         recyclerView.setAdapter(travelListAdapter);
 
         return v;
+
+         */
     }
 
     @Override

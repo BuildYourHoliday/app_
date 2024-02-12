@@ -3,13 +3,9 @@ package it.unimib.buildyourholiday;
 import static android.app.PendingIntent.getActivity;
 import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static it.unimib.buildyourholiday.util.Constants.ID_TOKEN;
-import static it.unimib.buildyourholiday.util.Constants.RATE_LIMIT_TIME;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +20,6 @@ import android.widget.TextView;
 import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -215,7 +210,7 @@ public class AmadeusAsync extends AppCompatActivity {
                 source = new SavedTravelDataSource(dataEncryptionUtil
                         .readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID_TOKEN));
                 db.travelDao().insertTravel(travel);
-                source.addSavedTravel(travel);
+                source.addTravel(travel);
                 return true;
             } catch (GeneralSecurityException | IOException e) {
                 return false;

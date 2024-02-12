@@ -23,4 +23,6 @@ public abstract class BaseTravelLocalDataSource {
     public abstract void insertTravels(List<Travel> travelsList);
     public abstract void deleteAll();
     public abstract void deleteSavedTravel(Travel travel);
+
+    public abstract void getBookedTravels();
 }

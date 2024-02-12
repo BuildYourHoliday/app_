@@ -25,6 +25,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     private static final String TAG = TravelRepository.class.getSimpleName();
 
     private final MutableLiveData<Result> savedTravelsMutableLiveData;
+    private final MutableLiveData<Result> bookedTravelsMutableLiveData;
     private final BaseTravelRemoteDataSource travelRemoteDataSource;
     private final BaseTravelLocalDataSource travelLocalDataSource;
     private final BaseSavedTravelDataSource backupDataSource;
@@ -34,6 +35,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
                             BaseSavedTravelDataSource savedTravelDataSource) {
 
         savedTravelsMutableLiveData = new MutableLiveData<>();
+        bookedTravelsMutableLiveData = new MutableLiveData<>();
         this.travelRemoteDataSource = travelRemoteDataSource;
         this.travelLocalDataSource = travelLocalDataSource;
         this.backupDataSource = savedTravelDataSource;
@@ -71,7 +73,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     @Override
     public void updateSavedTravel(Travel travel) {
         travelLocalDataSource.updateTravel(travel);
-        backupDataSource.addSavedTravel(travel);
+        backupDataSource.addTravel(travel);
     }
 
     @Override
@@ -92,13 +94,31 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void saveSavedTravel(Travel travel) {
-        backupDataSource.addSavedTravel(travel);
+        backupDataSource.addTravel(travel);
     }
 
     @Override
     public MutableLiveData<Result> fetchAllSavedTravels() {
         travelLocalDataSource.getSavedTravels();
         return savedTravelsMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> fetchAllBookedTravels() {
+        travelLocalDataSource.getBookedTravels();
+        return bookedTravelsMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> getBookedTravels(boolean firstLoading) {
+        // The first time the user launches the app, check if she
+        // has previously saved favorite news on the cloud
+        if (firstLoading) {
+            backupDataSource.getBookedTravels();
+        } else {
+            travelLocalDataSource.getBookedTravels();
+        }
+        return bookedTravelsMutableLiveData;
     }
 
 
@@ -208,4 +228,16 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void onSuccessDeletion() {}
+
+    @Override
+    public void onSuccessFromBookedCloudReading(List<Travel> travelList) {
+        // Booked travel got from Realtime Database the first time
+        if (travelList != null) {
+            for (Travel t : travelList) {
+                t.setSynchronized(true);
+            }
+            travelLocalDataSource.insertTravels(travelList);
+            bookedTravelsMutableLiveData.postValue(new Result.TravelResponseSuccess(new TravelResponse(travelList)));
+        }
+    }
 }

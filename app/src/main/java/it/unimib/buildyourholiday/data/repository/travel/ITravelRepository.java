@@ -20,4 +20,8 @@ public interface ITravelRepository {
     void saveSavedTravel(Travel travel);
 
     MutableLiveData<Result> fetchAllSavedTravels();
+
+    MutableLiveData<Result> fetchAllBookedTravels();
+
+    MutableLiveData<Result> getBookedTravels(boolean firstLoading);
 }

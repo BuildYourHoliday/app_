@@ -1,5 +1,6 @@
 package it.unimib.buildyourholiday;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -18,7 +19,7 @@ public class TravelViewModel extends ViewModel {
     private boolean isLoading;
     private boolean firstLoading;
     private MutableLiveData<Result> travelListLiveData;
-  //  private MutableLiveData<Result> favoriteNewsListLiveData;
+    private MutableLiveData<Result> bookedTravelListLiveData;
 
     public TravelViewModel(ITravelRepository travelRepository) {
         this.travelRepository = travelRepository;
@@ -151,5 +152,21 @@ public class TravelViewModel extends ViewModel {
 
     public void fetchAllSavedTravels() {
         travelListLiveData = travelRepository.fetchAllSavedTravels();
+    }
+
+    public void fetchAllBookedTravels() {
+        travelListLiveData = travelRepository.fetchAllBookedTravels();
+    }
+
+    public LiveData<Result> getBookedTravelsLiveData(boolean isFirstLoading) {
+        if (bookedTravelListLiveData == null) {
+            bookedTravelListLiveData = new MutableLiveData<>();
+            getBookedTravels(isFirstLoading);
+        }
+        return bookedTravelListLiveData;
+    }
+
+    private void getBookedTravels(boolean isFirstLoading) {
+        bookedTravelListLiveData = travelRepository.getBookedTravels(firstLoading);
     }
 }

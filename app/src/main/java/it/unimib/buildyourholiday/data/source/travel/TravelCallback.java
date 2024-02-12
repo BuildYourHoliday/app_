@@ -21,4 +21,6 @@ public interface TravelCallback {
     void onFailureFromCloud(Exception exception);
     void onSuccessSynchronization();
     void onSuccessDeletion();
+
+    void onSuccessFromBookedCloudReading(List<Travel> travelList);
 }
