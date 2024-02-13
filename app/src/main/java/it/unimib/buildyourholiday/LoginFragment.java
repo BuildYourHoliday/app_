@@ -47,6 +47,7 @@ import it.unimib.buildyourholiday.model.User;
 import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.util.DataEncryptionUtil;
 import it.unimib.buildyourholiday.util.ServiceLocator;
+import it.unimib.buildyourholiday.util.SharedPreferencesUtil;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
@@ -203,6 +204,13 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // no login every time app starts
+        /* TODO: UNCOMMENT THIS ONCE LOGOUT IS AVAILABLE
+        if(userViewModel.getLoggedUser() != null) {
+            startActivityBasedOnCondition(MainActivity.class,R.id.action_loginFragment_to_mainActivity);
+        }
+
+         */
 
         textInputLayoutEmail = view.findViewById(R.id.textInputLayout_email);
         textInputLayoutPassword = view.findViewById(R.id.textInputLayout_password);
