@@ -65,7 +65,7 @@
       "type": "fill",
       "source": "composite",
       "source-layer": "country_boundaries",
-      "filter": ["match", ["get", "iso_3166_1"], ["YYYY","DE"], true, false],
+      "filter": ["match", ["get", "iso_3166_1"], [""], true, false],
       "layout": {},
       "paint": {"fill-color": "hsla(58, 100%, 50%, 0.33)"}
     },
