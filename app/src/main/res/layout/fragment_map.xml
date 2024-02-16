@@ -24,7 +24,21 @@
                 mapbox:layout_constraintTop_toTopOf="parent"
                 mapbox:mapbox_cameraTargetLat="40.7128"
                 mapbox:mapbox_cameraTargetLng="-24.0060"
-                mapbox:mapbox_cameraZoom="0.5" />
+                mapbox:mapbox_cameraZoom="0.5" >
+
+            </com.mapbox.maps.MapView>
+
+            <Button
+                android:id="@+id/refresh_button"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/refreshes_description"
+                mapbox:icon="@drawable/baseline_update_24"
+                mapbox:layout_constraintEnd_toEndOf="parent"
+                mapbox:layout_constraintTop_toTopOf="@+id/map_view" />
 
             <TextView
                 android:id="@+id/debug_country"

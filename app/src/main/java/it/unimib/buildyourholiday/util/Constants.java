@@ -45,4 +45,6 @@ public class Constants {
     public static final int FRESH_TIMEOUT = 300000;
 
 
+    public static final String SAVED_COUNTRIES_LAYER = "country-blue";
+    public static final String BOOKED_COUNTRIES_LAYER = "country-green";
 }

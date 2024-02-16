@@ -1,6 +1,13 @@
 package it.unimib.buildyourholiday;
 
+import static it.unimib.buildyourholiday.util.Constants.BOOKED_COUNTRIES_LAYER;
+import static it.unimib.buildyourholiday.util.Constants.SAVED_COUNTRIES_LAYER;
+import static it.unimib.buildyourholiday.util.MapUtil.fetchBookedCountriesFromDB;
+import static it.unimib.buildyourholiday.util.MapUtil.fetchSavedCountriesFromDB;
 import static it.unimib.buildyourholiday.util.MapUtil.getAllCountriesFormatted;
+import static it.unimib.buildyourholiday.util.MapUtil.initMap;
+import static it.unimib.buildyourholiday.util.MapUtil.refreshMap;
+import static it.unimib.buildyourholiday.util.MapUtil.resetCountries;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,6 +33,7 @@ import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Response;
@@ -98,6 +106,8 @@ public class MapFragment extends Fragment {
     private TravelsRoomDatabase database;
     TravelListAdapter travelListAdapter;
     private MapView mapView = null;
+    private Button refreshMapButton = null;
+    private boolean refreshTriggered = false;
 
     public MapFragment() {
         // Required empty public constructor
@@ -142,16 +152,11 @@ public class MapFragment extends Fragment {
                 getString(R.string.mapbox_access_token));
         Log.d("MapFragment","dopo GETINSTANCE() + "+getString(R.string.mapbox_access_token));
 
-      //  jsonFileReader = new JsonFileReader();
-
-
-
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-
         mapView = view.findViewById(R.id.map_view);
-        //mapView.getMapboxMap().loadStyleUri(Style.LIGHT);
 
+        refreshMapButton = view.findViewById(R.id.refresh_button);
         //////////////////////////////////////////////
         ITravelRepository travelRepository = ServiceLocator.getInstance()
                 .getTravelRepository(requireActivity().getApplication());
@@ -195,7 +200,12 @@ public class MapFragment extends Fragment {
                     Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 100%)\"");
                     mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
                 }
+                Log.d("MapFragment","VERIFICA YYYY: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-blue","filter"));
+
+                initMap(mapView, travelViewModel, getViewLifecycleOwner());
                 // reset all blue countries
+                //////// resetCountries(SAVED_COUNTRIES_LAYER, mapView);
+                /*
                 Expected<String,Value> defaultConv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
                         "[\"get\", \"iso_3166_1\"],\n" + "[\"\"],\n" + "true,\n" +
                         "false\n" + "]");
@@ -203,10 +213,15 @@ public class MapFragment extends Fragment {
                 mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-blue","filter",defaultConv.getValue());
                 Log.d("MapFragment","property blue default: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-blue","filter"));
 
+                 */
+
                 // reset all green countries
-                mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-green","filter",defaultConv.getValue());
+                //////// resetCountries(BOOKED_COUNTRIES_LAYER, mapView);
+                //mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-green","filter",defaultConv.getValue());
 
                 // set all blue countries
+                //////// fetchSavedCountriesFromDB(mapView, travelViewModel,getViewLifecycleOwner());
+                /*
                 travelViewModel.fetchAllSavedTravels();
                 travelViewModel.getSavedTravelsLiveData(false).observe(getViewLifecycleOwner(),
                         new Observer<Result>() {
@@ -224,7 +239,11 @@ public class MapFragment extends Fragment {
 
                             }
                         });
+
+                 */
                 // set all green countries
+                //////// fetchBookedCountriesFromDB(mapView, travelViewModel, getViewLifecycleOwner());
+                /*
                 travelViewModel.fetchAllBookedTravels();
                 travelViewModel.getBookedTravelsLiveData(false).observe(getViewLifecycleOwner(),
                         new Observer<Result>() {
@@ -236,13 +255,23 @@ public class MapFragment extends Fragment {
                                         "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
                                         "false\n" + "]");
                                 Log.d("MapFragment",conv.getValue().toString());
-                                mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-green",
+                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(BOOKED_COUNTRIES_LAYER,
                                         "filter",conv.getValue());
-                                Log.d("MapFragment","property green: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-blue","filter"));
+                                Log.d("MapFragment","property green: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(SAVED_COUNTRIES_LAYER,"filter"));
 
                             }
                         });
 
+                 */
+
+            }
+        });
+
+        refreshMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshTriggered = true;
+                refreshMap(mapView, travelViewModel, getViewLifecycleOwner());
             }
         });
 
@@ -281,6 +310,7 @@ public class MapFragment extends Fragment {
         gesturesPlugin.addOnMapClickListener(new OnMapClickListener() {
             @Override
             public boolean onMapClick(@NonNull Point point) {
+                refreshTriggered = false;
 
                 ArrayList<String> layers = new ArrayList<>();
                 layers.add("country-non-visited");
@@ -338,18 +368,21 @@ public class MapFragment extends Fragment {
                                                             Log.d("MapFragment","risultati: "+((Result.TravelResponseSuccess)result).getData().getTravelList().size());
                                                         //    Log.d("MapFragment","results: "+((Result.TravelResponseSuccess)result).getData().getTravelList().get(0).getCountry());
                                                         }
-                                                        List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
 
-                                                        travelListAdapter = new TravelListAdapter(travelList,new TravelListAdapter.OnItemClickListener(){
-                                                            public void onTravelItemClick(Travel travel){
-                                                                Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
-                                                            }
+                                                        if(!refreshTriggered) {
+                                                            List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
 
-                                                            public void onDeleteButtonPressed(int position){
-                                                                Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-                                                        recyclerView.setAdapter(travelListAdapter);
+                                                            travelListAdapter = new TravelListAdapter(travelList,new TravelListAdapter.OnItemClickListener(){
+                                                                public void onTravelItemClick(Travel travel){
+                                                                    Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                                                }
+
+                                                                public void onDeleteButtonPressed(int position){
+                                                                    Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                            recyclerView.setAdapter(travelListAdapter);
+                                                        }
                                                     }
                                                 });
 

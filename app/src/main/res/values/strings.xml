@@ -68,5 +68,6 @@
     <string name="info_content_description">expand</string>
     <string name="booked_price_item" translatable="false">100$</string>
     <string name="list_size_message" translatable="false">List:</string>
+    <string name="refreshes_description">Refreshes map style</string>
 
 </resources>
