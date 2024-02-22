@@ -200,70 +200,7 @@ public class MapFragment extends Fragment {
                     Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 100%)\"");
                     mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
                 }
-                Log.d("MapFragment","VERIFICA YYYY: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-blue","filter"));
-
                 initMap(mapView, travelViewModel, getViewLifecycleOwner());
-                // reset all blue countries
-                //////// resetCountries(SAVED_COUNTRIES_LAYER, mapView);
-                /*
-                Expected<String,Value> defaultConv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
-                        "[\"get\", \"iso_3166_1\"],\n" + "[\"\"],\n" + "true,\n" +
-                        "false\n" + "]");
-                Log.d("MapFragment",defaultConv.getValue().toString());
-                mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-blue","filter",defaultConv.getValue());
-                Log.d("MapFragment","property blue default: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-blue","filter"));
-
-                 */
-
-                // reset all green countries
-                //////// resetCountries(BOOKED_COUNTRIES_LAYER, mapView);
-                //mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-green","filter",defaultConv.getValue());
-
-                // set all blue countries
-                //////// fetchSavedCountriesFromDB(mapView, travelViewModel,getViewLifecycleOwner());
-                /*
-                travelViewModel.fetchAllSavedTravels();
-                travelViewModel.getSavedTravelsLiveData(false).observe(getViewLifecycleOwner(),
-                        new Observer<Result>() {
-                            @Override
-                            public void onChanged(Result result) {
-                                String countries = getAllCountriesFormatted(((Result.TravelResponseSuccess)result).getData().getTravelList());
-                                Log.d("MapFragment","ids: "+countries);
-                                Expected<String,Value> conv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
-                                        "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
-                                        "false\n" + "]");
-                                Log.d("MapFragment",conv.getValue().toString());
-                                mapView.getMapboxMap().getStyle().setStyleLayerProperty("country-blue",
-                                        "filter",conv.getValue());
-                                Log.d("MapFragment","property blue: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-blue","filter"));
-
-                            }
-                        });
-
-                 */
-                // set all green countries
-                //////// fetchBookedCountriesFromDB(mapView, travelViewModel, getViewLifecycleOwner());
-                /*
-                travelViewModel.fetchAllBookedTravels();
-                travelViewModel.getBookedTravelsLiveData(false).observe(getViewLifecycleOwner(),
-                        new Observer<Result>() {
-                            @Override
-                            public void onChanged(Result result) {
-                                String countries = getAllCountriesFormatted(((Result.TravelResponseSuccess)result).getData().getTravelList());
-                                Log.d("MapFragment","ids: "+countries);
-                                Expected<String,Value> conv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
-                                        "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
-                                        "false\n" + "]");
-                                Log.d("MapFragment",conv.getValue().toString());
-                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(BOOKED_COUNTRIES_LAYER,
-                                        "filter",conv.getValue());
-                                Log.d("MapFragment","property green: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(SAVED_COUNTRIES_LAYER,"filter"));
-
-                            }
-                        });
-
-                 */
-
             }
         });
 
@@ -274,12 +211,6 @@ public class MapFragment extends Fragment {
                 refreshMap(mapView, travelViewModel, getViewLifecycleOwner());
             }
         });
-
-//        mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","paint",new Property<>("hsl(0, 0%, 0%"));
-
-//            mapView.getMapboxMap().getStyle().getStyleLayerProperties("background").toString());
-        // }
-
 
         TextView debugText = view.findViewById(R.id.debug_country);
 

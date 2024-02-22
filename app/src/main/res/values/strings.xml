@@ -69,5 +69,7 @@
     <string name="booked_price_item" translatable="false">100$</string>
     <string name="list_size_message" translatable="false">List:</string>
     <string name="refreshes_description">Refreshes map style</string>
+    <string name="amadeus_client_id" translatable="false">UWAFKYZec0REMjNs6agWEur2IpEnZ78H</string>
+    <string name="amadeus_client_secret" translatable="false">D9AZ2ZHEW8CkgYBH</string>
 
 </resources>

@@ -45,7 +45,7 @@ public class AmadeusTesting extends AppCompatActivity {
        // searchHotel = findViewById(R.id.hotelsFor);
        //     searchHotel.setText("PAR");
         submitHotel = findViewById(R.id.buttonHotel);
-        hotelResults = findViewById(R.id.hotelResults);
+       // hotelResults = findViewById(R.id.hotelResults);
 
 
         // <---------------- QUESTO
@@ -258,9 +258,9 @@ public class AmadeusTesting extends AppCompatActivity {
                                                     }
                                                 }
                                                 Log.d("VOLO",out);
-                                                hotelResults.append(out);
+                                                //hotelResults.append(out);
                                             }
-                                            hotelResults.append("\n\n\n");
+                                            //hotelResults.append("\n\n\n");
                                         }
                         );
 
@@ -302,9 +302,9 @@ public class AmadeusTesting extends AppCompatActivity {
                                               Log.d("VOLO",offers[j].getRoom().getDescription().toString());
                                               Log.d("VOLO", "Prezzo: " + offers[j].getPrice());
                                               Log.d("VOLO","Descrizione"+offers[j].getDescription());
-                                              hotelResults.append("Prezzo: " + offers[j].getPrice());
-                                              hotelResults.append("Descrizione"+offers[j].getDescription());
-                                              hotelResults.append(offers[j].getRoom().getDescription().toString());
+                                              //hotelResults.append("Prezzo: " + offers[j].getPrice());
+                                              //hotelResults.append("Descrizione"+offers[j].getDescription());
+                                              //hotelResults.append(offers[j].getRoom().getDescription().toString());
                                           }
                                       }
                                                             /*

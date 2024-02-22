@@ -15,7 +15,7 @@ import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
 import com.amadeus.resources.Hotel;
 import com.amadeus.shopping.FlightOffersSearch;
-
+import com.google.firebase.database.collection.BuildConfig;
 
 import java.util.List;
 
@@ -72,9 +72,21 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
 
     public Hotel[] getHotels(String cityCode) throws ResponseException {
         //get a list of hotels in a given city
+      /*  HotelOfferSearch[] hotelOfferSearches = amadeus.shopping.hotelOffersSearch.get(
+                Params.with("cityCode", "PAR").and("checkInDate","2024-03-01")
+                        .and("checkOutDate","2024-03-08")
+        );
+
+       */
+
         Hotel[] hotels = amadeus.referenceData.locations.hotels.byCity.get(
                 Params.with("cityCode", "PAR").and("ratings",1).and("radius",3));
 
+
+
+        // hotelOfferSearches[0].getOffers()[0].getPrice().getTotal();
+       // if (hotelOfferSearches[0].getResponse().getStatusCode() != 200 ) {
+       //     System.out.println("Wrong status code: " + hotelOfferSearches[0].getResponse().getStatusCode());
         if (hotels[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + hotels[0].getResponse().getStatusCode());
             System.exit(-1);
@@ -101,10 +113,13 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
     }
 
     public HotelOfferSearch[] getRooms(List<String> hotelCodes, int adults, String checkIn, String checkOut) throws ResponseException {
+
+        // .and("priceRange",max prezzo)
+
         //get a list of hotels in a given city
         HotelOfferSearch[] rooms = amadeus.shopping.hotelOffersSearch.get(
                 Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
-                        .and("checkOutDate", checkOut).and("bestRateOnly",true));
+                        .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currencyCode","EUR"));
 
         if (rooms[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
@@ -117,7 +132,7 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
     public Observable<FlightOfferSearch[]> fetchFlightsAsync(String originCityCode, String destinationCityCode, String departureDate, @Nullable String returnDate, int adults) {
         return Observable.create((ObservableOnSubscribe<FlightOfferSearch[]>) emitter -> {
             // to not exceed api rate-limit
-            Thread.sleep(RATE_LIMIT_TIME);
+            // Thread.sleep(RATE_LIMIT_TIME);
             // Effettua la tua chiamata in background qui
             FlightOfferSearch[] result = getFlights(originCityCode, destinationCityCode, departureDate,
                     returnDate, adults);
@@ -133,17 +148,19 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
     public FlightOfferSearch[] getFlights(String originCityCode, String destinationCityCode, String departureDate, @Nullable String returnDate, int adults) throws ResponseException {
         FlightOfferSearch[] flights = null;
 
+        // .and("maxPrice",intero a persona)
+
         //get a list of hotels in a given city
         if(returnDate==null || returnDate.isEmpty()) {
              flights = amadeus.shopping.flightOffersSearch.get(
                     Params.with("originLocationCode", originCityCode).and("destinationLocationCode", destinationCityCode)
                             .and("departureDate", departureDate).and("adults", adults)
-                            .and("max", TOTAL_FLIGHTS_RESULTS));
+                            .and("max", TOTAL_FLIGHTS_RESULTS).and("currencyCode","EUR"));
         } else {
             flights = amadeus.shopping.flightOffersSearch.get(
                     Params.with("originLocationCode", originCityCode).and("destinationLocationCode", destinationCityCode)
                             .and("departureDate", departureDate).and("returnDate", returnDate).and("adults", adults)
-                            .and("max", TOTAL_FLIGHTS_RESULTS));
+                            .and("max", TOTAL_FLIGHTS_RESULTS).and("currencyCode","EUR"));
         }
 
         if (flights[0].getResponse().getStatusCode() != 200) {

@@ -11,6 +11,7 @@
         <item name="colorSecondaryVariant">@color/black</item>
         <item name="colorOnSecondary">#C5CAE9</item>
 
+        <item name="colorControlNormal">#C5CAE9</item>
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>

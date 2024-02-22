@@ -57,4 +57,5 @@
     <string name="error_form_message">Prego inserisci le tue informazioni</string>
     <string name="error_check_password">Controlli la sua password</string>
     <string name="info_content_description">espandi</string>
+    <string name="refreshes_description">Ricarica lo stile della mappa</string>
 </resources>

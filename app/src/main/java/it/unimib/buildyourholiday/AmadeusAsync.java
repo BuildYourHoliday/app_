@@ -5,6 +5,8 @@ import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERE
 import static it.unimib.buildyourholiday.util.Constants.ID_TOKEN;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -29,6 +32,9 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import it.unimib.buildyourholiday.adapter.FlightListAdapter;
+import it.unimib.buildyourholiday.adapter.HotelListAdapter;
+import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
 import it.unimib.buildyourholiday.data.source.travel.SavedTravelDataSource;
 import it.unimib.buildyourholiday.model.Flight;
@@ -43,10 +49,11 @@ public class AmadeusAsync extends AppCompatActivity {
     private EditText searchHotel;
     private Button submitHotel;
     private TextView hotelResults;
+    private RecyclerView flightsRecyclerView;
+    private RecyclerView hotelsRecyclerView;
     private AutoCompleteTextView multiAutoCompleteTextView;
     private AutoCompleteTextView autoCompleteTextView;
     private Button saveButton;
-    private Button loginButton;
     private String originCityCode = "MIL"; //= "BKK";
     private String destinationCityCode = "PAR"; // = "SYD";
     private String departureDate = "2024-03-01";
@@ -66,9 +73,12 @@ public class AmadeusAsync extends AppCompatActivity {
         // searchHotel = findViewById(R.id.hotelsFor);
         //     searchHotel.setText("PAR");
         submitHotel = findViewById(R.id.buttonHotel);
-        hotelResults = findViewById(R.id.hotelResults);
+        //hotelResults = findViewById(R.id.hotelResults);
         saveButton = findViewById(R.id.buttonSave);
-        loginButton = findViewById(R.id.buttonLogin);
+        // setup flights recycler view
+        flightsRecyclerView = findViewById(R.id.recyclerview_flight_offers);
+        flightsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
         db = TravelsRoomDatabase.getDatabase(getApplicationContext());
         dataEncryptionUtil = new DataEncryptionUtil(getApplicationContext());
 
@@ -184,7 +194,10 @@ public class AmadeusAsync extends AppCompatActivity {
         submitHotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                flightSearch();
                 completeAsyncCalls();
+                Log.d("RxJava","flight instance: "+(flight!=null)+", hotel instance: "+(hotel!=null));
+                //checkout = new Travel(flight,hotel);
             }
         });
 
@@ -194,14 +207,6 @@ public class AmadeusAsync extends AppCompatActivity {
                 addToSaved(checkout);
             }
         });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 
     public boolean addToSaved(Travel travel) {
@@ -219,84 +224,115 @@ public class AmadeusAsync extends AppCompatActivity {
         return false;
     }
 
+    public Disposable flightSearch() {
+        return service.fetchFlightsAsync(originCityCode, destinationCityCode, departureDate, returnDate, adults)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> {
+                            Log.d("RxJava","result");
+                            //int choiceId = 0;
+                            List<Flight> flights = new ArrayList<>();
+                            String out = "";
+                            for (int i=0; i<result.length; i++) {       // TODO: gestire caso returnal null
+
+                                Log.d("RxJava","flights pos: "+i);
+                                flight = new Flight(result[i].getSource(),departureDate,"time","depAirport",
+                                        returnDate,"rTime","arrivAirport",Double.valueOf(result[i].getPrice().getGrandTotal()));
+                                FlightOfferSearch.Itinerary[] itineraries = result[i].getItineraries();
+                                flight.setDepartureTime(itineraries[0].getSegments()[0].getDeparture().getAt().substring(10));
+                                flight.setDepartureAirport(itineraries[0].getSegments()[0].getDeparture().getIataCode());
+                                int arrivalIndex = itineraries[0].getSegments().length;
+                                flight.setArrivalAirport(itineraries[0].getSegments()[arrivalIndex-1].getArrival().getIataCode());
+                                int lastIndex = itineraries[itineraries.length-1].getSegments().length;
+                                flight.setReturnalTime(itineraries[itineraries.length-1].getSegments()[lastIndex-1].getDeparture().getAt());
+
+                                flights.add(flight);
+
+                                FlightOfferSearch f = result[i];
+                                out += "Offerta " + f.getId() + "\n"
+                                        + "Posti disponibili " + f.getNumberOfBookableSeats() + "\n"
+                                        + "Prezzo " + f.getPrice().getGrandTotal() + "\n";
+
+                                Log.d("VOLO", out);
+                               // hotelResults.append(out);
+                            }
+                         //   hotelResults.append("\n\n\n");
+                            Log.d("RxJava","flights instance: "+(flights!=null)+"flights size: " + flights.size());
+
+                            FlightListAdapter flightListAdapter = new FlightListAdapter(flights,
+                                    new FlightListAdapter.OnItemClickListener(){
+                                        @Override
+                                        public void onTravelItemClick(Flight flight) {
+
+                                        }
+                                    });
+                            Log.d("RxJava","nh1");
+                            flightsRecyclerView = findViewById(R.id.recyclerview_flight_offers);
+                            Log.d("RxJava","nh2");
+                            flightsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            Log.d("RxJava","nh3");
+                            flightsRecyclerView.setAdapter(flightListAdapter);
+                            Log.d("RxJava","nh4");
+                        }
+                );
+    }
+
     public Disposable completeAsyncCalls() {
         Log.d("RxJava","before search: "+originCityCode+"->"+destinationCityCode);
         Log.d("RxJava","Before search: "+departureDate+" - "+returnDate);
 
-
-        return service.fetchFlightsAsync(originCityCode, destinationCityCode, departureDate, returnDate, adults)
-                .flatMap(result -> {
-                    Log.d("RxJava","result");
-                    int choiceId = 0;
-                    flight = new Flight(result[choiceId].getSource(),departureDate,"time","depAirport",
-                                returnDate,"rTime","arrivAirport",Double.valueOf(result[choiceId].getPrice().getGrandTotal()));
-
-                    String out = "";
-                    for (int i=0; i<result.length; i++) {       // TODO: gestire caso returnal null
-                        if(i==choiceId) {
-                            FlightOfferSearch.Itinerary[] itineraries = result[choiceId].getItineraries();
-                            flight.setDepartureTime(itineraries[0].getSegments()[0].getDeparture().getAt().substring(10));
-                            flight.setDepartureAirport(itineraries[0].getSegments()[0].getDeparture().getIataCode());
-                            int arrivalIndex = itineraries[0].getSegments().length;
-                            flight.setArrivalAirport(itineraries[0].getSegments()[arrivalIndex-1].getArrival().getIataCode());
-                            int lastIndex = itineraries[itineraries.length-1].getSegments().length;
-                            flight.setReturnalTime(itineraries[itineraries.length-1].getSegments()[lastIndex-1].getDeparture().getAt());
-                        }
-                        FlightOfferSearch f = result[i];
-                            out += "Offerta " + f.getId() + "\n"
-                                    + "Posti disponibili " + f.getNumberOfBookableSeats() + "\n"
-                                    + "Prezzo " + f.getPrice().getGrandTotal() + "\n";
-                            FlightOfferSearch.Itinerary itineraries[] = f.getItineraries();
-                            for (FlightOfferSearch.Itinerary itin : itineraries) {
-                                FlightOfferSearch.SearchSegment segments[] = itin.getSegments();
-                                for (FlightOfferSearch.SearchSegment s : segments) {
-                                    out += "volo num. " + s.getId() + " di " + s.getAircraft().getCode() + " scalo da: " + s.getDeparture().getIataCode() + " a " + s.getArrival().getIataCode()
-                                            + " durata: " + s.getDuration();
-                                }
-                            }
-                            Log.d("VOLO", out);
-                            hotelResults.append(out);
-                        }
-                        hotelResults.append("\n\n\n");
-
-                        return service.fetchHotelAsync(destinationCityCode);
-                    })
+        return service.fetchHotelAsync(destinationCityCode)
                 .flatMap(hotelResult -> {
-                        List<String> listaId = new ArrayList<>();
-                        String[] ids = new String[30];
-                        for (int k = 0; k < ids.length && k < hotelResult.length; k++) {
-                            Log.d("VOLO", "Hotel: " + hotelResult[k].toString() + "\n\n");
-                            ids[k] = hotelResult[k].getHotelId();
-                            listaId.add(hotelResult[k].getHotelId());
-                            Log.d("VOLO", "ID salvato: " + ids[k]);
-                        }
-                        listaId.add("HNPARKGU");
+                    List<String> listaId = new ArrayList<>();
+                    String[] ids = new String[30];
+                    for (int k = 0; k < ids.length && k < hotelResult.length; k++) {
+                        Log.d("VOLO", "Hotel: " + hotelResult[k].toString() + "\n\n");
+                        ids[k] = hotelResult[k].getHotelId();
+                        listaId.add(hotelResult[k].getHotelId());
+                        Log.d("VOLO", "ID salvato: " + ids[k]);
+                    }
+                    listaId.add("HNPARKGU");
 
-                        return service.fetchRoomsAsync(listaId, 2, "2024-03-01", "2024-03-08");
+                    return service.fetchRoomsAsync(listaId, adults, departureDate, returnDate);
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             roomsResult -> {
-                                int choiceId = 0;
+                                Log.d("RxJava","Rooms result");
+                                List<Hotel> hotels = null;
+                                List<String> descriptions = null, links = null;
 
-                                hotel = new Hotel(roomsResult[choiceId].getHotel().getName(),roomsResult[choiceId].getHotel().getHotelId(),
-                                        roomsResult[choiceId].getHotel().getCityCode(),"cityname",roomsResult[choiceId].getOffers()[0].getCheckInDate(),
-                                        roomsResult[choiceId].getOffers()[0].getCheckOutDate(),adults,Double.valueOf(roomsResult[choiceId].getOffers()[0].getPrice().getTotal()));
-                                Log.d("VOLO", "RISULTATO APERTO, totale risultati: " + roomsResult.length);
-                                for (int i = 0; i < 5 && i < roomsResult.length; i++) {
-                                    Log.d("VOLO", "Offerta " + i + ": ");
-                                    HotelOfferSearch.Offer[] offers = roomsResult[i].getOffers();
-                                    for (int j = 0; j < 5 && j < offers.length; j++) {
-                                        Log.d("VOLO", offers[j].getRoom().getDescription().toString());
-                                        Log.d("VOLO", "Prezzo: " + offers[j].getPrice());
-                                        Log.d("VOLO", "Descrizione" + offers[j].getDescription());
-                                        hotelResults.append("Prezzo: " + offers[j].getPrice());
-                                        hotelResults.append("Descrizione" + offers[j].getDescription());
-                                        hotelResults.append(offers[j].getRoom().getDescription().toString());
+                                if(roomsResult!=null && roomsResult[0]!=null) {
+                                    Log.d("RxJava","Not null rooms result");
+                                    hotels = new ArrayList<>();
+                                    descriptions = new ArrayList<>(); links = new ArrayList<>();
+
+                                    for (int i=0; i<roomsResult.length; i++) {
+                                        Hotel h = new Hotel(roomsResult[i].getHotel().getName(),roomsResult[i].getHotel().getHotelId(),
+                                                roomsResult[i].getHotel().getCityCode(),"cityname",roomsResult[i].getOffers()[0].getCheckInDate(),
+                                                roomsResult[i].getOffers()[0].getCheckOutDate(),adults,Double.valueOf(roomsResult[i].getOffers()[0].getPrice().getTotal()));
+                                        hotels.add(h);
+                                        links.add("geo:"+roomsResult[i].getHotel().getLatitude()+","+roomsResult[i].getHotel().getLongitude());
+                                        descriptions.add(roomsResult[i].getOffers()[0].getRoom().getDescription().getText());
                                     }
                                 }
-                                checkout = new Travel(flight,hotel);
+                                HotelListAdapter hotelListAdapter = new HotelListAdapter(hotels, descriptions, links, new HotelListAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onHotelItemClick(Hotel hotel) {
+
+                                    }
+                                }, getApplicationContext());
+                                Log.d("RxJava","nh1");
+                                hotelsRecyclerView = findViewById(R.id.recyclerview_hotel_offers);
+                                Log.d("RxJava","nh2");
+                                hotelsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                Log.d("RxJava","nh3");
+                                hotelsRecyclerView.setAdapter(hotelListAdapter);
+                                Log.d("RxJava","nh4");
+
+                                //checkout = new Travel(flight,hotel);
                             },
                             throwable -> {
                                 // Gestisci gli errori qui

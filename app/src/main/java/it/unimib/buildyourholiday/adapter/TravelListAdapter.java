@@ -115,9 +115,9 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         public TravelViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewDestination = itemView.findViewById(R.id.textview_destination);
-            textViewDate = itemView.findViewById(R.id.textview_date);
+            textViewDate = itemView.findViewById(R.id.textview_checkinDate);
             textViewPrice = itemView.findViewById(R.id.textview_price);
-            textViewEndDate = itemView.findViewById(R.id.textview_endDate);
+            textViewEndDate = itemView.findViewById(R.id.textview_checkoutDate);
 
             buttonDelete = itemView.findViewById(R.id.button_delete);
 
