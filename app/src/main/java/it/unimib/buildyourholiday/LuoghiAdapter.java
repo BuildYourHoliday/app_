@@ -37,6 +37,10 @@ public class LuoghiAdapter extends ArrayAdapter<String> {
         return buffer[position].getIataCode();
     }
 
+    public String nameForSelected(int position) {
+        return buffer[position].getName();
+    }
+
     @Override
     public int getCount() {
         return super.getCount();

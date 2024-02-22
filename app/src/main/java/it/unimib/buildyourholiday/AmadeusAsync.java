@@ -5,6 +5,7 @@ import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERE
 import static it.unimib.buildyourholiday.util.Constants.ID_TOKEN;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,7 @@ import it.unimib.buildyourholiday.adapter.FlightListAdapter;
 import it.unimib.buildyourholiday.adapter.HotelListAdapter;
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
+import it.unimib.buildyourholiday.data.repository.travel.TravelRepository;
 import it.unimib.buildyourholiday.data.source.travel.SavedTravelDataSource;
 import it.unimib.buildyourholiday.model.Flight;
 import it.unimib.buildyourholiday.model.Hotel;
@@ -55,7 +57,9 @@ public class AmadeusAsync extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
     private Button saveButton;
     private String originCityCode = "MIL"; //= "BKK";
+    private String originCity = "Milan";
     private String destinationCityCode = "PAR"; // = "SYD";
+    private String destinationCity = "Paris";
     private String departureDate = "2024-03-01";
     private String returnDate = "2024-03-08";
     private int adults = 2;
@@ -131,6 +135,7 @@ public class AmadeusAsync extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 originCityCode = luoghiAdapter.codeForSelected(position);
+                originCity = luoghiAdapter.nameForSelected(position);
 
                 Log.d("LUOGO"," "+luoghiAdapter.getItemId(position));
                 Log.d("LUOGO"," id "+ id);
@@ -183,6 +188,7 @@ public class AmadeusAsync extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 destinationCityCode = luoghiAdapterDestination.codeForSelected(position);
+                destinationCity = luoghiAdapterDestination.nameForSelected(position);
 
                 Log.d("LUOGO"," "+luoghiAdapterDestination.getItemId(position));
                 Log.d("LUOGO"," id "+ id);
@@ -197,14 +203,21 @@ public class AmadeusAsync extends AppCompatActivity {
                 flightSearch();
                 completeAsyncCalls();
                 Log.d("RxJava","flight instance: "+(flight!=null)+", hotel instance: "+(hotel!=null));
-                //checkout = new Travel(flight,hotel);
+                checkout = new Travel();
             }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToSaved(checkout);
+                if(checkout != null && checkout.getHotel() != null && checkout.getFlight() != null) {
+                    Log.d("VOLO","travel to be saved");
+                    // TODO addToSaved(checkout);
+                } else {
+                    //TODO: case null
+                    Log.d("VOLO","can't save travel, travel null: "+(checkout==null));
+                    if(checkout!=null) Log.d("VOLO","flight null: "+(checkout.getFlight()==null)+"; hotel null: "+(checkout.getHotel()==null));
+                }
             }
         });
     }
@@ -212,6 +225,7 @@ public class AmadeusAsync extends AppCompatActivity {
     public boolean addToSaved(Travel travel) {
         if(travel != null) {
             try {
+                //TODO: use viewmodel to save, not working either
                 source = new SavedTravelDataSource(dataEncryptionUtil
                         .readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID_TOKEN));
                 db.travelDao().insertTravel(travel);
@@ -237,7 +251,9 @@ public class AmadeusAsync extends AppCompatActivity {
                             for (int i=0; i<result.length; i++) {       // TODO: gestire caso returnal null
 
                                 Log.d("RxJava","flights pos: "+i);
-                                flight = new Flight(result[i].getSource(),departureDate,"time","depAirport",
+                                String flightCode = result[i].getItineraries()[0].getSegments()[0].getCarrierCode()
+                                        + result[i].getItineraries()[0].getSegments()[0].getNumber();
+                                flight = new Flight(flightCode,departureDate,"time","depAirport",
                                         returnDate,"rTime","arrivAirport",Double.valueOf(result[i].getPrice().getGrandTotal()));
                                 FlightOfferSearch.Itinerary[] itineraries = result[i].getItineraries();
                                 flight.setDepartureTime(itineraries[0].getSegments()[0].getDeparture().getAt().substring(10));
@@ -263,8 +279,9 @@ public class AmadeusAsync extends AppCompatActivity {
                             FlightListAdapter flightListAdapter = new FlightListAdapter(flights,
                                     new FlightListAdapter.OnItemClickListener(){
                                         @Override
-                                        public void onTravelItemClick(Flight flight) {
-
+                                        public void onFlightItemClick(Flight flight) {
+                                            checkout.setFlight(flight);
+                                            Log.d("VOLO","flight set to travel");
                                         }
                                     });
                             Log.d("RxJava","nh1");
@@ -311,7 +328,7 @@ public class AmadeusAsync extends AppCompatActivity {
 
                                     for (int i=0; i<roomsResult.length; i++) {
                                         Hotel h = new Hotel(roomsResult[i].getHotel().getName(),roomsResult[i].getHotel().getHotelId(),
-                                                roomsResult[i].getHotel().getCityCode(),"cityname",roomsResult[i].getOffers()[0].getCheckInDate(),
+                                                roomsResult[i].getHotel().getCityCode(),destinationCity,roomsResult[i].getOffers()[0].getCheckInDate(),
                                                 roomsResult[i].getOffers()[0].getCheckOutDate(),adults,Double.valueOf(roomsResult[i].getOffers()[0].getPrice().getTotal()));
                                         hotels.add(h);
                                         links.add("geo:"+roomsResult[i].getHotel().getLatitude()+","+roomsResult[i].getHotel().getLongitude());
@@ -321,7 +338,8 @@ public class AmadeusAsync extends AppCompatActivity {
                                 HotelListAdapter hotelListAdapter = new HotelListAdapter(hotels, descriptions, links, new HotelListAdapter.OnItemClickListener() {
                                     @Override
                                     public void onHotelItemClick(Hotel hotel) {
-
+                                        checkout.setHotel(hotel);
+                                        Log.d("VOLO","hotel set to travel");
                                     }
                                 }, getApplicationContext());
                                 Log.d("RxJava","nh1");

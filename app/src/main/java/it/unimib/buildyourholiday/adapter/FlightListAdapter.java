@@ -19,7 +19,7 @@ import it.unimib.buildyourholiday.model.Flight;
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.FlightViewHolder> {
 
     public interface OnItemClickListener{
-        void onTravelItemClick(Flight flight);
+        void onFlightItemClick(Flight flight);
     }
     private final List<Flight> flightList;
     private final FlightListAdapter.OnItemClickListener onItemClickListener;
@@ -51,6 +51,7 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
                 int position = holder.getAdapterPosition();
                 Log.d("RadioButton","click detected on position: "+position);
                 Flight flight = flightList.get(position);
+                onItemClickListener.onFlightItemClick(flight);
                 //notifyItemChanged(position);
 
                 if(position != RecyclerView.NO_POSITION) {

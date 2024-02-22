@@ -74,6 +74,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 int position = holder.getAdapterPosition();
                 Log.d("RadioButton", "click detected on position: " + position);
                 Hotel hotel = hotelList.get(position);
+                onItemClickListener.onHotelItemClick(hotel);
                 //notifyItemChanged(position);
 
                 if (position != RecyclerView.NO_POSITION) {
