@@ -58,4 +58,6 @@
     <string name="error_check_password">Controlli la sua password</string>
     <string name="info_content_description">espandi</string>
     <string name="refreshes_description">Ricarica lo stile della mappa</string>
+    <string name="no_data">Seleziona un paese</string>
+    <string name="your_travels_for">"I Tuoi Viaggi per: "</string>
 </resources>

@@ -5,6 +5,7 @@ import static it.unimib.buildyourholiday.util.Constants.SHARED_PREFERENCES_FILE_
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.buildyourholiday.data.database.TravelDao;
@@ -159,6 +160,14 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             }
         });
     }
+
+    @Override
+    public void insertTravel(Travel travel) {
+        List<Travel> singleTravel = new ArrayList<>();
+        singleTravel.add(travel);
+        insertTravels(singleTravel);
+    }
+
     @Override
     public void deleteAll() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
@@ -185,7 +194,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             if (travelsCounter != travelsDeleted) {
                 //TODO  sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
                 //TODO  dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
-                travelCallback.onDeleteFavoriteNewsSuccess(travelList);
+                travelCallback.onDeleteFavoriteNewsSuccess(travelList, travel);
             }
 
         });

@@ -37,12 +37,15 @@ import it.unimib.buildyourholiday.adapter.FlightListAdapter;
 import it.unimib.buildyourholiday.adapter.HotelListAdapter;
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
+import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.data.repository.travel.TravelRepository;
+import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.data.source.travel.SavedTravelDataSource;
 import it.unimib.buildyourholiday.model.Flight;
 import it.unimib.buildyourholiday.model.Hotel;
 import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.util.DataEncryptionUtil;
+import it.unimib.buildyourholiday.util.ServiceLocator;
 
 public class AmadeusAsync extends AppCompatActivity {
 
@@ -66,15 +69,14 @@ public class AmadeusAsync extends AppCompatActivity {
     private Flight flight = null;
     private Hotel hotel = null;
     private Travel checkout = null;
-    private SavedTravelDataSource source = null;
-    private TravelsRoomDatabase db;
-    private DataEncryptionUtil dataEncryptionUtil;
+    private TravelViewModel travelViewModel;
+    private UserViewModel userViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amadeus_testing);
         // searchCity = findViewById(R.id.debugging);
-        // searchHotel = findViewById(R.id.hotelsFor);
+        // searchHotel = findViewById(R.id.hotelsFor)
         //     searchHotel.setText("PAR");
         submitHotel = findViewById(R.id.buttonHotel);
         //hotelResults = findViewById(R.id.hotelResults);
@@ -83,8 +85,13 @@ public class AmadeusAsync extends AppCompatActivity {
         flightsRecyclerView = findViewById(R.id.recyclerview_flight_offers);
         flightsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        db = TravelsRoomDatabase.getDatabase(getApplicationContext());
-        dataEncryptionUtil = new DataEncryptionUtil(getApplicationContext());
+        ITravelRepository travelRepository = ServiceLocator.getInstance().getTravelRepository(getApplication());
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
+
+        travelViewModel = new ViewModelProvider(this,new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
+
+        userViewModel = new ViewModelProvider(this, new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
 
         // WORKING ORIGIN CITY
@@ -203,20 +210,26 @@ public class AmadeusAsync extends AppCompatActivity {
                 flightSearch();
                 completeAsyncCalls();
                 Log.d("RxJava","flight instance: "+(flight!=null)+", hotel instance: "+(hotel!=null));
-                checkout = new Travel();
+                //checkout = new Travel();
             }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkout != null && checkout.getHotel() != null && checkout.getFlight() != null) {
-                    Log.d("VOLO","travel to be saved");
-                    // TODO addToSaved(checkout);
+                if(flight != null && hotel != null) {
+                    checkout = new Travel(flight, hotel);
+                    if(isUserLogged()) {
+                        Log.d("VOLO","travel to be saved");
+                        checkout.setSaved(true);
+                        addToSaved(checkout);
+                    } else {
+                        Log.d("VOLO","cannot save, login required");
+                        //TODO: open login fragment, make sure once done comes back here (possibly with no loss)
+                    }
                 } else {
-                    //TODO: case null
-                    Log.d("VOLO","can't save travel, travel null: "+(checkout==null));
-                    if(checkout!=null) Log.d("VOLO","flight null: "+(checkout.getFlight()==null)+"; hotel null: "+(checkout.getHotel()==null));
+                    //TODO: user feedback for case null
+                    Log.d("VOLO","flight null: "+(flight==null)+"; hotel null: "+(hotel==null));
                 }
             }
         });
@@ -224,17 +237,23 @@ public class AmadeusAsync extends AppCompatActivity {
 
     public boolean addToSaved(Travel travel) {
         if(travel != null) {
-            try {
-                //TODO: use viewmodel to save, not working either
-                source = new SavedTravelDataSource(dataEncryptionUtil
-                        .readSecretDataWithEncryptedSharedPreferences(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID_TOKEN));
-                db.travelDao().insertTravel(travel);
-                source.addTravel(travel);
+            if(userViewModel.getLoggedUser() != null) {
+                travelViewModel.saveTravel(travel);
+                Log.d("VOLO","user is logged, proceeded to save");
                 return true;
-            } catch (GeneralSecurityException | IOException e) {
+            } else {
+                Log.d("VOLO","user must be logged in order to save a travel!");
+                // TODO: open login fragment
                 return false;
             }
         }
+        Log.d("VOLO", "travel value is null");
+        return false;
+    }
+
+    public boolean isUserLogged() {
+        if(userViewModel.getLoggedUser() != null)
+            return true;
         return false;
     }
 
@@ -279,8 +298,9 @@ public class AmadeusAsync extends AppCompatActivity {
                             FlightListAdapter flightListAdapter = new FlightListAdapter(flights,
                                     new FlightListAdapter.OnItemClickListener(){
                                         @Override
-                                        public void onFlightItemClick(Flight flight) {
-                                            checkout.setFlight(flight);
+                                        public void onFlightItemClick(Flight selectedFlight) {
+                                            //checkout.setFlight(flight);
+                                            flight = selectedFlight;
                                             Log.d("VOLO","flight set to travel");
                                         }
                                     });
@@ -337,8 +357,9 @@ public class AmadeusAsync extends AppCompatActivity {
                                 }
                                 HotelListAdapter hotelListAdapter = new HotelListAdapter(hotels, descriptions, links, new HotelListAdapter.OnItemClickListener() {
                                     @Override
-                                    public void onHotelItemClick(Hotel hotel) {
-                                        checkout.setHotel(hotel);
+                                    public void onHotelItemClick(Hotel selectedHotel) {
+                                        //checkout.setHotel(hotel);
+                                        hotel = selectedHotel;
                                         Log.d("VOLO","hotel set to travel");
                                     }
                                 }, getApplicationContext());

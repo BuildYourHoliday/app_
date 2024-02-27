@@ -23,4 +23,6 @@ public interface TravelCallback {
     void onSuccessDeletion();
 
     void onSuccessFromBookedCloudReading(List<Travel> travelList);
+
+    void onDeleteFavoriteNewsSuccess(List<Travel> travelList, Travel deletedTravel);
 }

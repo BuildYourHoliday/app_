@@ -11,9 +11,14 @@ import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.referencedata.Locations;
 import com.amadeus.resources.FlightOfferSearch;
+import com.amadeus.resources.FlightOrder;
+import com.amadeus.resources.FlightPayment;
+import com.amadeus.resources.FlightPrice;
+import com.amadeus.resources.HotelBooking;
 import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
 import com.amadeus.resources.Hotel;
+import com.amadeus.shopping.FlightOffers;
 import com.amadeus.shopping.FlightOffersSearch;
 import com.google.firebase.database.collection.BuildConfig;
 
@@ -163,6 +168,10 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
                             .and("max", TOTAL_FLIGHTS_RESULTS).and("currencyCode","EUR"));
         }
 
+        if (flights==null || flights.length==0) {
+            System.out.println("No result obtained: ");
+            System.exit(-1);
+        }
         if (flights[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + flights[0].getResponse().getStatusCode());
             System.exit(-1);
@@ -171,5 +180,66 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
         return (flights);
     }
 
+    public Observable<Boolean> bookTravelAsync(FlightOfferSearch flightOffer, FlightOrder.Traveler travelers[], String email, HotelOfferSearch hotelOffer) {
+        return Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+            // to not exceed api rate-limit
+            // Thread.sleep(RATE_LIMIT_TIME);
+            // Effettua la tua chiamata in background qui
+            Boolean flightResult = bookFlight(flightOffer, travelers);
+
+            String body = "{\"data\""
+                    + ":{\"offerId\":\""+hotelOffer.getOffers()[0].getId()+"\"" + ",\"guests\":[";
+
+            for (int i=0; i<travelers.length; i++) {
+                body += "{\"id\":"+(i+1)+",\"name\":{\"title\":\"MR\",\"firstName\":\""+travelers[i].getName().getFirstName()+"\","
+                        + "\"lastName\" :\""+travelers[i].getName().getLastName()+"\"},\"contact\":{\"phone\":\""+travelers[i].getContact().getPhones()[0].getNumber()+"\",\""
+                        + "email\":\""+email+"\"}}";
+                if(i == travelers.length-1) {
+                    body += "],\"";
+                } else {
+                    body += ",";
+                }
+            }
+
+            // VISA card for testing
+            body += "payments\":[{\"id\":1,\"method\":\"creditCard\",\""
+                    + "card\":{\""+"vendorCode\":\"VI\",\"cardNumber\""
+                    + ":\"4111111111111111\",\"expiryDate\":\"2025-01\"}}]}}";
+
+            Boolean hotelResult = bookHotel(body);
+            Boolean result = flightResult && hotelResult;
+
+            // Invia il risultato all'emitter
+            emitter.onNext(result);
+
+            // Completa l'observable
+            emitter.onComplete();
+        });
+    }
+
+    public boolean bookFlight(FlightOfferSearch flightOffer, FlightOrder.Traveler traveler[]) throws ResponseException {
+        //TODO: null check
+        FlightPrice flightPrice = amadeus.shopping.flightOffersSearch.pricing.post(flightOffer);
+        FlightOrder order = amadeus.booking.flightOrders.post(flightPrice, traveler);
+
+        if(order.getResponse().getStatusCode() != 200) {
+            System.out.println("Wrong status code: " + order.getResponse().getStatusCode());
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean bookHotel(String body) throws ResponseException {
+        //TODO: null check
+        HotelBooking[] hotel = amadeus.booking.hotelBookings.post(body);
+
+        if(hotel[0].getResponse().getStatusCode() != 200) {
+            System.out.println("Wrong status code: " + hotel[0].getResponse().getStatusCode());
+            return false;
+        }
+
+        return true;
+    }
 
 }

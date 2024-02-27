@@ -100,6 +100,11 @@ public class SavedFragment extends Fragment {
                                     }
 
                                     public void onDeleteButtonPressed(int position){
+                                        /* TODO: test once saving is possible
+                                        Travel delete = travelList.get(position);
+                                        travelViewModel.deleteTravel(delete);
+
+                                         */
                                         Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });

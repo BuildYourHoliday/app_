@@ -94,7 +94,8 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void saveSavedTravel(Travel travel) {
-        backupDataSource.addTravel(travel);
+        travelLocalDataSource.insertTravel(travel);
+        //backupDataSource.addTravel(travel);
     }
 
     @Override
@@ -134,6 +135,8 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void onSuccessFromLocal(List<Travel> travelList) {
+        Log.d("SaveID","associated id: "+travelList.get(0).getId());
+        backupDataSource.addTravel(travelList.get(0));
         if(savedTravelsMutableLiveData.getValue()!=null && savedTravelsMutableLiveData.getValue().isSuccess()) {
             List<Travel> travels = ((Result.TravelResponseSuccess)savedTravelsMutableLiveData.getValue()).getData().getTravelList();
             travels.addAll(travelList);
@@ -208,7 +211,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
             for (Travel t : travelList) {
                 t.setSynchronized(true);
             }
-            travelLocalDataSource.insertTravels(travelList);
+            //travelLocalDataSource.insertTravels(travelList);
             savedTravelsMutableLiveData.postValue(new Result.TravelResponseSuccess(new TravelResponse(travelList)));
         }
     }
@@ -239,5 +242,30 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
             travelLocalDataSource.insertTravels(travelList);
             bookedTravelsMutableLiveData.postValue(new Result.TravelResponseSuccess(new TravelResponse(travelList)));
         }
+    }
+
+    @Override
+    public void onDeleteFavoriteNewsSuccess(List<Travel> travelList, Travel deletedTravel) {
+        Result allTravels = savedTravelsMutableLiveData.getValue();
+
+        if (allTravels != null && allTravels.isSuccess()) {
+            List<Travel> oldTravels = ((Result.TravelResponseSuccess)allTravels).getData().getTravelList();
+            for (Travel t: travelList) {
+                if (oldTravels.contains(t)) {
+                    oldTravels.set(oldTravels.indexOf(t), t);
+                }
+            }
+            savedTravelsMutableLiveData.postValue(allTravels);
+        }
+
+        if (savedTravelsMutableLiveData.getValue() != null &&
+                savedTravelsMutableLiveData.getValue().isSuccess()) {
+            travelList.clear();
+            Result.TravelResponseSuccess result = new Result.TravelResponseSuccess(new TravelResponse(travelList));
+            savedTravelsMutableLiveData.postValue(result);
+        }
+
+        // ??
+        backupDataSource.deleteSavedTravel(deletedTravel);
     }
 }

@@ -62,6 +62,10 @@ public class TravelViewModel extends ViewModel {
         travelRepository.updateSavedTravel(travel);
     }
 
+    public void saveTravel(Travel travel) {
+        travelRepository.saveSavedTravel(travel);
+    }
+
     public void fetchSavedTravels(String country) {
         travelListLiveData = travelRepository.fetchSavedTravels(country);
     }
@@ -168,5 +172,9 @@ public class TravelViewModel extends ViewModel {
 
     private void getBookedTravels(boolean isFirstLoading) {
         bookedTravelListLiveData = travelRepository.getBookedTravels(firstLoading);
+    }
+
+    public void deleteTravel(Travel travel) {
+        travelRepository.deleteSavedTravel(travel);
     }
 }

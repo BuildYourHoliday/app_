@@ -1,85 +1,52 @@
 package it.unimib.buildyourholiday;
 
-import static it.unimib.buildyourholiday.util.Constants.BOOKED_COUNTRIES_LAYER;
-import static it.unimib.buildyourholiday.util.Constants.SAVED_COUNTRIES_LAYER;
-import static it.unimib.buildyourholiday.util.MapUtil.fetchBookedCountriesFromDB;
-import static it.unimib.buildyourholiday.util.MapUtil.fetchSavedCountriesFromDB;
-import static it.unimib.buildyourholiday.util.MapUtil.getAllCountriesFormatted;
 import static it.unimib.buildyourholiday.util.MapUtil.initMap;
 import static it.unimib.buildyourholiday.util.MapUtil.refreshMap;
-import static it.unimib.buildyourholiday.util.MapUtil.resetCountries;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.preference.PreferenceManager;
-import android.util.JsonReader;
 import android.util.Log;
-import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.Response;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mapbox.bindgen.Expected;
 import com.mapbox.bindgen.Value;
-import com.mapbox.common.ResourceLoadOptions;
-import com.mapbox.common.TileStore;
 import com.mapbox.common.ValueConverter;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.*;
-import com.mapbox.maps.ResourceOptions;
 import com.mapbox.maps.ResourceOptionsManager;
-import com.mapbox.maps.Style;
 import com.mapbox.maps.extension.observable.eventdata.StyleLoadedEventData;
-import com.mapbox.maps.loader.MapboxMaps;
-import com.mapbox.maps.loader.MapboxMapsInitializer;
-import com.mapbox.maps.plugin.Plugin;
 import com.mapbox.maps.plugin.delegates.listeners.OnStyleLoadedListener;
 import com.mapbox.maps.plugin.gestures.GesturesPlugin;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
 import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
-import it.unimib.buildyourholiday.model.TravelResponse;
 import it.unimib.buildyourholiday.util.JsonFileReader;
 import it.unimib.buildyourholiday.util.ServiceLocator;
-import it.unimib.buildyourholiday.util.MapUtil;
-import kotlin.jvm.JvmOverloads;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -212,7 +179,7 @@ public class MapFragment extends Fragment {
             }
         });
 
-        TextView debugText = view.findViewById(R.id.debug_country);
+        TextView selectedCountry = view.findViewById(R.id.textView_selectedCountry);
 
         //mapView.getMapboxMap().loadStyleUri("asset://map_style.json");
         //mapView.getMapboxMap().loadStyleJson("asset://map_style.json");
@@ -273,19 +240,8 @@ public class MapFragment extends Fragment {
                                             if (countryName != null && countryCode != null) {
                                                 Log.d("PRINT-FROM-CALLBACK", "name: " + countryName +
                                                         " code: " + countryCode);
-                                                debugText.setText("Country name: " + countryName +
-                                                        "\ncountry code: " + countryCode);
+                                                selectedCountry.setText(countryName +" (" + countryCode + ")");
 
-
-
-                                                // previous results
-                                                if(travelViewModel.getTravelResponseLiveData()!=null) {
-                                                   /* TravelResponse response = new TravelResponse();
-                                                    response.setTravelList(null);
-                                                    travelViewModel.getTravelResponseLiveData().postValue(new Result.TravelResponseSuccess(response));
-                                                    */
-                                                  //  travelViewModel.setTravelListLiveData(null);
-                                                   // recyclerView.setAdapter(null);
                                                 }
 
                                                 String searchCode = countryCode.substring(1,countryCode.length()-1);
@@ -334,7 +290,7 @@ public class MapFragment extends Fragment {
                                             }
                                         }
                                     }
-                                }
+
                                 Value stringValueExpected =
                                         mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-selected","filter").getValue();
 
