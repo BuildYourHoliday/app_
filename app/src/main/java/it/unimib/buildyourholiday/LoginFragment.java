@@ -205,12 +205,11 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // no login every time app starts
-        /* TODO: UNCOMMENT THIS ONCE LOGOUT IS AVAILABLE
+        // TODO: UNCOMMENT THIS ONCE LOGOUT IS AVAILABLE
         if(userViewModel.getLoggedUser() != null) {
             startActivityBasedOnCondition(MainActivity.class,R.id.action_loginFragment_to_mainActivity);
         }
 
-         */
 
         textInputLayoutEmail = view.findViewById(R.id.textInputLayout_email);
         textInputLayoutPassword = view.findViewById(R.id.textInputLayout_password);
