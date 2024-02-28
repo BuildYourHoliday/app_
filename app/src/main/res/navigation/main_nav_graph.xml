@@ -14,12 +14,14 @@
         <action
             android:id="@+id/action_homeFragment_to_profileActivity"
             app:destination="@id/profileActivity" />
+
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="it.unimib.buildyourholiday.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="it.unimib.buildyourholiday.MyFragment"
@@ -30,5 +32,8 @@
         android:name="it.unimib.buildyourholiday.ProfileActivity"
         android:label="activity_profile"
         tools:layout="@layout/activity_profile" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="it.unimib.buildyourholiday.LoginActivity" />
 
 </navigation>

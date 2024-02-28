@@ -1,10 +1,14 @@
 package it.unimib.buildyourholiday.adapter;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +19,7 @@ import java.util.List;
 
 import it.unimib.buildyourholiday.R;
 import it.unimib.buildyourholiday.model.Flight;
+import it.unimib.buildyourholiday.model.Hotel;
 
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.FlightViewHolder> {
 
@@ -22,11 +27,20 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
         void onFlightItemClick(Flight flight);
     }
     private final List<Flight> flightList;
+    private List<String> durations = null;
+    private List<Boolean> directFlight = null;
     private final FlightListAdapter.OnItemClickListener onItemClickListener;
     private int selectedItemPosition = -1;
 
     public FlightListAdapter(List<Flight> flightList, FlightListAdapter.OnItemClickListener onItemClickListener) {
         this.flightList = flightList;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public FlightListAdapter(List<Flight> flightList, List<String> durations, List<Boolean> directFlight, FlightListAdapter.OnItemClickListener onItemClickListener) {
+        this.flightList = flightList;
+        this.durations = durations;
+        this.directFlight = directFlight;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -42,7 +56,10 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
 
     @Override
     public void onBindViewHolder(@NonNull FlightListAdapter.FlightViewHolder holder, int position) {
-        holder.bind(flightList.get(position), position);
+        if(durations == null || directFlight == null)
+            holder.bind(flightList.get(position), position);
+        else
+            holder.bind(flightList.get(position), position, durations.get(position), directFlight.get(position));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +97,11 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
         private final TextView origin, destination;
         private final RadioButton radioButton;
         private final ConstraintLayout constraintLayout;
+        private final TextView duration;
+        private final CheckBox direct;
+        private final Button expand;
+        private final RelativeLayout expandableLayout;
+        private boolean expandable = false;
 
         public FlightViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,19 +115,12 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
 
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
 
-            //itemView.setOnClickListener(this);
-
-            /* NON FACEVA ATTIVARE IL CLICK LISTENER SULLA RECYCLER VIEW
-            constraintLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Flight flight = flightList.get(getAdapterPosition());
-                    notifyItemChanged(getAdapterPosition());
-                    //radioButton.setChecked(!radioButton.isChecked());
-                }
-            });
-
-             */
+            duration = itemView.findViewById(R.id.textview_duration);
+            direct = itemView.findViewById(R.id.checkbox_directFlight);
+            expand = itemView.findViewById(R.id.button_expand);
+              expand.setVisibility(View.GONE);
+            expandableLayout = itemView.findViewById(R.id.expandable_layout);
+                expandableLayout.setVisibility(View.GONE);
         }
 
         public void bind(Flight flight, int position) {
@@ -140,23 +155,32 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
             Log.d("RadioButton","radio checked: "+radioButton.isChecked());
         }
 
-        /*
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            Log.d("RadioButton","click detected on position: "+position);
-            Flight flight = flightList.get(position);
-            //notifyItemChanged(position);
+        public void bind(Flight flight, int position, String duration, Boolean directFlight) {
+            bind(flight, position);
 
-            if(position != RecyclerView.NO_POSITION) {
-                Log.d("RadioButton","new position: "+position);
-                selectedItemPosition = position;
-                notifyDataSetChanged();
-            }
+            expand.setVisibility(View.VISIBLE);
+            expand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("RadioButton", "Detected touch on expand element");
+                    expandable = !expandable;
+
+                    if(expandable)
+                        expandableLayout.setVisibility(View.VISIBLE);
+                    else
+                        expandableLayout.setVisibility(View.GONE);
+                }
+            });
+
+            if(duration != null)
+                this.duration.setText(duration);
+            else
+                this.duration.setText("errorDuration");
+
+            if(directFlight)
+                this.direct.setChecked(true);
+            else
+                this.direct.setChecked(false);
         }
-
-         */
-
-
     }
 }

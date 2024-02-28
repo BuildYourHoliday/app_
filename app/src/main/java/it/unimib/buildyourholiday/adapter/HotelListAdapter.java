@@ -118,8 +118,10 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             description = itemView.findViewById(R.id.textview_description);
             radioButton = itemView.findViewById(R.id.radioButton);
             expand = itemView.findViewById(R.id.button_expand);
+                expand.setVisibility(View.GONE);
             viewOnMap = itemView.findViewById(R.id.button_viewOnMap);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
+                expandableLayout.setVisibility(View.GONE);
         }
 
         public void bind(Hotel hotel, int position) {
@@ -148,8 +150,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             else
                 price.setText("errorPrice");
 
-            expand.setVisibility(View.GONE);
-            expandableLayout.setVisibility(View.GONE);
             radioButton.setClickable(false);
             Log.d("RadioButton", "position: " + position + "; selected item: " + selectedItemPosition);
             radioButton.setChecked(position == selectedItemPosition);
@@ -163,15 +163,15 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
             expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("RadioButton", "Detected touch on expand element");
                     expandable = !expandable;
-                    notifyItemChanged(position);
+
+                    if(expandable)
+                        expandableLayout.setVisibility(View.VISIBLE);
+                    else
+                        expandableLayout.setVisibility(View.GONE);
                 }
             });
-
-            if(expandable)
-                expandableLayout.setVisibility(View.VISIBLE);
-            else
-                expandableLayout.setVisibility(View.GONE);
 
             if(description != null)
                 this.description.setText(description);

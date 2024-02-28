@@ -207,7 +207,7 @@ public class AmadeusAsync extends AppCompatActivity {
         submitHotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flightSearch();
+                //flightSearch();
                 completeAsyncCalls();
                 Log.d("RxJava","flight instance: "+(flight!=null)+", hotel instance: "+(hotel!=null));
                 //checkout = new Travel();
@@ -264,8 +264,10 @@ public class AmadeusAsync extends AppCompatActivity {
                 .subscribe(
                         result -> {
                             Log.d("RxJava","result");
-                            //int choiceId = 0;
+
                             List<Flight> flights = new ArrayList<>();
+                            List<String> durations = new ArrayList<>();
+                            List<Boolean> directFlight = new ArrayList<>();
                             String out = "";
                             for (int i=0; i<result.length; i++) {       // TODO: gestire caso returnal null
 
@@ -284,6 +286,9 @@ public class AmadeusAsync extends AppCompatActivity {
 
                                 flights.add(flight);
 
+                                durations.add(result[i].getItineraries()[0].getDuration());
+                                directFlight.add(result[i].getItineraries()[0].getSegments().length == 1);
+
                                 FlightOfferSearch f = result[i];
                                 out += "Offerta " + f.getId() + "\n"
                                         + "Posti disponibili " + f.getNumberOfBookableSeats() + "\n"
@@ -295,7 +300,7 @@ public class AmadeusAsync extends AppCompatActivity {
                          //   hotelResults.append("\n\n\n");
                             Log.d("RxJava","flights instance: "+(flights!=null)+"flights size: " + flights.size());
 
-                            FlightListAdapter flightListAdapter = new FlightListAdapter(flights,
+                            FlightListAdapter flightListAdapter = new FlightListAdapter(flights, durations, directFlight,
                                     new FlightListAdapter.OnItemClickListener(){
                                         @Override
                                         public void onFlightItemClick(Flight selectedFlight) {

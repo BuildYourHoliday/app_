@@ -60,4 +60,7 @@
     <string name="refreshes_description">Ricarica lo stile della mappa</string>
     <string name="no_data">Seleziona un paese</string>
     <string name="your_travels_for">"I Tuoi Viaggi per: "</string>
+    <string name="view_on_map">Vedi sulla mappa</string>
+    <string name="direct_flight">"Diretto: "</string>
+    <string name="login_required">Effettua l\'accesso per accedere a questa funzionalità</string>
 </resources>

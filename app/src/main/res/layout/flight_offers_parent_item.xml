@@ -109,6 +109,91 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="$100" />
 
+        <Button
+            android:id="@+id/button_expand"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="expand"
+            app:icon="@drawable/baseline_keyboard_arrow_down_24"
+            app:iconPadding="0dp"
+            app:iconSize="35sp"
+            app:layout_constraintBottom_toTopOf="@+id/expandable_layout"
+            app:layout_constraintStart_toEndOf="@+id/textview_checkoutDate"
+            app:layout_constraintTop_toBottomOf="@+id/textview_city" />
+
+        <RelativeLayout
+            android:id="@+id/expandable_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_checkinDate"
+            app:layout_constraintVertical_bias="1.0">
+
+            <ImageView
+                android:id="@+id/imageview_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_timer_24"
+                android:contentDescription="time indication"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textview_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="60dp"
+                android:layout_toEndOf="@+id/imageview_duration"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textSize="16sp"
+                android:textAllCaps="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="HH.MM duration" />
+
+            <ImageView
+                android:id="@+id/imageview_direct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_airline_stops_24"
+                android:contentDescription="direct flight indication"
+                android:layout_below="@id/textview_duration"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/textview_directFlight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/direct_flight"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/imageview_direct"
+                android:layout_below="@id/textview_duration"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textSize="16sp"
+                android:textAllCaps="true"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <CheckBox
+                android:id="@+id/checkbox_directFlight"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="60dp"
+                android:layout_toEndOf="@+id/textview_directFlight"
+                android:layout_below="@id/textview_duration"
+                android:clickable="false" />
+
+        </RelativeLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
