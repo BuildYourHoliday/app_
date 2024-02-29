@@ -47,7 +47,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     @Override
     public MutableLiveData<Result> getSavedTravels(boolean isFirstLoading) {
         // The first time the user launches the app, check if she
-        // has previously saved favorite news on the cloud
+        // has previously saved favorite travel on the cloud
         if (isFirstLoading) {
             backupDataSource.getSavedTravels();
         } else {

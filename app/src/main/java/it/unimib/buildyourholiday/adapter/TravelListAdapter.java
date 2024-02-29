@@ -2,6 +2,9 @@ package it.unimib.buildyourholiday.adapter;
 
 
 
+import android.animation.LayoutTransition;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import it.unimib.buildyourholiday.R;
@@ -106,11 +113,11 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
 
     public class TravelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private final TextView textViewDestination;
-        private final TextView textViewDate, textViewPrice, textViewEndDate;
+        private final TextView textViewDestination, textViewDeparture, textViewSeparation;
+        private final TextView textViewDate, textViewPrice, textViewEndDate, textViewDepartureTime, textViewAdults, textViewNights;
         private final Button buttonDelete;
-        private final ConstraintLayout constraintLayout;
-        private final RelativeLayout expandableLayout;
+        private final ConstraintLayout constraintLayout, expandableLayout;
+        //private final RelativeLayout expandableLayout;
 
         public TravelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -118,12 +125,18 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             textViewDate = itemView.findViewById(R.id.textview_checkinDate);
             textViewPrice = itemView.findViewById(R.id.textview_price);
             textViewEndDate = itemView.findViewById(R.id.textview_checkoutDate);
+            textViewDeparture = itemView.findViewById(R.id.textview_departure);
+            textViewDepartureTime = itemView.findViewById(R.id.textView_departureTime);
+            textViewSeparation = itemView.findViewById(R.id.textview_separation);
+            textViewNights = itemView.findViewById(R.id.textview_nights);
+            //toDo
+            textViewAdults = itemView.findViewById(R.id.textview_adults);
 
             buttonDelete = itemView.findViewById(R.id.button_delete);
 
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
-
+            constraintLayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
             itemView.setOnClickListener(this);
             buttonDelete.setOnClickListener(this);
 
@@ -145,12 +158,40 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
 
 
         public void bind(Travel travel) {
+            //dovrebbe funzionare anche con API level 24 nel caso aggiorniamo il minimo
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // Parse the strings into LocalDate objects
+            LocalDate date1, date2;
+            long nights;
+            date1 = null;
+            date2 = null;
+            nights = 0;
+
+            //check null date for saved
+            if(travel.getFinishDate() != null)
+                date1 = LocalDate.parse(travel.getFinishDate(), formatter);
+            if(travel.getBeginDate() != null)
+                date2 = LocalDate.parse(travel.getBeginDate(), formatter);
+
+            // Calculate the difference in days
+            if(date1 != null && date2 != null)
+                nights = Math.abs(ChronoUnit.DAYS.between(date1, date2));
+
             if(travel.getCity() != null)
                 textViewDestination.setText(travel.getCity());
             else
                 textViewDestination.setText("errorCity");
+            if(travel.getFlight().getDepartureAirport() != null)
+                textViewDeparture.setText(travel.getFlight().getDepartureAirport());
+            else
+                textViewDeparture.setText("errorCity");
             if(travel.getBeginDate() != null)
                 textViewDate.setText(travel.getBeginDate());
+            else
+                textViewDate.setText("errorDate");
+            if(travel.getFlight().getDepartureTime() != null)
+                textViewDepartureTime.setText(travel.getFlight().getDepartureTime());
             else
                 textViewDate.setText("errorDate");
             if(travel.getTotalPrice() != 0)
@@ -162,11 +203,23 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             else
                 textViewEndDate.setText("errorEndDate");
 
+            if(travel.getBeginDate() != null && travel.getFinishDate() != null)
+                textViewNights.setText(String.valueOf(nights));
+            else
+                textViewNights.setText(String.valueOf(0));
+            /*if(travel.getHotel().getAdults() != 0)
+                textViewEndDate.setText(travel.getHotel().getAdults());
+            else
+                textViewEndDate.setText("errorAdults");*/
+
+            textViewSeparation.setText("-");
+
             boolean isExpandable = travel.isExpandable();
             expandableLayout.setVisibility(isExpandable? View.VISIBLE : View.GONE);
+
+            //textViewSeparation.setText('-');
         }
 
-        // Expand(better) e Delete da implementare
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.button_delete) {
@@ -177,6 +230,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             else{
                 Travel travel = travelList.get(getAdapterPosition());
                 travel.setExpandable(!travel.isExpandable());
+                TransitionManager.beginDelayedTransition(constraintLayout, new AutoTransition());
                 notifyItemChanged(getAdapterPosition());
             }
         }

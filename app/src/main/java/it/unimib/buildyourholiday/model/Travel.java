@@ -25,6 +25,8 @@ public class Travel implements Parcelable {
     private String beginDate;
     private String finishDate;
 
+    //private int totAdults;
+
     private boolean expandable;
     private double totalPrice;
     @ColumnInfo(name = "is_synchronized")
@@ -56,7 +58,19 @@ public class Travel implements Parcelable {
             this.finishDate = flight.getReturnalDate();
         else
             this.finishDate = hotel.getCheckoutDate();
+        //this.totAdults = hotel.getAdults();
         this.totalPrice = flight.getPrice() + hotel.getTotal();
+        //this.expandable = false;
+
+    }
+
+    public Travel(Flight flight) {
+        this.flight = flight;
+        this.beginDate = flight.getDepartureDate();
+        if(flight.getReturnalDate()!=null)
+            this.finishDate = flight.getReturnalDate();
+        else
+            this.totalPrice = flight.getPrice();
         //this.expandable = false;
 
     }
@@ -245,4 +259,14 @@ public class Travel implements Parcelable {
             return new Travel[size];
         }
     };
+
+
+
+   /* public int getTotAdults() {
+        return totAdults;
+    }
+
+    public void setTotAdults(int totAdults) {
+        this.totAdults = totAdults;
+    }*/
 }

@@ -1,9 +1,7 @@
 package it.unimib.buildyourholiday;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,6 +28,7 @@ import java.util.List;
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
+import it.unimib.buildyourholiday.model.Flight;
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.User;
@@ -40,7 +39,7 @@ public class BookedFragment extends Fragment {
 
     private List<Travel> bookedList;
     //    private TravelListAdapter travelListAdapter;
-    private ProgressBar progressBar;
+
     //private TravelViewModel travelViewModel;
 
     private RecyclerView recyclerView;
@@ -84,23 +83,20 @@ public class BookedFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         travelViewModel.fetchAllBookedTravels();
         travelViewModel.getBookedTravelsLiveData(false).observe(getViewLifecycleOwner(),
-                new Observer<Result>() {
-                    @Override
-                    public void onChanged(Result result) {
-                        List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
-                        TravelListAdapter travelListAdapter = new TravelListAdapter(travelList,
-                                new TravelListAdapter.OnItemClickListener(){
-                                    public void onTravelItemClick(Travel travel){
-                                        Snackbar.make(v, travel.getCity(), Snackbar.LENGTH_SHORT).show();
-                                    }
+                result -> {
+                    List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
+                    TravelListAdapter travelListAdapter = new TravelListAdapter(travelList,
+                            new TravelListAdapter.OnItemClickListener(){
+                                public void onTravelItemClick(Travel travel){
+                                    Snackbar.make(v, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                }
 
-                                    public void onDeleteButtonPressed(int position){
-                                        Snackbar.make(v, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
-                                    }
-                                });
+                                public void onDeleteButtonPressed(int position){
+                                    Snackbar.make(v, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
 
-                        recyclerView.setAdapter(travelListAdapter);
-                    }
+                    recyclerView.setAdapter(travelListAdapter);
                 });
 
 
@@ -143,12 +139,20 @@ public class BookedFragment extends Fragment {
 
     private void initData(){
         bookedList = new ArrayList<>();
+        Flight flight = new Flight("COD","12-02-25", "16:00 - 17:30", "Roma", "24-02-24", "9:00 - 10:00", "Barcelona", 1000.00);
 
-        bookedList.add(new Travel("Roma", "12-02-25", "24-02-24", 120.00));
+        bookedList.add(new Travel(flight));
+        bookedList.add(new Travel(flight));
+        bookedList.add(new Travel(flight));
+        bookedList.add(new Travel(flight));
+        bookedList.add(new Travel(flight));
+        bookedList.add(new Travel(flight));
+
+        /*bookedList.add(new Travel("Roma", "12-02-25", "24-02-24", 120.00));
         bookedList.add(new Travel("Parigi", "15-04-24", "24-04-24", 620.50));
         bookedList.add(new Travel("Londra", "14-05-24", "23-05-24", 150.50));
         bookedList.add(new Travel("Mosca", "19-06-24", "26-06-24", 1200.00));
         bookedList.add(new Travel("Los Angeles", "17-07-24", "30-07-24", 1820.50));
-        bookedList.add(new Travel("Tokio", "15-08-26", "30-08-26", 2020.50));
+        bookedList.add(new Travel("Tokio", "15-08-26", "30-08-26", 2020.50));*/
     }
 }

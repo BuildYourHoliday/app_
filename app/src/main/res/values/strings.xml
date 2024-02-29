@@ -72,6 +72,7 @@
     <string name="refreshes_description">Refreshes map style</string>
     <string name="amadeus_client_id" translatable="false">UWAFKYZec0REMjNs6agWEur2IpEnZ78H</string>
     <string name="amadeus_client_secret" translatable="false">D9AZ2ZHEW8CkgYBH</string>
+    <string name="delete">Delete</string>
     <string name="no_data">Please select a country</string>
     <string name="your_travels_for">Your Travels for:</string>
     <string name="view_on_map">View on map</string>
