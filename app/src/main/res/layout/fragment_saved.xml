@@ -6,24 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".SavedFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/saved"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_saved_trip"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_saved_trip"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="80dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
-        tools:listitem="@layout/booked_travels_parent_item"
+        tools:listitem="@layout/saved_travels_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

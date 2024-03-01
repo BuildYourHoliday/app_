@@ -237,7 +237,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginBottom="36dp"
-                android:text="nights"
+                android:text="@string/nights"
                 android:textSize="16sp"
                 app:layout_constraintBaseline_toBaselineOf="@id/textview_nights"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -251,6 +251,7 @@
                 android:layout_marginBottom="36dp"
                 android:src="@drawable/baseline_person_black_24"
                 android:textSize="16sp"
+                style="@style/IMAGEVIEW"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -325,7 +326,7 @@
             android:layout_marginBottom="-8dp"
             android:backgroundTint="@android:color/transparent"
             android:text="@string/delete"
-            android:textColor="@color/black"
+            style="@style/BUTTON"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout"
             app:layout_constraintTop_toBottomOf="@+id/expandable_layout"
