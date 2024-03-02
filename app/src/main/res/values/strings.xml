@@ -78,5 +78,14 @@
     <string name="view_on_map">View on map</string>
     <string name="direct_flight">Direct:</string>
     <string name="nights">nights</string>
+    <string name="your_destination">Your destination</string>
+    <string name="depart_date">Departure date</string>
+    <string name="return_date">Return date</string>
+    <string name="date">dd/mm/yyyy</string>
+    <string name="reset">Reset all</string>
+    <string name="people">People</string>
+    <string name="departure_place">Departure from</string>
+    <string name="find_journey">Find your journey</string>
+    <string name="budget" translatable="false">Budget</string>
 
 </resources>

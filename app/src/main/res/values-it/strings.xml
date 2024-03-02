@@ -65,4 +65,12 @@
     <string name="direct_flight">"Diretto: "</string>
     <string name="login_required">Effettua l\'accesso per accedere a questa funzionalità</string>
     <string name="nights">notti</string>
+    <string name="your_destination">La tua destinazione</string>
+    <string name="depart_date">Data di partenza</string>
+    <string name="return_date">Data di ritorno</string>
+    <string name="date">gg/mm/aaaa</string>
+    <string name="reset">Azzera parametri</string>
+    <string name="people">Persone</string>
+    <string name="departure_place">Luogo di partenza</string>
+    <string name="find_journey">Trova il viaggio</string>
 </resources>
