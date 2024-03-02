@@ -17,7 +17,8 @@
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toEndOf="@+id/budget"
-        app:layout_constraintTop_toBottomOf="@+id/return_date_input" />
+        app:layout_constraintTop_toBottomOf="@+id/return_date_input"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
