@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/ScreenBackground">
+
+    <ImageButton
+        android:id="@+id/back_buttom_to_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/account"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="20sp"
+        android:src="@drawable/baseline_keyboard_backspace_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/drawable" />
+
+    <TextView
+        android:id="@+id/title_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/account_menu"
+        android:textSize="30sp"
+        android:layout_marginTop="12sp"
+        android:layout_marginStart="20sp"
+        android:textStyle="bold"
+        style="@style/TextBackground"
+        app:layout_constraintStart_toEndOf="@+id/back_buttom_to_setting"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/change_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13sp"
+        android:layout_marginTop="10sp"
+        android:text="@string/change_email"
+        android:textSize="27sp"
+        style="@style/TextBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_account" />
+
+    <TextView
+        android:id="@+id/sign_change_email"
+        android:layout_width="13dp"
+        android:layout_height="42dp"
+        android:text=">"
+        android:textSize="27sp"
+        android:layout_marginEnd="17sp"
+        style="@style/TextBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/change_email" />
+
+    <Button
+        android:id="@+id/change_email_button"
+        android:layout_width="400sp"
+        android:layout_height="48sp"
+        android:background="@android:color/transparent"
+        android:text="."
+        android:textSize="0sp"
+        app:layout_constraintBottom_toBottomOf="@+id/change_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/change_email" />
+
+    <TextView
+        android:id="@+id/change_passeord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password"
+        android:textSize="27sp"
+        android:layout_marginStart="13sp"
+        android:layout_marginTop="13sp"
+        style="@style/TextBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/change_email" />
+
+    <TextView
+        android:id="@+id/sign_change_password"
+        android:layout_width="13dp"
+        android:layout_height="42dp"
+        android:text=">"
+        android:textSize="27sp"
+        android:layout_marginEnd="17sp"
+        style="@style/TextBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/change_passeord"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/change_passeord" />
+
+    <Button
+        android:id="@+id/change_password_button"
+        android:layout_width="400sp"
+        android:layout_height="48sp"
+        android:background="@android:color/transparent"
+        android:text="."
+        android:textSize="0sp"
+        app:layout_constraintBottom_toBottomOf="@+id/change_passeord"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/change_passeord" />
+</androidx.constraintlayout.widget.ConstraintLayout>

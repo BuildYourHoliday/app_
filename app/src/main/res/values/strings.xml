@@ -46,5 +46,73 @@
     <string name="error_collision_user_message">User already associated with account</string>
     <string name="error_form_message">Please insert your information</string>
     <string name="error_check_password">Please check your password</string>
+    <string name="italian_language">Italian</string>
+    <string name="english_language">English</string>
+    <string name="login_or_sign_up">Login / sign up</string>
+    <string name="are_you_sure_to_logout">Are you sure to logout?</string>
+    <string name="quit_logout">Quit</string>
+    <string name="cancel_logout">Cancel</string>
+    <string name="choose_option_add_photo">Choose an option</string>
+    <string name="set_image_photo">Set image</string>
+    <string name="remove_image_photo">Remove photo</string>
+    <string name="privacy_information">Privacy policy</string>
+    <string name="condition_of_use">Conditions of use</string>
+    <string name="assistance">Assistance</string>
+    <string name="account_menu">Account</string>
+    <string name="change_email">Change email</string>
+    <string name="change_password">Change password</string>
+    <string name="change_email_text">Insert current email</string>
+    <string name="new_email_text">Write the new email</string>
+    <string name="confirm">Confirm</string>
+    <string name="same_email">The email cannot be the same as the old one</string>
+    <string name="email_errata">The email is not the correct one, try again</string>
+    <string name="change_password_text">Insert current password</string>
+    <string name="new_password_text">Write the new password</string>
+    <string name="new_passwor_again_text">Write again the new password</string>
+    <string name="old_password_wrong">The password cannot be the same as the old one</string>
+    <string name="new_password_again_wrong">The password is not the same, try again</string>
+    <string name="compile_camp">Compile the camp</string>
+    <string name="change_password_success">The password was successfully changed</string>
+    <string name="change_password_error">Error, the password was not change</string>
+    <string name="change_email_successs">Send email change addrss</string>
+    <string name="fail_login">Login failed</string>
 
+    //Stringhe per le condizioni d'uso
+    <string name="condition_of_use_title">Terms of use</string>
+    <string name="condition_of_use_text">
+       Welcome to the Build your holiday app. Accessing and using this App are subject to the following terms of use. By using this App, you agree to be bound by these terms. If you do not agree to these terms, do not use this App.\n
+        <b>1. Acceptance of Terms:</b> Your use of this App constitutes acceptance of these Terms and Conditions of Use ("Terms"). If you do not agree to these Terms, please do not use this App.\n
+        <b>2. Use of the App:</b> The App is provided for your personal, non-commercial use. You may not modify, distribute, transmit, reproduce, publish, license, create derivative works, transfer, or sell any information, software, product, or service obtained from or through this App.\n
+        <b>3. User Account:</b> Some features of the App may require you to create a user account. If you create an account, you are responsible for maintaining the security of your login credentials and for informing us immediately of any unauthorized use of your account.\n
+        <b>4. Privacy:</b> Your use of the App is subject to our Privacy Policy, available at privacy policy section. By accepting these Terms, you also agree to be bound by our Privacy Policy.\n
+        <b>5. User Content:</b> Certain parts of the App may allow users to submit, post, or share content. If you submit, post, or share content through the App, you grant us a worldwide, non-exclusive, royalty-free, transferable, and sublicensable license to use, reproduce, modify, adapt, publish, translate, and distribute such content.\n
+        <b>6. Intellectual Property</b>: The App and all its content, including but not limited to text, images, logos, videos, and trademarks, are protected by intellectual property rights and are either owned by us or used under license from third parties.\n
+        <b>7. Disclaimer of Warranties:</b> The App is provided "as is" and "as available," without any warranties of any kind, express or implied. You use this App at your own risk.\n
+        <b>8. Limitation of Liability:</b> In no event shall we be liable for any direct, indirect, special, consequential, or punitive damages arising out of or in any way related to the use or inability to use this App.\n
+        <b>9. Changes to the Terms:</b> We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting on this page. It is recommended to periodically review these Terms to stay informed of any changes.\n
+        <b>10. Applicable Law</b>: These Terms are governed and construed in accordance with the laws of the italian state, without regard to its conflict of law principles.\n
+        <b>11. Contact:</b> For questions or comments about these Terms, please contact us at support section.
+    </string>
+
+    //Stringhe per la informativa sulla privacy
+    <string name="privacy_policy_title">Privacy Policy</string>
+    <string name="privacy_policy_text">Last Updated: 02-05-2024\n
+    Thank you for using Build your holiday. This Privacy Policy explains how we collect, use, and share users\' personal information who use our App.\n<b>1. Information Collected</b>\n
+        <b> 1.1. Information Provided by the User:</b> We may collect personal information provided by users while using the App, such as name, email address, and other voluntarily provided information.\n
+        <b>1.2. Usage Information:</b> We collect information about the usage of the App, such as actions taken by users within the App, interactions with content, and other usage information.\n<b>2. Use of Information</b> We use the collected information for the following purposes:\n
+
+        <b>2.1. Providing and Improving Our Services:</b> We use the information to provide the services requested by users and to continuously improve our App.\n
+        <b>2.2. Communications:</b> We use the information to communicate with users, such as responding to their inquiries or providing updates about our services.\n
+        <b>2.3. Personalization:</b> We use the information to personalize the user experience within the App, such as showing personalized content or advertisements.\n<b>3. Sharing of Information:</b>/n
+
+        <b>3.1. Service Providers:</b> We may share information with trusted service providers who assist us in delivering our services, such as processing payments or analyzing data.\bn
+        <b>3.2. Legal Obligations:</b> We may share personal information if required by law or if reasonably necessary to protect our legal rights, the safety of our users, or to comply with a judicial proceeding.\n<b>4. Information Security</b> We adopt appropriate security measures to protect users\' personal information from unauthorized access, disclosure, or alteration.\n<b>5. Users\' Rights</b> Users have the right to access, correct, or delete their personal information. To exercise these rights or to ask questions regarding our Privacy Policy, please contact us at support section.\n<b>6. Changes to the Privacy Policy</b> We reserve the right to modify this Privacy Policy at any time. Any changes will be effective immediately upon posting the updated version. Users are advised to periodically review our Privacy Policy to stay informed of any changes.\n
+    </string>
+
+    <string name="assistance_text"> <b>Welcome to Build Your Holiday Support!</b>\nIf you encounter problems using the app, contact us at the following email address:</string>
+
+    <string name="assistance_text2">Thank you for choosing Build your holiday! We hope you can enjoy the experience offered by our application to the fullest.
+        \n<b>Kind regards, The Support Team.</b></string>
+
+    <string name="emailAssistenza">BuildYourHoliday.Assistenza@gmail.com</string>
 </resources>

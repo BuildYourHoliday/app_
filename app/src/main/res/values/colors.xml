@@ -14,4 +14,5 @@
     <color name="lavender">#8692f7</color>
     <color name="grey">#aaaa</color>
     <color name="darkGrey">#ff424242</color>
+    <color name ="drawable">#FF000000</color>
 </resources>

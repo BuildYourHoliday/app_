@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreenBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/back_buttom_to_information_assistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/account"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/baseline_keyboard_backspace_24"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/drawable"
+        />
+
+    <TextView
+        android:id="@+id/assistance"
+        style="@style/TextBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/assistance"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/back_buttom_to_information_assistance"
+        app:layout_constraintStart_toEndOf="@+id/back_buttom_to_information_assistance"
+        app:layout_constraintTop_toTopOf="@+id/back_buttom_to_information_assistance" />
+
+    <TextView
+        android:id="@+id/assistance_text"
+        style="@style/TextBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/assistance_text"
+        android:textSize="15sp"
+        android:layout_marginTop="3sp"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assistance" />
+
+    <Button
+        android:id="@+id/mail"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="@string/emailAssistenza"
+        android:layout_marginStart="3sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assistance_text" />
+
+    <TextView
+        android:id="@+id/assistance_text2"
+        style="@style/TextBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/assistance_text2"
+        android:textSize="15sp"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="10sp"
+        app:layout_constraintTop_toBottomOf="@+id/mail"
+        tools:layout_editor_absoluteX="44dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

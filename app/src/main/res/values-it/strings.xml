@@ -11,7 +11,7 @@
     <string name="item_profile">Profilo</string>
     <string name="account">Account</string>
     <string name="language">Lingua</string>
-    <string name="dark_mode">Modalità notte</string>
+    <string name="dark_mode">Tema scuro</string>
     <string name="about_us">Informazioni</string>
     <string name="logout">Esci</string>
     <string name="login">Accedi</string>
@@ -34,4 +34,72 @@
     <string name="error_login_user_message">Utente non valido</string>
     <string name="error_registration_password_message">Password non valida</string>
     <string name="error_collision_user_message">Utente già associato ad un account esistente</string>
+    <string name="italian_language">Italiano</string>
+    <string name="english_language">Inglese</string>
+    <string name="login_or_sign_up">Accedi / iscriviti</string>
+    <string name="are_you_sure_to_logout">Sei sicuro di voler uscire?</string>
+    <string name="quit_logout">Esci</string>
+    <string name="cancel_logout">Annulla</string>
+    <string name="choose_option_add_photo">Scegli un opzione</string>
+    <string name="set_image_photo">Imposta foto profilo</string>
+    <string name="remove_image_photo">Rimuovi foto profilo</string>
+    <string name="privacy_information">Privacy</string>
+    <string name="condition_of_use">Condizioni d\'uso</string>
+    <string name="assistance">Assistenza</string>
+    <string name="account_menu">Account</string>
+    <string name="change_email">Modifica email</string>
+    <string name="change_password">Modifica password</string>
+    <string name="change_email_text">Inserire email attuale</string>
+    <string name="new_email_text">Scrivi la nuova email</string>
+    <string name="confirm">Conferma</string>
+    <string name="same_email">La email non può essere uguale a quella vecchia</string>
+    <string name="email_errata">La email non è quella corretta, riprova</string>
+    <string name="change_password_text">Inserire password attuale</string>
+    <string name="new_password_text">Scrivi la nuova password</string>
+    <string name="new_passwor_again_text">Riscrivi la nuova password</string>
+    <string name="old_password_wrong">La password non può essere uguale alla vecchia</string>
+    <string name="new_password_again_wrong">La password non è la stessa, riprova</string>
+    <string name="compile_camp">Compila il campo</string>
+    <string name="change_password_success">La password è stata modificata con successo</string>
+    <string name="change_password_error">Errore, la password non è stata modificata</string>
+    <string name="change_email_successs">Invio email modifica indirizzo</string>
+    <string name="fail_login">Accesso fallito</string>
+
+    //Stringhe riguardanti le condizioni d'uso
+    <string name="condition_of_use_title">Condizioni d\'uso</string>
+    <string name="condition_of_use_text">Benvenuto nell\'applicazione Buil your holiday. L\'accesso e l\'utilizzo di questa App sono soggetti alle seguenti condizioni d\'uso. Utilizzando questa App, accetti di essere vincolato da queste condizioni. Se non accetti queste condizioni, non utilizzare questa App.\n
+       <b>1. Accettazione dei Termini:</b> L\'utilizzo di questa App implica l\'accettazione dei presenti Termini e Condizioni d\'Uso ("Termini"). Se non sei d\'accordo con questi Termini, ti preghiamo di non utilizzare questa App.\n
+        <b>2. Utilizzo dell\'App:</b> L\'App è fornita per il tuo uso personale e non commerciale. Non è consentito modificare, distribuire, trasmettere, riprodurre, pubblicare, concedere in licenza, creare opere derivate, trasferire o vendere qualsiasi informazione, software, prodotto o servizio ottenuto da o attraverso questa App.\n
+        <b>3. Account Utente:</b> Alcune funzionalità dell\'App potrebbero richiedere la creazione di un account utente. Se crei un account, sei responsabile di mantenere la sicurezza delle tue credenziali di accesso e di informarci immediatamente in caso di utilizzo non autorizzato del tuo account.\n
+        <b>4. Privacy:</b> Il tuo utilizzo dell\'App è soggetto alla nostra Politica sulla Privacy, disponibile alla voce “Informativa sulla privacy” Accettando questi Termini, accetti anche di essere vincolato dalla nostra Politica sulla Privacy.\n
+        <b>5. Contenuti Utente:</b> Alcune parti dell\'App potrebbero consentire agli utenti di inviare, pubblicare o condividere contenuti. Se invii, pubblichi o condividi contenuti tramite l\'App, conferisci a noi una licenza mondiale, non esclusiva, gratuita, trasferibile e sublicenziabile per utilizzare, riprodurre, modificare, adattare, pubblicare, tradurre e distribuire tali contenuti.\n
+        <b>6. Proprietà Intellettuale:</b> L\'App e tutto il suo contenuto, compresi, a titolo esemplificativo, il testo, le immagini, i loghi, i video e i marchi, sono protetti da diritti di proprietà intellettuale e sono di nostra proprietà o di terzi che ci hanno concesso il permesso di utilizzarli.\n
+        <b>7. Esclusione di Garanzie:</b> L\'App è fornita "così com'è" e "come disponibile", senza alcuna garanzia di alcun tipo, esplicita o implicita. Utilizzi questa App a tuo rischio e pericolo.\n
+        <b>8. Limitazione di Responsabilità:</b> In nessuna circostanza saremo responsabili per danni diretti, indiretti, speciali, consequenziali o punitivi derivanti dall\'utilizzo o dall\'incapacità di utilizzare questa App.\n
+        <b>9. Modifiche ai Termini:</b> Ci riserviamo il diritto di modificare questi Termini in qualsiasi momento. Le modifiche saranno efficaci non appena pubblicate su questa pagina. Si consiglia di rivedere periodicamente questi Termini per essere informato su eventuali modifiche.\n
+        <b>10. Legge Applicabile:</b> Questi Termini sono regolati e interpretati in conformità con le leggi dello Stato italiano, senza considerazione dei suoi principi di conflitto di leggi.\n
+        <b>11. Contatti:</b> Per domande o commenti su questi Termini, ti preghiamo di contattarci tramite la voce assistenza.
+     </string>
+
+    //Stringhe per la informativa sulla privacy
+    <string name="privacy_policy_title">Privacy</string>
+    <string name="privacy_policy_text">Ultimo aggiornamento: 05-02-2024\n
+    Grazie per utilizzare Build your holiday. La presente Informativa sulla Privacy spiega come raccogliamo, utilizziamo e condividiamo le informazioni personali degli utenti che utilizzano la nostra App.\n<b>1. Informazioni Raccolte:</b>\n
+        <b>1.1. Informazioni fornite dall\'utente:</b> Possiamo raccogliere informazioni personali fornite dagli utenti durante l\'utilizzo dell\'App, come nome, indirizzo email e altre informazioni fornite volontariamente.\n
+        <b>1.2. Informazioni di utilizzo:</b> Raccogliamo informazioni sull\'utilizzo dell\'App, ad esempio le azioni compiute dagli utenti all\'interno dell\'App, le interazioni con i contenuti e altre informazioni di utilizzo\n<b>2. Utilizzo delle Informazioni</b> Utilizziamo le informazioni raccolte per i seguenti scopi:\n
+
+        <b>2.1. Fornire e migliorare i nostri servizi:</b> Utilizziamo le informazioni per fornire i servizi richiesti dagli utenti e per migliorare continuamente la nostra App\n
+        <b>2.2. Comunicazioni:</b> Utilizziamo le informazioni per comunicare con gli utenti, ad esempio per rispondere alle loro domande o fornire aggiornamenti sui nostri servizi.\n
+        <b>2.3. Personalizzazione:</b> Utilizziamo le informazioni per personalizzare l\'esperienza degli utenti all\'interno dell\'App, ad esempio mostrando contenuti o pubblicità personalizzati.\n<b>3. Condivisione delle Informazioni</b>\n
+
+        <b>3.1. Fornitori di Servizi:</b> Possiamo condividere informazioni con fornitori di servizi di fiducia che ci assistono nell\'erogazione dei nostri servizi, ad esempio nell\'elaborazione dei pagamenti o nell\'analisi dei dati.\n
+        <b>3.2. Obblighi legali:</b> Possiamo condividere informazioni personali se richiesto dalla legge o se ritenuto ragionevolmente necessario per proteggere i nostri diritti legali, la sicurezza dei nostri utenti o per conformarsi a una procedura giudiziaria.\n<b>4. Sicurezza delle Informazioni</b> Adottiamo misure di sicurezza adeguate per proteggere le informazioni personali degli utenti da accesso non autorizzato, divulgazione o alterazione.\n<b>5. Diritti degli Utenti</b> Gli utenti hanno il diritto di accedere, correggere o eliminare le proprie informazioni personali. Per esercitare questi diritti o per fare domande riguardanti la nostra Informativa sulla Privacy, si prega di contattarci tramite la voce assistenza.\n<b>6. Modifiche alla Politica sulla Privacy</b> Ci riserviamo il diritto di modificare la presente Informativa sulla Privacy in qualsiasi momento. Eventuali modifiche entreranno in vigore immediatamente dopo la pubblicazione della versione aggiornata. Si consiglia agli utenti di rivedere periodicamente la nostra Informativa sulla Privacy per essere informati su eventuali modifiche.\n
+    </string>
+
+    //Stringhe per l'assistenza
+    <string name="assistance_text"><b>Benvenuto nell\'Assistenza di Build Your Holiday!</b>\nSe riscontri problemi con l\'utilizzo dell\'app contattaci al seguente indirizzo email:</string>
+    <string name="assistance_text2">Grazie per aver scelto Build your holiday! Speriamo che tu possa goderti al massimo l\'esperienza offerta dalla nostra applicazione.\n<b>Cordiali saluti, Il Team di Assistenza.</b></string>
+
+    //email assistenza
+    <string name="emailAssistenza">BuildYourHoliday.Assistenza@gmail.com</string>
 </resources>

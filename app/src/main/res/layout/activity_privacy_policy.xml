@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ScreenBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageButton
+            android:id="@+id/back_buttom_to_information_privacy_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/account"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/baseline_keyboard_backspace_24"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/drawable"
+            />
+
+        <TextView
+            android:id="@+id/privacy_policy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_policy_title"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20sp"
+            style="@style/TextBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/back_buttom_to_information_privacy_policy"
+            app:layout_constraintStart_toEndOf="@+id/back_buttom_to_information_privacy_policy"
+            app:layout_constraintTop_toTopOf="@+id/back_buttom_to_information_privacy_policy" />
+
+        <TextView
+            android:id="@+id/privacy_policy_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_policy_text"
+            android:layout_marginTop="3sp"
+            android:layout_marginStart="15sp"
+            android:layout_marginEnd="10sp"
+            style="@style/TextBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacy_policy_title" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
