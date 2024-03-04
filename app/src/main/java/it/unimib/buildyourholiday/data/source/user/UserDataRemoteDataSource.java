@@ -1,6 +1,7 @@
 package it.unimib.buildyourholiday.data.source.user;
 
 import static it.unimib.buildyourholiday.util.Constants.FIREBASE_REALTIME_DATABASE;
+import static it.unimib.buildyourholiday.util.Constants.FIREBASE_SAVED_TRAVELS_COLLECTION;
 import static it.unimib.buildyourholiday.util.Constants.FIREBASE_USERS_COLLECTION;
 
 
@@ -16,6 +17,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.User;
 import it.unimib.buildyourholiday.util.SharedPreferencesUtil;
 
@@ -69,11 +74,10 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource {
         });
     }
 
-    /*
     @Override
-    public void getUserFavoriteNews(String idToken) {
+    public void getUserSavedTravels(String idToken) {
         databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken).
-            child(FIREBASE_FAVORITE_NEWS_COLLECTION).get().addOnCompleteListener(task -> {
+            child(FIREBASE_SAVED_TRAVELS_COLLECTION).get().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     Log.d(TAG, "Error getting data", task.getException());
                     userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
@@ -81,18 +85,18 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource {
                 else {
                     Log.d(TAG, "Successful read: " + task.getResult().getValue());
 
-                    /* READ HERE
-                    List<News> newsList = new ArrayList<>();
+                    // READ HERE
+                    List<Travel> travelsList = new ArrayList<>();
                     for(DataSnapshot ds : task.getResult().getChildren()) {
-                        News news = ds.getValue(News.class);
-                        newsList.add(news);
+                        Travel travel = ds.getValue(Travel.class);
+                        travelsList.add(travel);
                     }
 
-                    userResponseCallback.onSuccessFromRemoteDatabase(newsList);
+                    userResponseCallback.onSuccessFromRemoteDatabase(travelsList);
                 }
             });
     }
-    */
+
 
     /*
     @Override

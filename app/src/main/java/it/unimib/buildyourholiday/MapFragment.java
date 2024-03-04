@@ -1,61 +1,52 @@
 package it.unimib.buildyourholiday;
 
+import static it.unimib.buildyourholiday.util.MapUtil.initMap;
+import static it.unimib.buildyourholiday.util.MapUtil.refreshMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.preference.PreferenceManager;
-import android.util.JsonReader;
 import android.util.Log;
-import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mapbox.bindgen.Expected;
 import com.mapbox.bindgen.Value;
-import com.mapbox.common.ResourceLoadOptions;
-import com.mapbox.common.TileStore;
 import com.mapbox.common.ValueConverter;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.*;
-import com.mapbox.maps.ResourceOptions;
 import com.mapbox.maps.ResourceOptionsManager;
-import com.mapbox.maps.Style;
 import com.mapbox.maps.extension.observable.eventdata.StyleLoadedEventData;
-import com.mapbox.maps.loader.MapboxMaps;
-import com.mapbox.maps.loader.MapboxMapsInitializer;
-import com.mapbox.maps.plugin.Plugin;
 import com.mapbox.maps.plugin.delegates.listeners.OnStyleLoadedListener;
 import com.mapbox.maps.plugin.gestures.GesturesPlugin;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
+import it.unimib.buildyourholiday.adapter.TravelListAdapter;
+import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
+import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
+import it.unimib.buildyourholiday.model.Result;
+import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.util.JsonFileReader;
-import kotlin.jvm.JvmOverloads;
+import it.unimib.buildyourholiday.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,8 +69,12 @@ public class MapFragment extends Fragment {
     SharedPreferences sharedPreferences;
     String mapStyle = "map_style.json";
  //   JsonFileReader jsonFileReader;
-
+    private RecyclerView recyclerView;
+    private TravelsRoomDatabase database;
+    TravelListAdapter travelListAdapter;
     private MapView mapView = null;
+    private Button refreshMapButton = null;
+    private boolean refreshTriggered = false;
 
     public MapFragment() {
         // Required empty public constructor
@@ -124,15 +119,19 @@ public class MapFragment extends Fragment {
                 getString(R.string.mapbox_access_token));
         Log.d("MapFragment","dopo GETINSTANCE() + "+getString(R.string.mapbox_access_token));
 
-      //  jsonFileReader = new JsonFileReader();
-
-
-
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-
         mapView = view.findViewById(R.id.map_view);
-        //mapView.getMapboxMap().loadStyleUri(Style.LIGHT);
+
+        refreshMapButton = view.findViewById(R.id.refresh_button);
+        //////////////////////////////////////////////
+        ITravelRepository travelRepository = ServiceLocator.getInstance()
+                .getTravelRepository(requireActivity().getApplication());
+        TravelViewModel travelViewModel = new ViewModelProvider(
+                requireActivity(),
+                new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
+
+
 
         mapView.getMapboxMap().loadStyleJson(JsonFileReader.readJsonFromAssets(getContext(), mapStyle));
 
@@ -168,16 +167,19 @@ public class MapFragment extends Fragment {
                     Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 100%)\"");
                     mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
                 }
+                initMap(mapView, travelViewModel, getViewLifecycleOwner());
             }
         });
 
-//        mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","paint",new Property<>("hsl(0, 0%, 0%"));
+        refreshMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshTriggered = true;
+                refreshMap(mapView, travelViewModel, getViewLifecycleOwner());
+            }
+        });
 
-//            mapView.getMapboxMap().getStyle().getStyleLayerProperties("background").toString());
-        // }
-
-
-        TextView debugText = view.findViewById(R.id.debug_country);
+        TextView selectedCountry = view.findViewById(R.id.textView_selectedCountry);
 
         //mapView.getMapboxMap().loadStyleUri("asset://map_style.json");
         //mapView.getMapboxMap().loadStyleJson("asset://map_style.json");
@@ -196,12 +198,17 @@ public class MapFragment extends Fragment {
             ex.printStackTrace();
         }*/
 
+       // database = TravelsRoomDatabase.getDatabase(requireContext());
 
+
+        recyclerView = view.findViewById(R.id.recyclerview_travels);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
         gesturesPlugin.addOnMapClickListener(new OnMapClickListener() {
             @Override
             public boolean onMapClick(@NonNull Point point) {
+                refreshTriggered = false;
 
                 ArrayList<String> layers = new ArrayList<>();
                 layers.add("country-non-visited");
@@ -233,8 +240,39 @@ public class MapFragment extends Fragment {
                                             if (countryName != null && countryCode != null) {
                                                 Log.d("PRINT-FROM-CALLBACK", "name: " + countryName +
                                                         " code: " + countryCode);
-                                                debugText.setText("Country name: " + countryName +
-                                                        "\ncountry code: " + countryCode);
+                                                selectedCountry.setText(countryName +" (" + countryCode + ")");
+
+                                                }
+
+                                                String searchCode = countryCode.substring(1,countryCode.length()-1);
+                                                Log.d("MapFragment", "search: "+searchCode+" vs. ");
+                                                travelViewModel.fetchSavedTravels(searchCode);
+
+                                                travelViewModel.getTravelResponseLiveData().observe(getViewLifecycleOwner(), new Observer<Result>() {
+                                                    @Override
+                                                    public void onChanged(Result result) {
+                                                        if(((Result.TravelResponseSuccess)result).getData().getTravelList()!=null) {
+                                                            Log.d("MapFragment","risultati: "+((Result.TravelResponseSuccess)result).getData().getTravelList().size());
+                                                        //    Log.d("MapFragment","results: "+((Result.TravelResponseSuccess)result).getData().getTravelList().get(0).getCountry());
+                                                        }
+
+                                                        if(!refreshTriggered) {
+                                                            List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
+
+                                                            travelListAdapter = new TravelListAdapter(travelList,new TravelListAdapter.OnItemClickListener(){
+                                                                public void onTravelItemClick(Travel travel){
+                                                                    Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                                                }
+
+                                                                public void onDeleteButtonPressed(int position){
+                                                                    Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                            recyclerView.setAdapter(travelListAdapter);
+                                                        }
+                                                    }
+                                                });
+
 
                                                 // set border on selected
                                                 Expected<String,Value> conv = ValueConverter.fromJson(
@@ -252,7 +290,7 @@ public class MapFragment extends Fragment {
                                             }
                                         }
                                     }
-                                }
+
                                 Value stringValueExpected =
                                         mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-selected","filter").getValue();
 

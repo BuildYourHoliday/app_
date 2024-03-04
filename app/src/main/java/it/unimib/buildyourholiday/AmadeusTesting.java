@@ -35,8 +35,8 @@ public class AmadeusTesting extends AppCompatActivity {
     private TextView hotelResults;
     private AutoCompleteTextView multiAutoCompleteTextView;
     private AutoCompleteTextView autoCompleteTextView;
-    private String originCityCode = "BKK";
-    private String destinationCityCode = "SYD";
+    private String originCityCode = null; //= "BKK";
+    private String destinationCityCode = null; // = "SYD";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +45,11 @@ public class AmadeusTesting extends AppCompatActivity {
        // searchHotel = findViewById(R.id.hotelsFor);
        //     searchHotel.setText("PAR");
         submitHotel = findViewById(R.id.buttonHotel);
-        hotelResults = findViewById(R.id.hotelResults);
+       // hotelResults = findViewById(R.id.hotelResults);
 
 
         // <---------------- QUESTO
-        TravelViewModel model = new ViewModelProvider(this).get(TravelViewModel.class);
+      /*  TravelViewModel model = new ViewModelProvider(this).get(TravelViewModel.class);
         model.getAllTravel().observe(this, new Observer<List<Travel>>() {
                     @Override
                     public void onChanged(List<Travel> travels) {
@@ -57,6 +57,8 @@ public class AmadeusTesting extends AppCompatActivity {
                         hotelResults.setText(travels.get(0).toString());
                     }
                 });
+
+       */
 
          //
 
@@ -119,7 +121,7 @@ public class AmadeusTesting extends AppCompatActivity {
 
 
         // WORKING
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoComplete2);
         LuoghiAdapter luoghiAdapterDestination = new LuoghiAdapter(this,android.R.layout.simple_spinner_dropdown_item);
 
         autoCompleteTextView.setAdapter(luoghiAdapter);
@@ -191,11 +193,50 @@ public class AmadeusTesting extends AppCompatActivity {
                         }
                 );*/
 
-        // WORKING, retrieves hotels from a given city name
+        // WORKING
         submitHotel.setOnClickListener(new View.OnClickListener() {
           @Override
             public void onClick(View v) {
-                  service.fetchFlightsAsync(originCityCode, destinationCityCode, "2024-03-01", "2024-03-08", 2)
+              if(originCityCode==null || originCityCode.length()>3) {
+                  Log.d("RxJava","before content: "+ multiAutoCompleteTextView.getText().toString());
+                  // WORKING, giving back city code for an input
+                service.fetchLocationAsync(multiAutoCompleteTextView.getText().toString())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                result -> {
+                                    String response = result[0].getIataCode();
+                                    originCityCode = response;
+                                    Log.d("RxJava", "Risultato: " + response);
+                                },
+                                error -> {
+                                    // Gestisci gli errori qui
+                                    Log.e("RxJava", "Errore: " + error.getMessage());
+                                }
+                        );
+              }
+
+              if(destinationCityCode==null || destinationCityCode.length()>3) {
+                  Log.d("RxJava","before content: "+ autoCompleteTextView.getText().toString());
+                  // WORKING, giving back city code for an input
+                  service.fetchLocationAsync(autoCompleteTextView.getText().toString())
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .subscribe(
+                                  result -> {
+                                      String response = result[0].getIataCode();
+                                      destinationCityCode = response;
+                                      Log.d("RxJava", "Risultato: " + response);
+                                  },
+                                  error -> {
+                                      // Gestisci gli errori qui
+                                      Log.e("RxJava", "Errore: " + error.getMessage());
+                                  }
+                          );
+              }
+              Log.d("RxJava","before search: "+originCityCode+"->"+destinationCityCode);
+
+              service.fetchFlightsAsync(originCityCode, destinationCityCode, "2024-03-01", "2024-03-08", 2)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(
@@ -217,9 +258,9 @@ public class AmadeusTesting extends AppCompatActivity {
                                                     }
                                                 }
                                                 Log.d("VOLO",out);
-                                                hotelResults.append(out);
+                                                //hotelResults.append(out);
                                             }
-                                            hotelResults.append("\n\n\n");
+                                            //hotelResults.append("\n\n\n");
                                         }
                         );
 
@@ -261,9 +302,9 @@ public class AmadeusTesting extends AppCompatActivity {
                                               Log.d("VOLO",offers[j].getRoom().getDescription().toString());
                                               Log.d("VOLO", "Prezzo: " + offers[j].getPrice());
                                               Log.d("VOLO","Descrizione"+offers[j].getDescription());
-                                              hotelResults.append("Prezzo: " + offers[j].getPrice());
-                                              hotelResults.append("Descrizione"+offers[j].getDescription());
-                                              hotelResults.append(offers[j].getRoom().getDescription().toString());
+                                              //hotelResults.append("Prezzo: " + offers[j].getPrice());
+                                              //hotelResults.append("Descrizione"+offers[j].getDescription());
+                                              //hotelResults.append(offers[j].getRoom().getDescription().toString());
                                           }
                                       }
                                                             /*

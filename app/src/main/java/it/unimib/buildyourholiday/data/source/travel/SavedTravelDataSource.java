@@ -43,35 +43,104 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
                         for (DataSnapshot ds: task.getResult().getChildren()) {
                             Travel travel = ds.getValue(Travel.class);
                             travel.setSynchronized(true);
-                            travelList.add(travel);
+                            if(travel.isSaved())
+                                travelList.add(travel);
                         }
-                        // TODO: callback
+                        travelCallback.onSuccessFromCloudReading(travelList);
                     }
                 });
     }
 
     @Override
-    public void addSavedTravel(Travel travel) {
+    public void getSavedTravels(String country) {
         databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
-                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.hashCode())).setValue(travel)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).get().addOnCompleteListener(task -> {
+                    if(!task.isSuccessful()) {
+                        Log.d(TAG, "Error retrieving data" + task.getException());
+                    } else {
+                        Log.d(TAG, "Success: " + task.getResult().getValue());
+
+                        List<Travel> travelList = new ArrayList<>();
+                        for (DataSnapshot ds: task.getResult().getChildren()) {
+                            Travel travel = ds.getValue(Travel.class);
+                            travel.setSynchronized(true);
+                            if(travel.getCountry().equals(country)) {
+
+                                travelList.add(travel);
+                            }
+                        }
+                        travelCallback.onSuccessFromCloudReading(travelList);
+                    }
+                });
+    }
+
+    @Override
+    public void addTravel(Travel travel) {
+        databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.getId())).setValue(travel)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         travel.setSynchronized(true);
-                        // TODO: callback
+                        travelCallback.onSuccessFromCloudWriting(travel);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // TODO: callback
+                        travelCallback.onFailureFromCloud(e);
                     }
                 });
     }
 
     @Override
-    public void synchronizedFavoriteNews(List<Travel> notSynchronizedTravelsList) {
-        // TODO
+    public void synchronizeSavedTravels(List<Travel> notSynchronizedTravelsList) {
+        databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).get().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        List<Travel> travels = new ArrayList<>();
+                        for (DataSnapshot ds:task.getResult().getChildren()) {
+                            Travel travel = ds.getValue(Travel.class);
+                            travel.setSynchronized(true);
+                            travels.add(travel);
+                        }
+                        travels.addAll(notSynchronizedTravelsList);
+
+                        for (Travel t:travels) {
+                            databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
+                                    .child(FIREBASE_SAVED_TRAVELS_COLLECTION)
+                                    .child(String.valueOf(t.hashCode())).setValue(t).addOnSuccessListener(
+                                            new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    t.setSynchronized(true);
+                                                }
+                                            }
+                                    );
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void getBookedTravels() {
+        databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).get().addOnCompleteListener(task -> {
+                    if(!task.isSuccessful()) {
+                        Log.d(TAG, "Error retrieving data" + task.getException());
+                    } else {
+                        Log.d(TAG, "Success: " + task.getResult().getValue());
+
+                        List<Travel> travelList = new ArrayList<>();
+                        for (DataSnapshot ds: task.getResult().getChildren()) {
+                            Travel travel = ds.getValue(Travel.class);
+                            travel.setSynchronized(true);
+                            if(travel.isBooked())
+                                travelList.add(travel);
+                        }
+                        travelCallback.onSuccessFromBookedCloudReading(travelList);
+                    }
+                });
     }
 
     @Override
@@ -82,10 +151,10 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
                     @Override
                     public void onSuccess(Void unused) {
                         travel.setSynchronized(false);
-                        // TODO: callback
+                        travelCallback.onSuccessFromCloudWriting(travel);
                     }
                 }).addOnFailureListener(e -> {
-                    // todo: callback
+                    travelCallback.onFailureFromCloud(e);
                 });
     }
 
@@ -93,9 +162,9 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
     public void deleteAllSavedTravels() {
         databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken).
                 child(FIREBASE_SAVED_TRAVELS_COLLECTION).removeValue().addOnSuccessListener(aVoid -> {
-                    // todo callback
+                    travelCallback.onSuccessFromCloudWriting(null);
                 }).addOnFailureListener(e -> {
-                    // todo callback
+                    travelCallback.onFailureFromCloud(e);
                 });
     }
 }

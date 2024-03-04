@@ -3,7 +3,11 @@ package it.unimib.buildyourholiday;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+import java.util.Set;
+
 import it.unimib.buildyourholiday.model.Result;
+import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.User;
 import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 
@@ -12,7 +16,7 @@ public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
     private MutableLiveData<Result> userMutableLiveData;
-    private MutableLiveData<Result> userFavoriteNewsMutableLiveData;
+    private MutableLiveData<Result> userSavedTravelsMutableLiveData;
     private MutableLiveData<Result> userPreferencesMutableLiveData;
     private boolean authenticationError;
 
@@ -36,15 +40,13 @@ public class UserViewModel extends ViewModel {
         return userMutableLiveData;
     }
 
-    /*
-    public MutableLiveData<Result> getUserFavoriteNewsMutableLiveData(String idToken) {
-        if (userFavoriteNewsMutableLiveData == null) {
-            getUserFavoriteNews(idToken);
+    public MutableLiveData<Result> getUserSavedTravelsMutableLiveData(String idToken) {
+        if (userSavedTravelsMutableLiveData == null) {
+            getUserSavedTravels(idToken);
         }
-        return userFavoriteNewsMutableLiveData;
+        return userSavedTravelsMutableLiveData;
     }
 
-     */
 
     /*
     public void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken) {
@@ -78,12 +80,9 @@ public class UserViewModel extends ViewModel {
         return userMutableLiveData;
     }
 
-    /*
-    private void getUserFavoriteNews(String idToken) {
-        userFavoriteNewsMutableLiveData = userRepository.getUserFavoriteNews(idToken);
+    private void getUserSavedTravels(String idToken) {
+        userSavedTravelsMutableLiveData = userRepository.getUserSavedTravels(idToken);
     }
-
-     */
 
     public void getUser(String email, String password, boolean isUserRegistered) {
         userRepository.getUser(email, password, isUserRegistered);

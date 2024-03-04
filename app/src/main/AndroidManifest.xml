@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +22,15 @@
             android:name=".AmadeusTesting"
             android:exported="true" >
 
+        </activity>
+        <activity
+            android:name=".AmadeusAsync"
+            android:exported="true" >
+
+        </activity>
+
+        <activity
+            android:name=".LanguageActivity">
         </activity>
 
         <activity
@@ -48,10 +56,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ProfileActivity"
             android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+        </activity>
+
+        <!-- Intent filter per avviare Google Maps -->
+        <activity android:name="com.google.android.maps.MapsActivity"
+            tools:ignore="MissingClass"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- URI schema per avviare Google Maps -->
+                <data android:scheme="geo" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

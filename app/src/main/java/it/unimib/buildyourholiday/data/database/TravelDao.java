@@ -14,8 +14,8 @@ import it.unimib.buildyourholiday.model.Travel;
 @Dao
 public interface TravelDao {
 
-    @Query("SELECT * from travel")
-    List<Travel> getAll();
+    @Query("SELECT * from travel WHERE is_saved = 1")
+    List<Travel> getAllSaved();
 
     @Query("SELECT * FROM travel WHERE id = :id")
     Travel getTravel(long id);
@@ -30,10 +30,18 @@ public interface TravelDao {
     void insertAll(Travel... travel);
 
     @Update
-    int updateSingleFavoriteNews(Travel travel);
+    int updateSingleSavedTravel(Travel travel);
 
     @Delete
     void delete(Travel travel);
 
+    @Query("DELETE FROM travel")
+    int deleteAll();
 
+
+    @Query("SELECT * FROM travel WHERE country = :countryCode")
+    List<Travel> getTravels(String countryCode);
+
+    @Query("SELECT * FROM travel WHERE is_booked = 1")
+    List<Travel> getAllBooked();
 }

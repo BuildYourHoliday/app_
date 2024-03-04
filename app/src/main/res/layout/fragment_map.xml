@@ -6,24 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".MapFragment">
 
-    <com.mapbox.maps.MapView
-        android:id="@+id/map_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        mapbox:layout_constraintStart_toStartOf="parent"
-        mapbox:layout_constraintTop_toTopOf="parent"
-        mapbox:mapbox_cameraTargetLat="40.7128"
-        mapbox:mapbox_cameraTargetLng="-24.0060"
-        mapbox:mapbox_cameraZoom="0.5" />
-
-    <TextView
-        android:id="@+id/debug_country"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="no data"
         mapbox:layout_constraintStart_toStartOf="parent"
-        mapbox:layout_constraintTop_toBottomOf="@+id/map_view" />
+        mapbox:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.mapbox.maps.MapView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                mapbox:layout_constraintStart_toStartOf="parent"
+                mapbox:layout_constraintTop_toTopOf="parent"
+                mapbox:mapbox_cameraTargetLat="40.7128"
+                mapbox:mapbox_cameraTargetLng="-24.0060"
+                mapbox:mapbox_cameraZoom="0.5" >
+
+            </com.mapbox.maps.MapView>
+
+            <Button
+                android:id="@+id/refresh_button"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/refreshes_description"
+                mapbox:icon="@drawable/baseline_update_24"
+                mapbox:layout_constraintEnd_toEndOf="parent"
+                mapbox:layout_constraintTop_toTopOf="@+id/map_view" />
+
+            <TextView
+                android:id="@+id/textView_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:textSize="20sp"
+                mapbox:layout_constraintStart_toStartOf="parent"
+                mapbox:layout_constraintTop_toBottomOf="@+id/map_view"
+                android:text="@string/your_travels_for" />
+
+            <TextView
+                android:id="@+id/textView_selectedCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:hint="@string/no_data"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                mapbox:layout_constraintStart_toEndOf="@+id/textView_result"
+                mapbox:layout_constraintTop_toBottomOf="@+id/map_view" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_travels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"
+                mapbox:layout_constraintStart_toStartOf="parent"
+                mapbox:layout_constraintTop_toBottomOf="@+id/textView_selectedCountry"
+                tools:listitem="@layout/booked_travels_parent_item" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

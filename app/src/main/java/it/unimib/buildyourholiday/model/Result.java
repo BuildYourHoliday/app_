@@ -19,6 +19,15 @@ public abstract class Result {
      * Class that represents a successful action during the interaction
      * with a Web Service or a local database.
      */
+    public static final class TravelResponseSuccess extends Result {
+        private final TravelResponse travelResponse;
+        public TravelResponseSuccess(TravelResponse travelResponse) {
+            this.travelResponse = travelResponse;
+        }
+        public TravelResponse getData() {
+            return travelResponse;
+        }
+    }
 
     /**
      * Class that represents a successful action during the interaction
