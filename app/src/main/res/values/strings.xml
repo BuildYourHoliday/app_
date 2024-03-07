@@ -17,10 +17,12 @@
     <string name="password_again">Confirm password</string>
     <string name="need_register">Not subscribed yet? Register</string>
     <string name="need_login">Already subscribed? Login</string>
+    <string name="login_required">Please log in to access this feature</string>
     <string name="error_email">The mail is not correct</string>
     <string name="error_password">The password is not correct</string>
     <string name="item_profile">Profile</string>
     <string name="account">Account</string>
+    <string name="booked">Booked</string>
     <string name="language">Language</string>
     <string name="dark_mode">Dark mode</string>
     <string name="about_us">About us</string>
@@ -108,6 +110,30 @@
         <b>3.1. Service Providers:</b> We may share information with trusted service providers who assist us in delivering our services, such as processing payments or analyzing data.\bn
         <b>3.2. Legal Obligations:</b> We may share personal information if required by law or if reasonably necessary to protect our legal rights, the safety of our users, or to comply with a judicial proceeding.\n<b>4. Information Security</b> We adopt appropriate security measures to protect users\' personal information from unauthorized access, disclosure, or alteration.\n<b>5. Users\' Rights</b> Users have the right to access, correct, or delete their personal information. To exercise these rights or to ask questions regarding our Privacy Policy, please contact us at support section.\n<b>6. Changes to the Privacy Policy</b> We reserve the right to modify this Privacy Policy at any time. Any changes will be effective immediately upon posting the updated version. Users are advised to periodically review our Privacy Policy to stay informed of any changes.\n
     </string>
+    <string name="saved">Saved</string>
+    <string name="booked_list_item_dest" translatable="false">Barcelona</string>
+    <string name="booked_list_item_date" translatable="false">27-02-24</string>
+    <string name="info_content_description">expand</string>
+    <string name="booked_price_item" translatable="false">100$</string>
+    <string name="list_size_message" translatable="false">List:</string>
+    <string name="refreshes_description">Refreshes map style</string>
+    <string name="amadeus_client_id" translatable="false">UWAFKYZec0REMjNs6agWEur2IpEnZ78H</string>
+    <string name="amadeus_client_secret" translatable="false">D9AZ2ZHEW8CkgYBH</string>
+    <string name="delete">Delete</string>
+    <string name="no_data">Please select a country</string>
+    <string name="your_travels_for">Your Travels for: </string>
+    <string name="view_on_map">View on map</string>
+    <string name="direct_flight">"Direct: "</string>
+    <string name="nights">nights</string>
+    <string name="your_destination">Your destination</string>
+    <string name="depart_date">Departure date</string>
+    <string name="return_date">Return date</string>
+    <string name="date">YYYY-MM-DD</string>
+    <string name="reset">Reset all</string>
+    <string name="people">People</string>
+    <string name="departure_place">Departure from</string>
+    <string name="find_journey">Build Your Holiday</string>
+    <string name="budget" translatable="false">Budget</string>
 
     <string name="assistance_text"> <b>Welcome to Build Your Holiday Support!</b>\nIf you encounter problems using the app, contact us at the following email address:</string>
 
@@ -115,4 +141,5 @@
         \n<b>Kind regards, The Support Team.</b></string>
 
     <string name="emailAssistenza">BuildYourHoliday.Assistenza@gmail.com</string>
+    <string name="saved_travel_success">Your travel has been saved!</string>
 </resources>

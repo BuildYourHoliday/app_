@@ -33,10 +33,6 @@
             android:name=".LanguageActivity">
         </activity>
 
-        <activity
-            android:name=".LanguageActivity">
-        </activity>
-
         <activity android:name=".AssistanceActivity"></activity>
         <activity android:name=".PrivacyPolicyActivity"></activity>
         <activity android:name=".ConditionOfUseActivity"></activity>
@@ -59,11 +55,7 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
 
-        </activity>
 
         <!-- Intent filter per avviare Google Maps -->
         <activity android:name="com.google.android.maps.MapsActivity"

@@ -207,7 +207,7 @@ public class AmadeusAsync extends AppCompatActivity {
         submitHotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //flightSearch();
+                flightSearch();
                 completeAsyncCalls();
                 Log.d("RxJava","flight instance: "+(flight!=null)+", hotel instance: "+(hotel!=null));
                 //checkout = new Travel();

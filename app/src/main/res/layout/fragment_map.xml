@@ -44,18 +44,17 @@
                 android:id="@+id/textView_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
+                android:text="@string/your_travels_for"
                 android:textSize="20sp"
                 mapbox:layout_constraintStart_toStartOf="parent"
-                mapbox:layout_constraintTop_toBottomOf="@+id/map_view"
-                android:text="@string/your_travels_for" />
+                mapbox:layout_constraintTop_toBottomOf="@+id/map_view" />
 
             <TextView
                 android:id="@+id/textView_selectedCountry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:hint="@string/no_data"
                 android:textSize="20sp"
@@ -68,8 +67,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="80dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10.0sp"
+                mapbox:layout_constraintBottom_toBottomOf="parent"
                 mapbox:layout_constraintStart_toStartOf="parent"
                 mapbox:layout_constraintTop_toBottomOf="@+id/textView_selectedCountry"
                 tools:listitem="@layout/booked_travels_parent_item" />

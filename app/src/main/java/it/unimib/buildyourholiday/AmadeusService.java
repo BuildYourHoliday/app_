@@ -4,6 +4,8 @@ import static android.graphics.Insets.add;
 import static it.unimib.buildyourholiday.util.Constants.RATE_LIMIT_TIME;
 import static it.unimib.buildyourholiday.util.Constants.TOTAL_FLIGHTS_RESULTS;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.amadeus.Amadeus;
@@ -134,6 +136,60 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
         return (rooms);
     }
 
+    // SEARCH WITH PRICE PARAMETER
+    public Observable<HotelOfferSearch[]> fetchRoomsAsync(List<String> hotelCodes, int adults, String checkIn, String checkOut, double price) throws NoHotelsForPriceException {
+        return Observable.create((ObservableOnSubscribe<HotelOfferSearch[]>) emitter -> {
+            // to not exceed api rate-limit
+            Thread.sleep(RATE_LIMIT_TIME);
+            // Effettua la tua chiamata in background qui
+            HotelOfferSearch[] result = getRooms(hotelCodes, adults, checkIn, checkOut, price);
+
+            // Invia il risultato all'emitter
+            if(result[0].getResponse().getStatusCode() == 424) {
+                result = getRooms(hotelCodes, adults, checkIn, checkOut);
+                emitter.onNext(result);
+                emitter.onComplete();
+                throw new NoHotelsForPriceException();
+
+            } else {
+                emitter.onNext(result);
+
+                // Completa l'observable
+                emitter.onComplete();
+            }
+
+
+            // emitter.onError(new Exception("No rooms found"));
+        });
+    }
+
+    public HotelOfferSearch[] getRooms(List<String> hotelCodes, int adults, String checkIn, String checkOut, double price) throws ResponseException {
+        Log.d("RxJava","hotel codes size: "+hotelCodes.size());
+        Log.d("RxJava","adults: "+adults);
+        Log.d("RxJava","checkin: "+checkIn);
+        Log.d("RxJava","price: "+(int)price);
+
+        HotelOfferSearch[] rooms;
+        if(checkOut!=null && !checkOut.isEmpty()) {
+            Log.d("RxJava","checkout: "+checkOut);
+
+            rooms = amadeus.shopping.hotelOffersSearch.get(
+                    Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
+                            .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currencyCode","EUR").and("priceRange",price));
+        } else {
+            rooms = amadeus.shopping.hotelOffersSearch.get(
+                    Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn).and("checkOutDate","2024-03-15")
+                            .and("bestRateOnly",true).and("currency","EUR").and("priceRange","-"+((int)price)));
+        }
+
+        if (rooms[0].getResponse().getStatusCode() != 200 && rooms[0].getResponse().getStatusCode() != 424) {
+            System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
+            System.exit(-1);
+        }
+
+        return (rooms);
+    }
+
     public Observable<FlightOfferSearch[]> fetchFlightsAsync(String originCityCode, String destinationCityCode, String departureDate, @Nullable String returnDate, int adults) {
         return Observable.create((ObservableOnSubscribe<FlightOfferSearch[]>) emitter -> {
             // to not exceed api rate-limit
@@ -169,7 +225,7 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
         }
 
         if (flights==null || flights.length==0) {
-            System.out.println("No result obtained: ");
+            System.out.println("No result obtained");
             System.exit(-1);
         }
         if (flights[0].getResponse().getStatusCode() != 200) {

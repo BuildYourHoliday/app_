@@ -29,7 +29,7 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
     private final List<Flight> flightList;
     private List<String> durations = null;
     private List<Boolean> directFlight = null;
-    private final FlightListAdapter.OnItemClickListener onItemClickListener;
+    private FlightListAdapter.OnItemClickListener onItemClickListener;
     private int selectedItemPosition = -1;
 
     public FlightListAdapter(List<Flight> flightList, FlightListAdapter.OnItemClickListener onItemClickListener) {
@@ -41,6 +41,14 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
         this.flightList = flightList;
         this.durations = durations;
         this.directFlight = directFlight;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 

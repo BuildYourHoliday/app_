@@ -28,6 +28,7 @@ public class Constants {
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.worldnews.encrypted_file.txt";
 
     // Constants for Amadeus API
+    public static final int TOTAL_HOTEL_RESULTS = 20;
     public static final int TOTAL_FLIGHTS_RESULTS = 3;
     public static final int RATE_LIMIT_TIME = 3000;
 

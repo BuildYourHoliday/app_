@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="@string/areYouSure"
+        android:text="@string/are_you_sure_to_logout"
         style="@style/TextBackground"/>
 
 
@@ -29,7 +29,7 @@
             android:textSize="20sp"
             android:layout_marginEnd="30sp"
             android:layout_marginTop="5sp"
-            android:text="@string/quit"/>
+            android:text="@string/quit_logout"/>
 
         <Button
             android:id="@+id/negate_logout_button"
@@ -39,7 +39,7 @@
             android:textSize="20sp"
             android:layout_marginStart="30sp"
             android:layout_marginTop="5sp"
-            android:text="@string/cancel"/>
+            android:text="@string/cancel_logout"/>
 
     </LinearLayout>
 

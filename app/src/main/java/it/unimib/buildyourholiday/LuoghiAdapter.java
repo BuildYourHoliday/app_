@@ -56,4 +56,8 @@ public class LuoghiAdapter extends ArrayAdapter<String> {
     public long getItemId(int position) {
         return super.getItemId(position);
     }
+
+    public String countryForSelected(int position) {
+        return buffer[position].getAddress().getCountryCode();
+    }
 }
