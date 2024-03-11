@@ -2,30 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
 
     <EditText
         android:id="@+id/budget_import"
-        android:layout_width="61dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="€"
+        android:drawableStart="@drawable/baseline_euro_24"
+        android:hint="@string/no_limit"
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toEndOf="@+id/budget"
         app:layout_constraintTop_toBottomOf="@+id/return_date_input" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintWidth_default="wrap"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -33,7 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="363dp"
+        app:layout_constraintGuide_end="36dp"
+        app:layout_constraintWidth_default="wrap"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -52,8 +52,8 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="114dp"
-        android:layout_height="98dp"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/settings"
@@ -64,11 +64,11 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:drawableStart="@android:drawable/ic_menu_search"
-        android:hint="@string/departure_place"
         android:completionThreshold="3"
+        android:drawableStart="@android:drawable/ic_menu_search"
         android:dropDownAnchor="@id/depart_place"
         android:dropDownWidth="match_parent"
+        android:hint="@string/departure_place"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
@@ -102,23 +102,24 @@
         android:id="@+id/depart_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="35dp"
         android:text="@string/depart_date"
-        app:layout_constraintEnd_toStartOf="@+id/depart_date_input"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/destination_place" />
 
     <EditText
         android:id="@+id/depart_date_input"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:drawableStart="@android:drawable/ic_menu_month"
-        android:ems="10"
         android:hint="@string/date"
         android:inputType="date"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toEndOf="@+id/depart_date"
         app:layout_constraintTop_toBottomOf="@+id/destination_place" />
 
     <TextView
@@ -127,6 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/return_date"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/depart_date_input" />
 
@@ -135,18 +137,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:ems="10"
+        android:drawableStart="@android:drawable/ic_menu_month"
         android:hint="@string/date"
         android:inputType="date"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/depart_date_input"
         app:layout_constraintTop_toBottomOf="@+id/depart_date_input" />
 
     <TextView
         android:id="@+id/people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:text="@string/people"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -154,12 +157,14 @@
 
     <EditText
         android:id="@+id/people_number"
-        android:layout_width="61dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
-        android:ems="10"
+        android:importantForAutofill="no"
+        android:hint="@string/range_people"
         android:inputType="number"
+        android:minWidth="48dp"
         app:layout_constraintStart_toEndOf="@+id/people"
         app:layout_constraintTop_toBottomOf="@+id/return_date_input" />
 
@@ -181,16 +186,18 @@
         android:layout_marginTop="12dp"
         android:src="@android:drawable/ic_menu_delete"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/search_button" />
+        app:layout_constraintTop_toBottomOf="@+id/search_button"
+        android:contentDescription="@string/delete" />
 
     <TextView
         android:id="@+id/budget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="25dp"
         android:text="@string/budget"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/budget_import"
         app:layout_constraintStart_toEndOf="@+id/people_number"
         app:layout_constraintTop_toBottomOf="@+id/return_date_input" />
 
@@ -199,6 +206,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/reset"
         app:layout_constraintBottom_toBottomOf="@+id/bin_button"
         app:layout_constraintEnd_toStartOf="@+id/bin_button" />

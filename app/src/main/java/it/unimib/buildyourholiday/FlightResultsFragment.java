@@ -3,6 +3,8 @@ package it.unimib.buildyourholiday;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -15,12 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Objects;
 
 import it.unimib.buildyourholiday.adapter.FlightListAdapter;
 import it.unimib.buildyourholiday.model.Flight;
@@ -45,10 +49,11 @@ public class FlightResultsFragment extends Fragment {
     private List<Flight> flights; private List<String> durations; private List<Boolean> directed;
     private Flight flight;
     private RecyclerView flightsRecyclerView;
+    private TextView resultPriceError;
     private TextView flightLabel;
     private LinearLayout loadingBar;
     private double flightPrice = -1;
-    private Button proceedButton;
+    private Button proceedButton; private ImageButton backButton;
 
     public FlightResultsFragment() {
         // Required empty public constructor
@@ -87,18 +92,22 @@ public class FlightResultsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"on create view");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_flight_results, container, false);
 
         loadingBar = view.findViewById(R.id.loading_layout);
-        loadingBar.setVisibility(View.VISIBLE);
+            loadingBar.setVisibility(View.VISIBLE);
 
+        resultPriceError = view.findViewById(R.id.error_match_text);
+            resultPriceError.setVisibility(View.GONE);
         proceedButton = view.findViewById(R.id.proceed_button);
+        backButton = view.findViewById(R.id.back_button);
         flightLabel = view.findViewById(R.id.flight_text);
         flightsRecyclerView = view.findViewById(R.id.recyclerview_flight_offers);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
         flightListViewModel = new ViewModelProvider(requireActivity()).get(FlightListViewModel.class);
@@ -129,6 +138,30 @@ public class FlightResultsFragment extends Fragment {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navController.navigate(R.id.homeFragment2);
+                // Ottieni il FragmentManager
+               // FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+
+                // Inizia una transazione del fragment
+               // FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                // Rimuovi il fragment corrente
+                //transaction.remove(FlightResultsFragment.this);
+
+                // Esegui il commit della transazione
+                //transaction.commit();
+// Torna alla schermata precedente
+                //fragmentManager.popBackStack();
+
+                navController.popBackStack(R.id.homeFragment2,false);
+              //  navController.navigate(R.id.homeFragment2);
+            }
+        });
+
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +188,11 @@ public class FlightResultsFragment extends Fragment {
         loadingBar.setVisibility(View.GONE);
 
         flightLabel.setVisibility(View.VISIBLE);
+
+        if(flights.size()==0) {
+            resultPriceError.setVisibility(View.VISIBLE);
+        } else
+            proceedButton.setVisibility(View.VISIBLE);
         Log.d(TAG, "progress bar gone");
 
         flightListAdapter = new FlightListAdapter(flights, durations, directed, new FlightListAdapter.OnItemClickListener() {
@@ -170,5 +208,24 @@ public class FlightResultsFragment extends Fragment {
         flightsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         flightsRecyclerView.setAdapter(flightListAdapter);
         Log.d(TAG, "recyclerview setup");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireView().invalidate();
+        Log.d(TAG,"on resume");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"on destroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"on destroy view");
     }
 }

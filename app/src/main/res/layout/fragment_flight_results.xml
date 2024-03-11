@@ -7,12 +7,37 @@
     android:layout_marginBottom="80dp"
     tools:context=".FlightResultsFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        app:titleTextColor="@color/icons_text"
+        app:titleMarginStart="64dp"
+        app:title="@string/flights"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:background="@null"
+        android:contentDescription="Page back"
+        android:src="@drawable/baseline_keyboard_backspace_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:tint="@color/icons_text" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,11 +49,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Seleziona volo:"
+                android:text="@string/select_flight"
                 android:textSize="24sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/error_match_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_corner_background"
+                android:drawablePadding="8dp"
+                android:textSize="15sp"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:text="@string/no_flights_for_budget"
+                app:drawableLeftCompat="@drawable/baseline_error_outline_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flight_text" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_flight_offers"
@@ -39,38 +81,43 @@
                 android:dividerHeight="10.0sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/flight_text"
+                app:layout_constraintTop_toBottomOf="@+id/error_match_text"
                 tools:listitem="@layout/flight_offers_parent_item" />
 
             <LinearLayout
                 android:id="@+id/loading_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="230dp"
                 android:orientation="vertical"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/flight_text"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="300dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:visibility="gone" >
 
                 <ImageView
                     android:id="@+id/logoImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:contentDescription="logo" />
 
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Attendi mentre costruiamo la tua vacanza..." />
+                    android:textSize="18sp"
+                    android:text="@string/loading_wait_text" />
 
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progress_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_margin="10dp"
                     app:indicatorColor="@color/primary"
                     app:trackColor="@color/secondary_text"
                     android:indeterminate="true" />
@@ -82,7 +129,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Trova hotel"
+                android:visibility="gone"
+                android:text="@string/find_hotel"
                 app:icon="@drawable/baseline_arrow_forward_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

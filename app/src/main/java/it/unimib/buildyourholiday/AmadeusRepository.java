@@ -40,7 +40,7 @@ public class AmadeusRepository {
     // invoco tramite parametri e passando il listener creato dal fragment, così posso gesitre l'onclick sugli item
     // dopo l'invocazione, assegno l'adapter ritornato alla recycler view
     public static void flightSearch(String originCityCode, String destinationCityCode, String departureDate,
-                                    String returnDate, int adults, FlightListViewModel viewModel) {
+                                    String returnDate, int adults, double price, FlightListViewModel viewModel) {
          service.fetchFlightsAsync(originCityCode, destinationCityCode, departureDate, returnDate, adults)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                         result -> {
@@ -66,10 +66,13 @@ public class AmadeusRepository {
                                     int lastIndex = itineraries[itineraries.length - 1].getSegments().length;
                                     flight.setReturnalTime(itineraries[itineraries.length - 1].getSegments()[lastIndex - 1].getDeparture().getAt());
 
-                                    flights.add(flight);
+                                    if(flight.getPrice() <= price) {
+                                        flights.add(flight);
 
-                                    durations.add(result[i].getItineraries()[0].getDuration().substring(2));
-                                    directFlight.add(result[i].getItineraries()[0].getSegments().length == 1);
+                                        durations.add(result[i].getItineraries()[0].getDuration().substring(2));
+                                        directFlight.add(result[i].getItineraries()[0].getSegments().length == 1);
+                                    }
+
                                 }
                                 Log.d("RxJava", "flights instance: " + (flights != null) + ", flights size: " + flights.size());
 

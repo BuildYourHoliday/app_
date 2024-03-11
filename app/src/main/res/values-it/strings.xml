@@ -78,11 +78,11 @@
     <string name="direct_flight">"Volo diretto: "</string>
     <string name="nights">notti</string>
     <string name="your_destination">La tua destinazione</string>
-    <string name="depart_date">Data di partenza</string>
-    <string name="return_date">Data di ritorno</string>
+    <string name="depart_date">Data partenza:</string>
+    <string name="return_date">Data ritorno:</string>
     <string name="date">AAAA-MM-GG</string>
     <string name="reset">Azzera parametri</string>
-    <string name="people">Persone</string>
+    <string name="people">Persone:</string>
     <string name="departure_place">Luogo di partenza</string>
     <string name="find_journey">Trova il viaggio</string>
 
@@ -124,4 +124,15 @@
     //email assistenza
     <string name="emailAssistenza">BuildYourHoliday.Assistenza@gmail.com</string>
     <string name="saved_travel_success">Il tuo viaggio è stato salvato!</string>
+    <string name="loading_wait_text">Attendi mentre costruiamo la tua vacanza...</string>
+    <string name="select_hotel">Seleziona hotel:</string>
+    <string name="no_results_for_budget">Non è stata trovata alcuna offerta per il tuo budget indicato, di seguito sono riportate alcune offerte generiche</string>
+    <string name="save_travel">Salva viaggio</string>
+    <string name="purchase_travel">Acquista viaggio</string>
+    <string name="select_flight">Seleziona volo:</string>
+    <string name="find_hotel">Trova hotel</string>
+    <string name="no_limit"> no budget</string>
+    <string name="no_flights_for_budget">Non è stato possibile trovare alcun volo per la tua ricerca, prova a modificare il tuo budget o la tua destinazione.</string>
+    <string name="flights">Voli</string>
+    <string name="hotels">Hotel</string>
 </resources>

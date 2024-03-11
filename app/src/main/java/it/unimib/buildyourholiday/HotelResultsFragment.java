@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ public class HotelResultsFragment extends Fragment {
     private boolean noMatchingResults = false;
     private TextView resultPriceError;
     private Travel builtTravel = null;
-    private Button saveButton; private Button purchaseButton;
+    private Button saveButton; private Button purchaseButton; private ImageButton backButton;
     private UserViewModel userViewModel = null; private TravelViewModel travelViewModel = null;
 
 
@@ -104,6 +105,7 @@ public class HotelResultsFragment extends Fragment {
         resultPriceError = view.findViewById(R.id.error_match_text);
         saveButton = view.findViewById(R.id.save_button);
         purchaseButton = view.findViewById(R.id.purchase_button);
+        backButton = view.findViewById(R.id.back_button);
 
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
@@ -145,6 +147,13 @@ public class HotelResultsFragment extends Fragment {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.flightResultsFragment);
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +163,7 @@ public class HotelResultsFragment extends Fragment {
                         navController.navigate(R.id.profileFragment);
                     }
                     else {
-                        navController.navigate(R.id.homeFragment);
+                        navController.navigate(R.id.homeFragment2);
                         navController.navigate(R.id.loginActivity);
                         Toast.makeText(requireContext(), requireContext().getString(R.string.login_required), Toast.LENGTH_LONG).show();
                     }
@@ -178,6 +187,8 @@ public class HotelResultsFragment extends Fragment {
         loadingBar.setVisibility(View.GONE);
 
         hotelLabel.setVisibility(View.VISIBLE);
+        saveButton.setVisibility(View.VISIBLE);
+        purchaseButton.setVisibility(View.VISIBLE);
         Log.d(TAG, "progress bar gone");
 
         if (noMatchingResults) {

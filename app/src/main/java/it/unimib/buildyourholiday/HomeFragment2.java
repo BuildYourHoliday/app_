@@ -1,17 +1,22 @@
 package it.unimib.buildyourholiday;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +25,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.DatePicker;
+
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,9 +47,11 @@ public class HomeFragment2 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static final String TAG = HomeFragment2.class.getSimpleName();
     private AutoCompleteTextView originAutoCompleteTextView;
     private AutoCompleteTextView destinationAutoCompleteTextView;
-    private Button searchButton;
+    private NavController navController;
+    private Button searchButton; private ImageButton resetButton;
     private EditText departDateEditText;
     private EditText returnDateEditText;
     private EditText adultsEditText;
@@ -100,11 +111,16 @@ public class HomeFragment2 extends Fragment {
         destinationAutoCompleteTextView = view.findViewById(R.id.destination_place);
 
         searchButton = view.findViewById(R.id.search_button);
+        resetButton = view.findViewById(R.id.bin_button);
 
         departDateEditText = view.findViewById(R.id.depart_date_input);
         returnDateEditText = view.findViewById(R.id.return_date_input);
         adultsEditText = view.findViewById(R.id.people_number);
         budgetEditText = view.findViewById(R.id.budget_import);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
 
         // dropdown results for origin city
         LuoghiAdapter originLuoghiAdapter = new LuoghiAdapter(requireContext(),android.R.layout.simple_spinner_dropdown_item);
@@ -131,31 +147,48 @@ public class HomeFragment2 extends Fragment {
             }
         });
 
-        NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
+        departDateEditText.setOnClickListener(v -> showDatePickerDialog(departDateEditText));
+        returnDateEditText.setOnClickListener(v -> showDatePickerDialog(returnDateEditText));
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(retrieveSearchParameters()) {
                     FlightListViewModel flightListViewModel = new ViewModelProvider(requireActivity()).get(FlightListViewModel.class);
-                    AmadeusRepository.flightSearch(originCityCode, destinationCityCode, departDate, returnDate, adults, flightListViewModel);
+                    AmadeusRepository.flightSearch(originCityCode, destinationCityCode, departDate, returnDate, adults, price, flightListViewModel);
 
                     AmadeusRepository.holdParameters(destinationCityCode, destinationCity, adults, returnDate);
 
                     // pass to execute SearchResultsFragment
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("price",price);
-                    navController.navigate(R.id.searchResultsFragment, bundle);
+                    //launchFragmentFlightResults(price);
+                    NavOptions navOptions = new NavOptions.Builder()
+                            .setPopUpTo(R.id.flightResultsFragment,true).build();
+
+                    navController.navigate(R.id.action_homeFragment2_to_flightResultsFragment, bundle, navOptions);
                 }
+            }
+        });
 
-
-
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetFields();
             }
         });
 
         return view;
+    }
+
+    private void launchFragmentFlightResults(double price) {
+        FlightResultsFragment flightResultsFragment = FlightResultsFragment.newInstance("","");
+
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, flightResultsFragment);
+        transaction.commit();
     }
 
     @Override
@@ -185,8 +218,8 @@ public class HomeFragment2 extends Fragment {
             return false;
         }
         adults = Integer.parseInt(adultsEditText.getText().toString());
-        if(adults <= 0) {
-            Snackbar.make(requireView(), "Please check input for number of people", Snackbar.LENGTH_SHORT).show();
+        if(adults <= 0 || adults>9) {
+            Snackbar.make(requireView(), "Please check input for number of people to be between 1-9", Snackbar.LENGTH_SHORT).show();
             return false;
         }
 
@@ -235,11 +268,53 @@ public class HomeFragment2 extends Fragment {
         return true;
     }
 
+    private void showDatePickerDialog(EditText dateEditText) {
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String selectedDate = year + "-";
+
+                month += 1;
+                if (month<10)   selectedDate += "0"+month+"-";
+                else            selectedDate += month+"-";
+
+                if(dayOfMonth<10)   selectedDate += "0"+dayOfMonth;
+                else                selectedDate += dayOfMonth;
+
+                dateEditText.setText(selectedDate);
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
+
     // TODO: implementation and refactoring?
     private boolean isDateValid(String date) {
         if (date.length() != 10)
             return false;
 
         return true;
+    }
+
+    private void resetFields() {
+        originAutoCompleteTextView.setText("");
+        destinationAutoCompleteTextView.setText("");
+        departDateEditText.setText("");
+        returnDateEditText.setText("");
+        adultsEditText.setText("");
+        budgetEditText.setText("");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"on resume");
+        Fragment f = getParentFragmentManager().findFragmentById(R.id.flightResultsFragment);
+        Log.d(TAG,"flightresults is null: "+(f==null));
     }
 }
