@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amadeus.resources.HotelOfferSearch;
+
 import java.util.List;
 
 import it.unimib.buildyourholiday.R;
@@ -25,14 +27,17 @@ import it.unimib.buildyourholiday.model.Hotel;
 
 public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.HotelViewHolder> {
 
+
     public interface OnItemClickListener {
 
-        void onHotelItemClick(Hotel hotel);
+        void onHotelItemClick(Hotel hotel,HotelOfferSearch hotelOfferSearch);
     }
 
     private final List<Hotel> hotelList;
     private List<String> hotelsDescription = null;
     private List<String> hotelLinks = null;
+    private List<HotelOfferSearch> hotelOfferSearches = null;
+
     private final HotelListAdapter.OnItemClickListener onItemClickListener;
     private int selectedItemPosition = -1;
     private Context context = null;
@@ -42,10 +47,12 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         this.onItemClickListener = onItemClickListener;
     }
 
-    public HotelListAdapter(List<Hotel> hotelList, List<String> hotelsDescription, List<String> hotelLinks, OnItemClickListener onItemClickListener, Context context) {
+    public HotelListAdapter(List<Hotel> hotelList, List<String> hotelsDescription, List<String> hotelLinks,
+                            List<HotelOfferSearch> hotelOfferSearches, OnItemClickListener onItemClickListener, Context context) {
         this.hotelList = hotelList;
         this.hotelsDescription = hotelsDescription;
         this.hotelLinks = hotelLinks;
+        this.hotelOfferSearches = hotelOfferSearches;
         this.onItemClickListener = onItemClickListener;
         this.context = context;
     }
@@ -74,7 +81,8 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 int position = holder.getAdapterPosition();
                 Log.d("RadioButton", "click detected on position: " + position);
                 Hotel hotel = hotelList.get(position);
-                onItemClickListener.onHotelItemClick(hotel);
+                HotelOfferSearch selectedHotelOffer = hotelOfferSearches.get(position);
+                onItemClickListener.onHotelItemClick(hotel,selectedHotelOffer);
                 //notifyItemChanged(position);
 
                 if (position != RecyclerView.NO_POSITION) {

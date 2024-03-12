@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amadeus.resources.FlightOfferSearch;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -45,9 +46,9 @@ public class FlightResultsFragment extends Fragment {
     private double price;
     private static final String TAG = FlightResultsFragment.class.getSimpleName();
     private FlightListViewModel flightListViewModel;
-    private FlightListAdapter flightListAdapter;
+    private FlightListAdapter flightListAdapter; private List<FlightOfferSearch> flightOffers;
     private List<Flight> flights; private List<String> durations; private List<Boolean> directed;
-    private Flight flight;
+    private Flight flight; private FlightOfferSearch flightOffer;
     private RecyclerView flightsRecyclerView;
     private TextView resultPriceError;
     private TextView flightLabel;
@@ -84,8 +85,6 @@ public class FlightResultsFragment extends Fragment {
             Bundle bundle = getArguments();
             price = bundle.getDouble("price");
             Log.d(TAG, "price received");
-          //  flightListViewModel = (FlightListViewModel) bundle.getSerializable("flights");
-          //  Log.d(TAG,"flights deserialized");
         }
     }
 
@@ -134,6 +133,14 @@ public class FlightResultsFragment extends Fragment {
             public void onChanged(List<Boolean> booleans) {
                 directed = booleans;
                 Log.d(TAG, "directed obtained");
+            }
+        });
+
+        flightListViewModel.getFlightOffersMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<FlightOfferSearch>>() {
+            @Override
+            public void onChanged(List<FlightOfferSearch> flightOfferSearches) {
+                flightOffers = flightOfferSearches;
+                Log.d(TAG,"offers received");
                 onResultReceived();
             }
         });
@@ -154,11 +161,11 @@ public class FlightResultsFragment extends Fragment {
 
                 // Esegui il commit della transazione
                 //transaction.commit();
-// Torna alla schermata precedente
+                // Torna alla schermata precedente
                 //fragmentManager.popBackStack();
 
                 navController.popBackStack(R.id.homeFragment,false);
-              //  navController.navigate(R.id.homeFragment2);
+                //  navController.navigate(R.id.homeFragment2);
             }
         });
 
@@ -166,17 +173,21 @@ public class FlightResultsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(flightPrice > 0) {
-                    double finalPrice = price - flightPrice;
+                    double finalPrice = -1;
+                    if(price>=0)    // price==-1 if research is without price parameter
+                        finalPrice = price - flightPrice;
+
 
                     HotelListViewModel hotelListViewModel = new ViewModelProvider(requireActivity()).get(HotelListViewModel.class);
                     AmadeusRepository.hotelSearch(flight.getDepartureDate(), finalPrice, hotelListViewModel);
+                    flightListViewModel.setSelectedFlightOffer(flightOffer);
 
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("flight",flight);
                     // pass to execute SearchResultsFragment with flight to build Travel instance
                     navController.navigate(R.id.hotelResultsFragment, bundle);
                 } else {
-                    Snackbar.make(v, "Please select a flight", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, getString(R.string.select_flight_err), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -195,10 +206,11 @@ public class FlightResultsFragment extends Fragment {
             proceedButton.setVisibility(View.VISIBLE);
         Log.d(TAG, "progress bar gone");
 
-        flightListAdapter = new FlightListAdapter(flights, durations, directed, new FlightListAdapter.OnItemClickListener() {
+        flightListAdapter = new FlightListAdapter(flights, durations, directed, flightOffers, new FlightListAdapter.OnItemClickListener() {
             @Override
-            public void onFlightItemClick(Flight selectedFlight) {
+            public void onFlightItemClick(Flight selectedFlight,FlightOfferSearch selectedFlightOffer) {
                 flight = selectedFlight;
+                flightOffer = selectedFlightOffer;
                 flightPrice = selectedFlight.getPrice();
                 Log.d(TAG, "flight set to travel");
             }

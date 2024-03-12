@@ -47,5 +47,10 @@
         android:name="it.unimib.buildyourholiday.HotelResultsFragment"
         android:label="fragment_hotel_results"
         tools:layout="@layout/fragment_hotel_results" />
+    <fragment
+        android:id="@+id/purchaseFragment"
+        android:name="it.unimib.buildyourholiday.PurchaseFragment"
+        android:label="fragment_purchase"
+        tools:layout="@layout/fragment_purchase" />
 
 </navigation>

@@ -154,4 +154,24 @@
     <string name="no_flights_for_budget">No flights were found for your reasearch, please try to modify budget or destination.</string>
     <string name="flights">Flights</string>
     <string name="hotels">Hotels</string>
+    <string name="cardNumber">Card number</string>
+    <string name="expirationDate">Expiration date</string>
+    <string name="cvv" translatable="false">CVV</string>
+    <string name="travelerFirstName">First name</string>
+    <string name="travelerLastName">Last name</string>
+    <string name="travelerPhone">Phone number</string>
+    <string name="travelerInfo">Traveler personal data:</string>
+    <string name="cardInfo">Payment details:</string>
+    <string name="purchased_travel_success">Your travel has been booked successfully!</string>
+    <string name="depart_date_err">Please check format for departure date</string>
+    <string name="return_date_err">Please check format for return date</string>
+    <string name="people_err">Please insert number of people</string>
+    <string name="people_number_err">Please check input for number of people to be between 1-9</string>
+    <string name="budget_err">Please check input for budget sum</string>
+    <string name="origin_city_err">Please check input for your departure city</string>
+    <string name="destination_city_err">Please check input for your destination city</string>
+    <string name="date_picker_err">Please make sure to pick a date in the future!</string>
+    <string name="date_range_err">Please make sure to pick a valid date range!</string>
+    <string name="select_flight_err">Please select a flight</string>
+    <string name="select_hotel_err">Please select a hotel</string>
 </resources>

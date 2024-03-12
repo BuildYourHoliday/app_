@@ -12,10 +12,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.amadeus.resources.FlightOfferSearch;
+import com.amadeus.resources.FlightOrder;
+import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -31,6 +34,7 @@ import static it.unimib.buildyourholiday.util.Constants.TOTAL_HOTEL_RESULTS;
  */
 public class AmadeusRepository {
     private static final AmadeusService service = new AmadeusService();
+    private static final String TAG = AmadeusRepository.class.getSimpleName();
    // private static FlightListViewModel flightListViewModel;       posso evitare di passare vm come parametro????
     private FlightListAdapter flightListAdapter = null;
     private HotelListAdapter hotelListAdapter = null;
@@ -50,6 +54,7 @@ public class AmadeusRepository {
                                 List<Flight> flights = new ArrayList<>();
                                 List<String> durations = new ArrayList<>();
                                 List<Boolean> directFlight = new ArrayList<>();
+                                List<FlightOfferSearch> flightOfferSearches = new ArrayList<>();
                                 String out = "";
                                 for (int i = 0; i < result.length; i++) {
 
@@ -66,11 +71,12 @@ public class AmadeusRepository {
                                     int lastIndex = itineraries[itineraries.length - 1].getSegments().length;
                                     flight.setReturnalTime(itineraries[itineraries.length - 1].getSegments()[lastIndex - 1].getDeparture().getAt());
 
-                                    if(flight.getPrice() <= price) {
+                                    if(price>=0 && flight.getPrice() <= price || price<=0) {
                                         flights.add(flight);
 
                                         durations.add(result[i].getItineraries()[0].getDuration().substring(2));
                                         directFlight.add(result[i].getItineraries()[0].getSegments().length == 1);
+                                        flightOfferSearches.add(result[i]);
                                     }
 
                                 }
@@ -79,6 +85,7 @@ public class AmadeusRepository {
                                 viewModel.setFlightList(flights);
                                 viewModel.setDurations(durations);
                                 viewModel.setDirectFlight(directFlight);
+                                viewModel.setFlightOffers(flightOfferSearches);
                             }
 
                         }
@@ -113,6 +120,7 @@ public class AmadeusRepository {
                     // testing hotel
                     listaId.add("HNPARKGU");
 
+                    Log.d(TAG,"price before fetchasync: "+price);
                     return service.fetchRoomsAsync(listaId, adults, checkinDate, checkoutDate, price);
                 })
                 .subscribeOn(Schedulers.io())
@@ -122,11 +130,13 @@ public class AmadeusRepository {
                             Log.d("RxJava","Rooms result");
                             List<Hotel> hotels = null;
                             List<String> descriptions = null, links = null;
+                            List<HotelOfferSearch> hotelOfferSearches = null;
 
                             if(roomsResult!=null && roomsResult[0]!=null) {
                                 Log.d("RxJava","Not null rooms result");
                                 hotels = new ArrayList<>();
                                 descriptions = new ArrayList<>(); links = new ArrayList<>();
+                                hotelOfferSearches = new ArrayList<>();
 
                                 for (int i=0; i<roomsResult.length; i++) {
                                     Hotel h = new Hotel(roomsResult[i].getHotel().getName(),roomsResult[i].getHotel().getHotelId(),
@@ -135,11 +145,13 @@ public class AmadeusRepository {
                                     hotels.add(h);
                                     links.add("geo:"+roomsResult[i].getHotel().getLatitude()+","+roomsResult[i].getHotel().getLongitude());
                                     descriptions.add(roomsResult[i].getOffers()[0].getRoom().getDescription().getText());
+                                    hotelOfferSearches.add(roomsResult[i]);
                                 }
 
                                 viewModel.setHotelListLiveData(hotels);
                                 viewModel.setHotelDescriptionLiveData(descriptions);
                                 viewModel.setHotelLinksLiveData(links);
+                                viewModel.setHotelOffersLiveData(hotelOfferSearches);
                             }
                         },
                         throwable -> {
@@ -204,5 +216,23 @@ public class AmadeusRepository {
                             Log.e("RxJava", "Errore: " + error.getMessage());
                         }
                 );
+    }
+
+    public static CompletableFuture<Boolean> bookTravel(FlightOfferSearch flightOfferSearch, FlightOrder.Traveler[] travelers, String email, HotelOfferSearch hotelOfferSearch) {
+        CompletableFuture<Boolean> futureResult = new CompletableFuture<>();
+
+        service.bookTravelAsync(flightOfferSearch,travelers,email,hotelOfferSearch)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> {
+                            futureResult.complete(result);
+                        },
+                        error -> {
+                            futureResult.completeExceptionally(error);
+                        }
+                );
+
+        return futureResult;
     }
 }

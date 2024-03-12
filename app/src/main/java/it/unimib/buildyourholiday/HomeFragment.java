@@ -181,16 +181,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void launchFragmentFlightResults(double price) {
-        FlightResultsFragment flightResultsFragment = FlightResultsFragment.newInstance("","");
-
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, flightResultsFragment);
-        transaction.commit();
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -200,26 +190,32 @@ public class HomeFragment extends Fragment {
     public boolean retrieveSearchParameters() {
         departDate = departDateEditText.getText().toString();
         if(departDate.isEmpty() || !isDateValid(departDate)) {
-            Snackbar.make(requireView(), "Please check format for departure date", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), getString(R.string.depart_date_err), Snackbar.LENGTH_SHORT).show();
             return false;
         }
         returnDate = returnDateEditText.getText().toString();
         if(!returnDate.isEmpty() && !isDateValid(returnDate)) {
-            Snackbar.make(requireView(), "Please check format for return date", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), getString(R.string.return_date_err), Snackbar.LENGTH_SHORT).show();
             return false;
         } else {
             if(returnDate.isEmpty()) {
                 returnDate = null;
+            } else {
+                if(!isDateRangeValid(departDate,returnDate)) {
+                    Snackbar.make(requireView(), getString(R.string.date_range_err), Snackbar.LENGTH_SHORT).show();
+                    return false;
+                }
             }
         }
 
+
         if(adultsEditText.getText().toString().isEmpty()) {
-            Snackbar.make(requireView(), "Please insert number of people", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), getString(R.string.people_err), Snackbar.LENGTH_SHORT).show();
             return false;
         }
         adults = Integer.parseInt(adultsEditText.getText().toString());
         if(adults <= 0 || adults>9) {
-            Snackbar.make(requireView(), "Please check input for number of people to be between 1-9", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), getString(R.string.people_number_err), Snackbar.LENGTH_SHORT).show();
             return false;
         }
 
@@ -228,14 +224,14 @@ public class HomeFragment extends Fragment {
         } else {
             price = Double.parseDouble(budgetEditText.getText().toString());
             if(price <= 0.0) {
-                Snackbar.make(requireView(), "Please check input for budget sum", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(requireView(), getString(R.string.budget_err), Snackbar.LENGTH_SHORT).show();
                 return false;
             }
         }
 
 
         if(originAutoCompleteTextView.getText().toString().isEmpty()) {
-            Snackbar.make(requireView(), "Please check input for your departure city", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), getString(R.string.origin_city_err), Snackbar.LENGTH_SHORT).show();
             return false;
         } else
         // activates in case autocomplete doesn't show up
@@ -251,7 +247,7 @@ public class HomeFragment extends Fragment {
         }
 
         if(destinationAutoCompleteTextView.getText().toString().isEmpty()) {
-            Snackbar.make(requireView(), "Please check input for your destination city", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), getString(R.string.destination_city_err), Snackbar.LENGTH_SHORT).show();
             return false;
         } else
         if(destinationCityCode == null || destinationCityCode.length() != 3) {
@@ -287,7 +283,10 @@ public class HomeFragment extends Fragment {
                 if(dayOfMonth<10)   selectedDate += "0"+dayOfMonth;
                 else                selectedDate += dayOfMonth;
 
-                dateEditText.setText(selectedDate);
+                if(year>=calendar.get(Calendar.YEAR) && month>calendar.get(Calendar.MONTH) && dayOfMonth>day)
+                    dateEditText.setText(selectedDate);
+                else
+                    Snackbar.make(view,getString(R.string.date_picker_err),Snackbar.LENGTH_SHORT).show();
             }
         }, year, month, day);
         datePickerDialog.show();
@@ -296,6 +295,17 @@ public class HomeFragment extends Fragment {
     // TODO: implementation and refactoring?
     private boolean isDateValid(String date) {
         if (date.length() != 10)
+            return false;
+
+        return true;
+    }
+
+    private boolean isDateRangeValid(String firstDate,String secondDate) {
+        if(Integer.parseInt(firstDate.substring(0,4))>Integer.parseInt(secondDate.substring(0,4)))
+            return false;
+        if(Integer.parseInt(firstDate.substring(5,7))>Integer.parseInt(secondDate.substring(5,7)))
+            return false;
+        if(Integer.parseInt(firstDate.substring(8))>Integer.parseInt(secondDate.substring(8)))
             return false;
 
         return true;

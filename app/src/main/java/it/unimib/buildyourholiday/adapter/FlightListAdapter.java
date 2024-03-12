@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amadeus.resources.FlightOfferSearch;
+
 import java.util.List;
 
 import it.unimib.buildyourholiday.R;
@@ -24,11 +26,14 @@ import it.unimib.buildyourholiday.model.Hotel;
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.FlightViewHolder> {
 
     public interface OnItemClickListener{
-        void onFlightItemClick(Flight flight);
+        //void onFlightItemClick(Flight flight);
+        void onFlightItemClick(Flight flight,FlightOfferSearch flightOfferSearch);
     }
     private final List<Flight> flightList;
     private List<String> durations = null;
     private List<Boolean> directFlight = null;
+    private List<FlightOfferSearch> flightOfferSearches = null;
+    private FlightOfferSearch selectedFlightOffer = null;
     private FlightListAdapter.OnItemClickListener onItemClickListener;
     private int selectedItemPosition = -1;
 
@@ -37,10 +42,12 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
         this.onItemClickListener = onItemClickListener;
     }
 
-    public FlightListAdapter(List<Flight> flightList, List<String> durations, List<Boolean> directFlight, FlightListAdapter.OnItemClickListener onItemClickListener) {
+    public FlightListAdapter(List<Flight> flightList, List<String> durations, List<Boolean> directFlight,
+                             List<FlightOfferSearch> flightOfferSearches, FlightListAdapter.OnItemClickListener onItemClickListener) {
         this.flightList = flightList;
         this.durations = durations;
         this.directFlight = directFlight;
+        this.flightOfferSearches = flightOfferSearches;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -76,7 +83,8 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Fl
                 int position = holder.getAdapterPosition();
                 Log.d("RadioButton","click detected on position: "+position);
                 Flight flight = flightList.get(position);
-                onItemClickListener.onFlightItemClick(flight);
+                selectedFlightOffer = flightOfferSearches.get(position);
+                onItemClickListener.onFlightItemClick(flight, selectedFlightOffer);
                 //notifyItemChanged(position);
 
                 if(position != RecyclerView.NO_POSITION) {

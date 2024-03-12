@@ -4,6 +4,7 @@ import static android.graphics.Insets.add;
 import static it.unimib.buildyourholiday.util.Constants.RATE_LIMIT_TIME;
 import static it.unimib.buildyourholiday.util.Constants.TOTAL_FLIGHTS_RESULTS;
 
+import android.service.credentials.CreateEntry;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -120,15 +121,21 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
     }
 
     public HotelOfferSearch[] getRooms(List<String> hotelCodes, int adults, String checkIn, String checkOut) throws ResponseException {
+        HotelOfferSearch[] rooms;
+        if(checkOut!=null && !checkOut.isEmpty()) {
+            Log.d("RxJava","checkout: "+checkOut);
 
-        // .and("priceRange",max prezzo)
+            rooms = amadeus.shopping.hotelOffersSearch.get(
+                    Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
+                            .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currency","EUR"));
+        } else {
+            rooms = amadeus.shopping.hotelOffersSearch.get(
+                    Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
+                            .and("bestRateOnly",true).and("currency","EUR"));
+        }
 
-        //get a list of hotels in a given city
-        HotelOfferSearch[] rooms = amadeus.shopping.hotelOffersSearch.get(
-                Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
-                        .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currencyCode","EUR"));
 
-        if (rooms[0].getResponse().getStatusCode() != 200) {
+        if (rooms[0].getResponse().getStatusCode() != 200 && rooms[0].getResponse().getStatusCode() != 424) {
             System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
             System.exit(-1);
         }
@@ -142,7 +149,14 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
             // to not exceed api rate-limit
             Thread.sleep(RATE_LIMIT_TIME);
             // Effettua la tua chiamata in background qui
-            HotelOfferSearch[] result = getRooms(hotelCodes, adults, checkIn, checkOut, price);
+            HotelOfferSearch[] result;
+            if(price>0) {
+                Log.d("AmadeusRepository","going for case price>0");
+                result = getRooms(hotelCodes, adults, checkIn, checkOut, price);
+            } else {
+                Log.d("AmadeusRepository","going for case price <= 0");
+                result = getRooms(hotelCodes, adults, checkIn, checkOut);
+            }
 
             // Invia il risultato all'emitter
             if(result[0].getResponse().getStatusCode() == 424) {
@@ -175,10 +189,10 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
 
             rooms = amadeus.shopping.hotelOffersSearch.get(
                     Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
-                            .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currencyCode","EUR").and("priceRange",price));
+                            .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currency","EUR").and("priceRange",price));
         } else {
             rooms = amadeus.shopping.hotelOffersSearch.get(
-                    Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn).and("checkOutDate","2024-03-15")
+                    Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
                             .and("bestRateOnly",true).and("currency","EUR").and("priceRange","-"+((int)price)));
         }
 
@@ -228,7 +242,7 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
             System.out.println("No result obtained");
             System.exit(-1);
         }
-        if (flights[0].getResponse().getStatusCode() != 200) {
+        if (flights!=null && flights[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + flights[0].getResponse().getStatusCode());
             System.exit(-1);
         }
@@ -238,17 +252,24 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
 
     public Observable<Boolean> bookTravelAsync(FlightOfferSearch flightOffer, FlightOrder.Traveler travelers[], String email, HotelOfferSearch hotelOffer) {
         return Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+
+            travelers[0].getContact().getPhones()[0].setCountryCallingCode("33");
+            travelers[0].getContact().getPhones()[0].setNumber("675426222");
+
             // to not exceed api rate-limit
             // Thread.sleep(RATE_LIMIT_TIME);
             // Effettua la tua chiamata in background qui
-            Boolean flightResult = bookFlight(flightOffer, travelers);
+           // Boolean flightResult = bookFlight(flightOffer, travelers);
+           // Log.d("PurchaseFragment","flight booking: "+flightResult);
 
             String body = "{\"data\""
                     + ":{\"offerId\":\""+hotelOffer.getOffers()[0].getId()+"\"" + ",\"guests\":[";
+            String phoneComplete = "+" + travelers[0].getContact().getPhones()[0].getCountryCallingCode() +
+                    travelers[0].getContact().getPhones()[0].getNumber();
 
             for (int i=0; i<travelers.length; i++) {
                 body += "{\"id\":"+(i+1)+",\"name\":{\"title\":\"MR\",\"firstName\":\""+travelers[i].getName().getFirstName()+"\","
-                        + "\"lastName\" :\""+travelers[i].getName().getLastName()+"\"},\"contact\":{\"phone\":\""+travelers[i].getContact().getPhones()[0].getNumber()+"\",\""
+                        + "\"lastName\" :\""+travelers[i].getName().getLastName()+"\"},\"contact\":{\"phone\":\""+phoneComplete+"\",\""
                         + "email\":\""+email+"\"}}";
                 if(i == travelers.length-1) {
                     body += "],\"";
@@ -261,9 +282,11 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
             body += "payments\":[{\"id\":1,\"method\":\"creditCard\",\""
                     + "card\":{\""+"vendorCode\":\"VI\",\"cardNumber\""
                     + ":\"4111111111111111\",\"expiryDate\":\"2025-01\"}}]}}";
+            Log.d("PurchaseFragment",body);
 
             Boolean hotelResult = bookHotel(body);
-            Boolean result = flightResult && hotelResult;
+            Boolean result =  hotelResult;
+            Log.d("PurchaseFragment","hotel booking: "+hotelResult);
 
             // Invia il risultato all'emitter
             emitter.onNext(result);

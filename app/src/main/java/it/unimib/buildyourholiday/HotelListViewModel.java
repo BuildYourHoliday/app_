@@ -3,6 +3,8 @@ package it.unimib.buildyourholiday;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.amadeus.resources.HotelOfferSearch;
+
 import java.util.List;
 
 import it.unimib.buildyourholiday.model.Hotel;
@@ -11,6 +13,8 @@ public class HotelListViewModel extends ViewModel {
     private MutableLiveData<List<Hotel>> hotelListLiveData = new MutableLiveData<>();
     private MutableLiveData<List<String>> hotelDescriptionLiveData = new MutableLiveData<>();
     private MutableLiveData<List<String>> hotelLinksLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<HotelOfferSearch>> hotelOffersLiveData = new MutableLiveData<>();
+    private MutableLiveData<HotelOfferSearch> selectedHotelOfferLiveData = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> resultsPriceError = new MutableLiveData<>(false);
 
@@ -44,5 +48,21 @@ public class HotelListViewModel extends ViewModel {
 
     public void setResultsPriceError(Boolean bool) {
         resultsPriceError.setValue(bool);
+    }
+
+    public MutableLiveData<List<HotelOfferSearch>> getHotelOffersLiveData() {
+        return hotelOffersLiveData;
+    }
+
+    public void setHotelOffersLiveData(List<HotelOfferSearch> hotelOffers) {
+        hotelOffersLiveData.setValue(hotelOffers);
+    }
+
+    public MutableLiveData<HotelOfferSearch> getSelectedHotelOfferLiveData() {
+        return selectedHotelOfferLiveData;
+    }
+
+    public void setSelectedHotelOfferLiveData(HotelOfferSearch selectedHotelOffer) {
+        selectedHotelOfferLiveData.setValue(selectedHotelOffer);
     }
 }

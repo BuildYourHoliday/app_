@@ -20,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amadeus.resources.HotelOfferSearch;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.List;
 
 import it.unimib.buildyourholiday.adapter.HotelListAdapter;
@@ -46,8 +49,9 @@ public class HotelResultsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private static final String TAG = HotelResultsFragment.class.getSimpleName();
     private HotelListViewModel hotelListViewModel; private Flight flight;
-    private HotelListAdapter hotelListAdapter;
+    private HotelListAdapter hotelListAdapter; private List<com.amadeus.resources.HotelOfferSearch> hotelOfferSearches;
     private List<Hotel> hotels; private List<String> descriptions; private List<String> links;
+    private HotelOfferSearch hotelOffer = null;
     private LinearLayout loadingBar;
     private TextView hotelLabel;
     private RecyclerView hotelsRecyclerView;
@@ -143,6 +147,14 @@ public class HotelResultsFragment extends Fragment {
             public void onChanged(List<String> linkList) {
                 links = linkList;
                 Log.d(TAG, "linkList obtained");
+            }
+        });
+
+        hotelListViewModel.getHotelOffersLiveData().observe(getViewLifecycleOwner(), new Observer<List<com.amadeus.resources.HotelOfferSearch>>() {
+            @Override
+            public void onChanged(List<com.amadeus.resources.HotelOfferSearch> hotelOffers) {
+                hotelOfferSearches = hotelOffers;
+                Log.d(TAG,"offers obtained");
                 onResultReceived();
             }
         });
@@ -175,7 +187,18 @@ public class HotelResultsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(builtTravel != null) {
-                    // todo purchase fragment & model
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("travel",builtTravel);
+                    hotelListViewModel.setSelectedHotelOfferLiveData(hotelOffer);
+                    if (saveTravel(builtTravel)) {
+                        navController.navigate(R.id.purchaseFragment,bundle);
+                    } else {
+                        navController.navigate(R.id.homeFragment);
+                        navController.navigate(R.id.loginActivity);
+                        Toast.makeText(requireContext(), requireContext().getString(R.string.login_required), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Snackbar.make(v, getString(R.string.select_hotel_err), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -195,10 +218,11 @@ public class HotelResultsFragment extends Fragment {
             resultPriceError.setVisibility(View.VISIBLE);
         }
 
-        hotelListAdapter = new HotelListAdapter(hotels, descriptions, links, new HotelListAdapter.OnItemClickListener() {
+        hotelListAdapter = new HotelListAdapter(hotels, descriptions, links, hotelOfferSearches,new HotelListAdapter.OnItemClickListener() {
             @Override
-            public void onHotelItemClick(Hotel selectedHotel) {
+            public void onHotelItemClick(Hotel selectedHotel, com.amadeus.resources.HotelOfferSearch selectedHotelOffer) {
                 hotel = selectedHotel;
+                hotelOffer = selectedHotelOffer;
                 buildTravelInstance();
                 Log.d(TAG, "hotel set to travel");
             }
@@ -225,6 +249,7 @@ public class HotelResultsFragment extends Fragment {
             travelViewModel = new ViewModelProvider(this,new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
         }
         if(userViewModel.getLoggedUser() != null) {
+            builtTravel.setSaved(true);
             travelViewModel.saveTravel(builtTravel);
             Log.d(TAG,"user is logged, proceeded to save");
             return true;

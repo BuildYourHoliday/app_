@@ -135,4 +135,23 @@
     <string name="no_flights_for_budget">Non è stato possibile trovare alcun volo per la tua ricerca, prova a modificare il tuo budget o la tua destinazione.</string>
     <string name="flights">Voli</string>
     <string name="hotels">Hotel</string>
+    <string name="cardNumber">Numero carta</string>
+    <string name="expirationDate">Data di scadenza</string>
+    <string name="travelerFirstName">Nome</string>
+    <string name="travelerLastName">Cognome</string>
+    <string name="travelerPhone">Numero di telefono</string>
+    <string name="travelerInfo">Dati personali viaggiatore:</string>
+    <string name="cardInfo">Metodo di pagamento:</string>
+    <string name="purchased_travel_success">Il tuo viaggio è stato prenotato con successo!</string>
+    <string name="depart_date_err">Controlla la tua data di partenza prima di proseguire</string>
+    <string name="return_date_err">Controlla la tua data di partenza prima di ritorno</string>
+    <string name="people_err">Inserisci un numero di persone prima di continuare</string>
+    <string name="people_number_err">Inserisci un numero di persone valido</string>
+    <string name="budget_err">Controlla la cifra inserita per il tuo bugdet prima di proseguire</string>
+    <string name="origin_city_err">Controlla la tua città di partenza prima di proseguire</string>
+    <string name="destination_city_err">Controlla la tua destinazione prima di proseguire</string>
+    <string name="date_picker_err">Inserisci una data non passata</string>
+    <string name="date_range_err">Scegli un range di date valido prima di proseguire</string>
+    <string name="select_flight_err">Scegli un volo prima di proseguire</string>
+    <string name="select_hotel_err">Scegli un hotel prima di proseguire</string>
 </resources>

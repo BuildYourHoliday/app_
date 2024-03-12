@@ -300,6 +300,7 @@ public class AmadeusAsync extends AppCompatActivity {
                          //   hotelResults.append("\n\n\n");
                             Log.d("RxJava","flights instance: "+(flights!=null)+"flights size: " + flights.size());
 
+                            /*
                             FlightListAdapter flightListAdapter = new FlightListAdapter(flights, durations, directFlight,
                                     new FlightListAdapter.OnItemClickListener(){
                                         @Override
@@ -316,6 +317,8 @@ public class AmadeusAsync extends AppCompatActivity {
                             Log.d("RxJava","nh3");
                             flightsRecyclerView.setAdapter(flightListAdapter);
                             Log.d("RxJava","nh4");
+
+                             */
                         }
                 );
     }
@@ -360,6 +363,7 @@ public class AmadeusAsync extends AppCompatActivity {
                                         descriptions.add(roomsResult[i].getOffers()[0].getRoom().getDescription().getText());
                                     }
                                 }
+                                /*
                                 HotelListAdapter hotelListAdapter = new HotelListAdapter(hotels, descriptions, links, new HotelListAdapter.OnItemClickListener() {
                                     @Override
                                     public void onHotelItemClick(Hotel selectedHotel) {
@@ -375,6 +379,8 @@ public class AmadeusAsync extends AppCompatActivity {
                                 Log.d("RxJava","nh3");
                                 hotelsRecyclerView.setAdapter(hotelListAdapter);
                                 Log.d("RxJava","nh4");
+
+                                 */
 
                                 //checkout = new Travel(flight,hotel);
                             },
