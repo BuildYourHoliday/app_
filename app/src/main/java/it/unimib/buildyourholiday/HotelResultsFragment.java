@@ -163,7 +163,7 @@ public class HotelResultsFragment extends Fragment {
                         navController.navigate(R.id.profileFragment);
                     }
                     else {
-                        navController.navigate(R.id.homeFragment2);
+                        navController.navigate(R.id.homeFragment);
                         navController.navigate(R.id.loginActivity);
                         Toast.makeText(requireContext(), requireContext().getString(R.string.login_required), Toast.LENGTH_LONG).show();
                     }

@@ -43,6 +43,7 @@ import java.util.List;
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
 import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
+import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.util.JsonFileReader;
@@ -131,7 +132,10 @@ public class MapFragment extends Fragment {
                 requireActivity(),
                 new TravelViewModelFactory(travelRepository)).get(TravelViewModel.class);
 
-
+        IUserRepository userRepository = ServiceLocator.getInstance()
+                .getUserRepository(requireActivity().getApplication());
+        UserViewModel userViewModel= new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         mapView.getMapboxMap().loadStyleJson(JsonFileReader.readJsonFromAssets(getContext(), mapStyle));
 
@@ -167,7 +171,9 @@ public class MapFragment extends Fragment {
                     Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 100%)\"");
                     mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
                 }
-                initMap(mapView, travelViewModel, getViewLifecycleOwner());
+
+                if(userRepository.getLoggedUser() != null)
+                    initMap(mapView, travelViewModel, getViewLifecycleOwner());
             }
         });
 

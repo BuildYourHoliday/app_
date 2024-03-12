@@ -157,7 +157,7 @@ public class FlightResultsFragment extends Fragment {
 // Torna alla schermata precedente
                 //fragmentManager.popBackStack();
 
-                navController.popBackStack(R.id.homeFragment2,false);
+                navController.popBackStack(R.id.homeFragment,false);
               //  navController.navigate(R.id.homeFragment2);
             }
         });

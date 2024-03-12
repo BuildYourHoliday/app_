@@ -1,5 +1,8 @@
 package it.unimib.buildyourholiday;
 
+import static com.google.gson.reflect.TypeToken.get;
+
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 
@@ -42,7 +46,7 @@ public class AuthenticationInterceptor implements NavController.OnDestinationCha
         }
     }
 
-    private boolean isUserLoggedIn() {
+    public boolean isUserLoggedIn() {
         if(userViewModel.getLoggedUser()!=null)
             return true;
         return false;

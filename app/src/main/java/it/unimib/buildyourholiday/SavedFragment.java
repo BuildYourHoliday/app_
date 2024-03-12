@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class SavedFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
+
+    private static final String TAG = SavedFragment.class.getSimpleName();
     private List<Travel> newList;
 //    private TravelListAdapter travelListAdapter;
     private ProgressBar progressBar;
@@ -101,12 +104,19 @@ public class SavedFragment extends Fragment {
                                         Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
                                     }
 
-                                    public void onDeleteButtonPressed(int position){
-                                        /* TODO: test once saving is possible
+                                    public void onDeleteButtonPressed(int position) {
+                                        for (int i=0;i<travelList.size();i++) {
+                                            Log.d(TAG,"travel "+i+": "+travelList.get(i).getCity());
+                                        }
+                                        Log.d(TAG,"size: "+travelList.size());
+                                        Log.d(TAG,"position: " + position);
+                                        
+                                        /* TODO: test once saving is possible */
                                         Travel delete = travelList.get(position);
+                                        Log.d(TAG,"pos: "+travelList.get(position).getFlight().getDepartureAirport());
                                         travelViewModel.deleteTravel(delete);
 
-                                         */
+
                                         Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
                                     }
                                 });

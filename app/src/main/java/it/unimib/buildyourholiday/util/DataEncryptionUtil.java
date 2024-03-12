@@ -150,4 +150,21 @@ public class DataEncryptionUtil {
         byte[] plaintext = byteArrayOutputStream.toByteArray();
         return new String(plaintext, StandardCharsets.UTF_8);
     }
+
+    /**
+     * Deletes data saved in files created with EncryptedSharedPreferences API
+     * and in normal text files where the information is encrypted.
+     * @param encryptedSharedPreferencesFileName The EncryptedSharedPreferences file name
+     *                                           where the information is saved.
+     * @param encryptedFileDataFileName The file name where the information is saved.
+     */
+    public void deleteAll(String encryptedSharedPreferencesFileName, String encryptedFileDataFileName) {
+        SharedPreferences sharedPref = context.getSharedPreferences(encryptedSharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+
+        new File(context.getFilesDir(), encryptedFileDataFileName).delete();
+    }
 }

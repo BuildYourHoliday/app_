@@ -15,7 +15,7 @@ public interface TravelCallback {
     void onFailureFromLocal(Exception exception);
     void onTravelSavedStatusChanged(Travel travel, List<Travel> savedTravels);
     void onTravelSavedStatusChanged(List<Travel> travelList);
-    void onDeleteFavoriteNewsSuccess(List<Travel> travelList);
+    void onDeleteFavoriteTravelSuccess(List<Travel> travelList);
     void onSuccessFromCloudReading(List<Travel> travelList);
     void onSuccessFromCloudWriting(Travel travel);
     void onFailureFromCloud(Exception exception);
@@ -24,5 +24,5 @@ public interface TravelCallback {
 
     void onSuccessFromBookedCloudReading(List<Travel> travelList);
 
-    void onDeleteFavoriteNewsSuccess(List<Travel> travelList, Travel deletedTravel);
+    void onDeleteFavoriteTravelSuccess(List<Travel> travelList, Travel deletedTravel);
 }

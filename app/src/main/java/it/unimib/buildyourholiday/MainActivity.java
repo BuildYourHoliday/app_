@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment2, R.id.mapFragment, R.id.profileFragment).build();
+                R.id.homeFragment, R.id.mapFragment, R.id.profileFragment).build();
 
         navController.addOnDestinationChangedListener(new AuthenticationInterceptor(this,userViewModel));
 

@@ -135,8 +135,11 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void onSuccessFromLocal(List<Travel> travelList) {
-        Log.d("SaveID","associated id: "+travelList.get(0).getId());
-        backupDataSource.addTravel(travelList.get(0));
+        if(travelList != null && travelList.size()>0) {
+            Log.d("SaveID","associated id: "+travelList.get(0).getId());
+            backupDataSource.addTravel(travelList.get(0));
+        }
+
         if(savedTravelsMutableLiveData.getValue()!=null && savedTravelsMutableLiveData.getValue().isSuccess()) {
             List<Travel> travels = ((Result.TravelResponseSuccess)savedTravelsMutableLiveData.getValue()).getData().getTravelList();
             travels.addAll(travelList);
@@ -181,7 +184,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     }
 
     @Override
-    public void onDeleteFavoriteNewsSuccess(List<Travel> travelList) {
+    public void onDeleteFavoriteTravelSuccess(List<Travel> travelList) {
         Result allTravels = savedTravelsMutableLiveData.getValue();
 
         if (allTravels != null && allTravels.isSuccess()) {
@@ -245,7 +248,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     }
 
     @Override
-    public void onDeleteFavoriteNewsSuccess(List<Travel> travelList, Travel deletedTravel) {
+    public void onDeleteFavoriteTravelSuccess(List<Travel> travelList, Travel deletedTravel) {
         Result allTravels = savedTravelsMutableLiveData.getValue();
 
         if (allTravels != null && allTravels.isSuccess()) {

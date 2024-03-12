@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profileActivity"
             app:destination="@id/profileActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_flightResultsFragment"
+            app:destination="@id/flightResultsFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -35,9 +38,9 @@
         android:id="@+id/loginActivity"
         android:name="it.unimib.buildyourholiday.LoginActivity" />
     <fragment
-        android:id="@+id/searchResultsFragment"
+        android:id="@+id/flightResultsFragment"
         android:name="it.unimib.buildyourholiday.FlightResultsFragment"
-        android:label="fragment_search_results"
+        android:label="fragment_flight_results"
         tools:layout="@layout/fragment_flight_results" />
     <fragment
         android:id="@+id/hotelResultsFragment"

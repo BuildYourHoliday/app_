@@ -49,7 +49,10 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Log.d(TAG,"listener triggered");
                 if (firebaseAuth.getCurrentUser() == null) {
+                    Log.d(TAG,"user null");
+
                     firebaseAuth.removeAuthStateListener(this);
                     Log.d(TAG, "User logged out");
                     userResponseCallback.onSuccessLogout();
@@ -58,6 +61,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
         };
         firebaseAuth.addAuthStateListener(authStateListener);
         firebaseAuth.signOut();
+        Log.d(TAG,"sign out statement");
     }
 
     @Override

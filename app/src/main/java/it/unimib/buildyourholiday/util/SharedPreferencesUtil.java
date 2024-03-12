@@ -71,5 +71,17 @@ public class SharedPreferencesUtil {
                 Context.MODE_PRIVATE);
         return sharedPref.getStringSet(key, null);
     }
+
+    /**
+     * Deletes data saved in files created with SharedPreferences API.
+     * @param sharedPreferencesFileName The file name where the information is saved.
+     */
+    public void deleteAll(String sharedPreferencesFileName) {
+        SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
 }
 

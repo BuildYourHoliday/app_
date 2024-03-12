@@ -147,6 +147,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
 
     @Override
     public void onSuccessLogout() {
+        Log.d(TAG,"callback, to delete locals");
         travelLocalDataSource.deleteAll();
     }
 
@@ -182,7 +183,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
     }
 
     @Override
-    public void onDeleteFavoriteNewsSuccess(List<Travel> travelList) {
+    public void onDeleteFavoriteTravelSuccess(List<Travel> travelList) {
 
     }
 
@@ -208,7 +209,9 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
 
     @Override
     public void onSuccessDeletion() {
-
+        Result.UserResponseSuccess result = new Result.UserResponseSuccess(null);
+        userMutableLiveData.postValue(result);
+        Log.d(TAG,"success result posted");
     }
 
     @Override
@@ -217,7 +220,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
     }
 
     @Override
-    public void onDeleteFavoriteNewsSuccess(List<Travel> travelList, Travel deletedTravel) {
+    public void onDeleteFavoriteTravelSuccess(List<Travel> travelList, Travel deletedTravel) {
 
     }
 }

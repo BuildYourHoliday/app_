@@ -18,12 +18,20 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
+import it.unimib.buildyourholiday.data.repository.user.UserRepository;
+import it.unimib.buildyourholiday.data.source.user.UserAuthenticationRemoteDataSource;
+import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.User;
+import it.unimib.buildyourholiday.util.ServiceLocator;
 
 public class ProfileActivity extends AppCompact implements LogoutBottomSheetDialog.BottomSheetListener, ProfilePicBottomSheetDialog.BottomSheetListener {
     Switch darkModeSwitch;
@@ -67,6 +75,11 @@ public class ProfileActivity extends AppCompact implements LogoutBottomSheetDial
         loginButton = findViewById(R.id.login_bottom);
         profilePhoto = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().
+                getUserRepository(getApplication());
+        userViewModel = new ViewModelProvider(this, new UserViewModelFactory(userRepository))
+                .get(UserViewModel.class);
 
      /*   sharedPreferences1 = getSharedPreferences("Log", MODE_PRIVATE);
         login = sharedPreferences1.getBoolean("Login", false);*/
@@ -254,9 +267,19 @@ public class ProfileActivity extends AppCompact implements LogoutBottomSheetDial
             login = sharedPreferences1.getBoolean("Login",false);*/
            // mFireBaseAuth.signOut();
            // mFireBaseAuth = null;
-            FirebaseAuth.getInstance().signOut();
-            mFireBaseAuth = null;
-            updateUI();
+            /*FirebaseAuth.getInstance().signOut();
+            mFireBaseAuth = null;*/
+            userViewModel.logout().observe(this, new Observer<Result>() {
+                @Override
+                public void onChanged(Result result) {
+                    if(result.isSuccess()) {
+                        mFireBaseAuth = null;
+                        updateUI();
+                    } else {
+                        //TODO error msg
+                    }
+                }
+            });
         } else if (action.equals("Add")) {
             openGallery();
         } else if (action.equals("Remove")) {

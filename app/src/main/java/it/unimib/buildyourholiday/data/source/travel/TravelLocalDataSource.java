@@ -1,5 +1,7 @@
 package it.unimib.buildyourholiday.data.source.travel;
 
+import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.unimib.buildyourholiday.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static it.unimib.buildyourholiday.util.Constants.GENERIC_ERROR;
 import static it.unimib.buildyourholiday.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
@@ -107,7 +109,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             // It means that the update succeeded because the number of updated rows is
             // equal to the number of the original favorite news
             if (travelDao.getAllSaved().size()==0) {
-                travelCallback.onDeleteFavoriteNewsSuccess(savedTravels);
+                travelCallback.onDeleteFavoriteTravelSuccess(savedTravels);
             } else {
                 travelCallback.onFailureFromLocal(new Exception(GENERIC_ERROR));
             }
@@ -173,11 +175,12 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
             int travelsCounter = travelDao.getAllSaved().size();
             int travelsDeleted = travelDao.deleteAll();
+            Log.d("TravelLocalDataSource","deleted from local");
 
             // It means that everything has been deleted
             if (travelsCounter == travelsDeleted) {
-              //TODO  sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
-              //TODO  dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
+                sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
+                dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
                 travelCallback.onSuccessDeletion();
             }
         });
@@ -192,9 +195,9 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             int travelsDeleted = travelList.size();
 
             if (travelsCounter != travelsDeleted) {
-                //TODO  sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
-                //TODO  dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
-                travelCallback.onDeleteFavoriteNewsSuccess(travelList, travel);
+                //sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
+                //dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
+                travelCallback.onDeleteFavoriteTravelSuccess(travelList, travel);
             }
 
         });

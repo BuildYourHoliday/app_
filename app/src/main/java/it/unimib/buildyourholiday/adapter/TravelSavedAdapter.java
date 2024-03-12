@@ -5,6 +5,7 @@ package it.unimib.buildyourholiday.adapter;
 import android.animation.LayoutTransition;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
@@ -21,7 +23,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import it.unimib.buildyourholiday.R;
+import it.unimib.buildyourholiday.TravelViewModel;
+import it.unimib.buildyourholiday.TravelViewModelFactory;
+import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.model.Travel;
+import it.unimib.buildyourholiday.util.ServiceLocator;
 
 public class TravelSavedAdapter extends RecyclerView.Adapter<TravelSavedAdapter.TravelViewHolder> {
 
@@ -217,11 +223,18 @@ public class TravelSavedAdapter extends RecyclerView.Adapter<TravelSavedAdapter.
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.button_delete) {
-                travelList.remove(getAdapterPosition());
-                notifyItemRemoved(getAdapterPosition());
-                onItemClickListener.onDeleteButtonPressed(getAdapterPosition());
+                int position = getAdapterPosition();
+                Log.d("SavedFragment","adapter size: "+ travelList.size());
+                Log.d("SavedFragment","adapter: " + travelList.get(position).getFlight().getDepartureAirport());
+                for (int i=0;i<travelList.size();i++) {
+                    Log.d("SavedFragment","(adapter) travel "+i+": "+travelList.get(i).getCity());
+                }
+                onItemClickListener.onDeleteButtonPressed(position);
+                travelList.remove(position);
+                notifyItemRemoved(position);
             }
             else{
+                Log.d("SavedFragment","position: "+getAdapterPosition());
                 Travel travel = travelList.get(getAdapterPosition());
                 travel.setExpandable(!travel.isExpandable());
                 TransitionManager.beginDelayedTransition(constraintLayout, new AutoTransition());
