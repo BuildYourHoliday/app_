@@ -161,17 +161,21 @@ public class PurchaseFragment extends Fragment {
     }
 
     private void cardTesting(View view) {
-        cardForm.setBackgroundColor(getActivity().getColor(R.color.grey));
+        //cardForm.setBackgroundColor(requireActivity().getColor(R.color.grey));
+
         cardForm.setClickable(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             cardForm.setTooltipText("Testing mode enabled");
         }
         cardNumber.setText("4111111111111111");
-        view.findViewById(R.id.card_number_inputLayout).setActivated(false);
+        cardNumber.setClickable(false);
+        view.findViewById(R.id.card_number_inputLayout).setBackgroundColor(requireActivity().getColor(com.mapbox.maps.plugin.overlay.R.color.material_grey_600));
         expiration.setText("2025-01");
-        view.findViewById(R.id.card_expiration_inputLayout).setActivated(false);
+        expiration.setClickable(false);
+        view.findViewById(R.id.card_expiration_inputLayout).setBackgroundColor(requireActivity().getColor(com.mapbox.maps.plugin.overlay.R.color.material_grey_600));
         cvv.setText("123");
-        view.findViewById(R.id.card_cvv_inputLayout).setActivated(false);
+        cvv.setClickable(false);
+        view.findViewById(R.id.card_cvv_inputLayout).setBackgroundColor(requireActivity().getColor(com.mapbox.maps.plugin.overlay.R.color.material_grey_600));
     }
 
     private void processPayment(Travel travel, FlightOfferSearch flightOfferSearch, FlightOrder.Traveler[] travelers, String email, HotelOfferSearch hotelOfferSearch) {

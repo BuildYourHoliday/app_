@@ -4,10 +4,10 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +25,6 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
-import java.util.Objects;
 
 import it.unimib.buildyourholiday.adapter.FlightListAdapter;
 import it.unimib.buildyourholiday.model.Flight;
@@ -43,9 +42,9 @@ public class FlightResultsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private double price;
+    private double price; private String destinationCountry;
     private static final String TAG = FlightResultsFragment.class.getSimpleName();
-    private FlightListViewModel flightListViewModel;
+    private FlightListViewModel flightListViewModel; private NavController navController;
     private FlightListAdapter flightListAdapter; private List<FlightOfferSearch> flightOffers;
     private List<Flight> flights; private List<String> durations; private List<Boolean> directed;
     private Flight flight; private FlightOfferSearch flightOffer;
@@ -55,6 +54,7 @@ public class FlightResultsFragment extends Fragment {
     private LinearLayout loadingBar;
     private double flightPrice = -1;
     private Button proceedButton; private ImageButton backButton;
+    private boolean reloaded = false;
 
     public FlightResultsFragment() {
         // Required empty public constructor
@@ -84,6 +84,7 @@ public class FlightResultsFragment extends Fragment {
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             price = bundle.getDouble("price");
+            destinationCountry = bundle.getString("destinationCountry");
             Log.d(TAG, "price received");
         }
     }
@@ -104,10 +105,13 @@ public class FlightResultsFragment extends Fragment {
         backButton = view.findViewById(R.id.back_button);
         flightLabel = view.findViewById(R.id.flight_text);
         flightsRecyclerView = view.findViewById(R.id.recyclerview_flight_offers);
+            flightsRecyclerView.setVisibility(View.GONE);
+
+        showLoading();
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
 
         flightListViewModel = new ViewModelProvider(requireActivity()).get(FlightListViewModel.class);
 
@@ -141,6 +145,7 @@ public class FlightResultsFragment extends Fragment {
             public void onChanged(List<FlightOfferSearch> flightOfferSearches) {
                 flightOffers = flightOfferSearches;
                 Log.d(TAG,"offers received");
+                loadingBar.setVisibility(View.VISIBLE);
                 onResultReceived();
             }
         });
@@ -148,24 +153,9 @@ public class FlightResultsFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //navController.navigate(R.id.homeFragment2);
-                // Ottieni il FragmentManager
-               // FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-
-                // Inizia una transazione del fragment
-               // FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-                // Rimuovi il fragment corrente
-                //transaction.remove(FlightResultsFragment.this);
-
-                // Esegui il commit della transazione
-                //transaction.commit();
-                // Torna alla schermata precedente
-                //fragmentManager.popBackStack();
-
-                navController.popBackStack(R.id.homeFragment,false);
-                //  navController.navigate(R.id.homeFragment2);
+                // Esegui la navigazione al nuovo fragment con le opzioni definite
+                navController.navigate(R.id.homeFragment);
+                reloaded = false;
             }
         });
 
@@ -174,7 +164,7 @@ public class FlightResultsFragment extends Fragment {
             public void onClick(View v) {
                 if(flightPrice > 0) {
                     double finalPrice = -1;
-                    if(price>=0)    // price==-1 if research is without price parameter
+                    if(price>=0)    // price == -1 if research is without price parameter
                         finalPrice = price - flightPrice;
 
 
@@ -184,8 +174,10 @@ public class FlightResultsFragment extends Fragment {
 
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("flight",flight);
+                    bundle.putString("destinationCountry",destinationCountry);
                     // pass to execute SearchResultsFragment with flight to build Travel instance
                     navController.navigate(R.id.hotelResultsFragment, bundle);
+                    reloaded = false;
                 } else {
                     Snackbar.make(v, getString(R.string.select_flight_err), Snackbar.LENGTH_SHORT).show();
                 }
@@ -195,6 +187,18 @@ public class FlightResultsFragment extends Fragment {
         return view;
     }
 
+    private void showLoading() {
+        Log.d(TAG,"reset loading view");
+
+        flightLabel.setVisibility(View.GONE);
+        flightsRecyclerView.setVisibility(View.GONE);
+
+        resultPriceError.setVisibility(View.GONE);
+        proceedButton.setVisibility(View.GONE);
+
+        loadingBar.setVisibility(View.VISIBLE);
+    }
+
     private void onResultReceived() {
         loadingBar.setVisibility(View.GONE);
 
@@ -202,8 +206,13 @@ public class FlightResultsFragment extends Fragment {
 
         if(flights.size()==0) {
             resultPriceError.setVisibility(View.VISIBLE);
-        } else
+            proceedButton.setVisibility(View.GONE);
+            flightsRecyclerView.setVisibility(View.GONE);
+        } else {
+            flightsRecyclerView.setVisibility(View.VISIBLE);
             proceedButton.setVisibility(View.VISIBLE);
+            resultPriceError.setVisibility(View.GONE);
+        }
         Log.d(TAG, "progress bar gone");
 
         flightListAdapter = new FlightListAdapter(flights, durations, directed, flightOffers, new FlightListAdapter.OnItemClickListener() {
@@ -225,7 +234,17 @@ public class FlightResultsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireView().invalidate();
+        if(navController!=null) {
+            int callingFragmentId = navController.getCurrentBackStack().getValue().get(navController.getCurrentBackStack().getValue().size()-2).getDestination().getId();
+            Log.d(TAG,"on resume, calling fragment: "+callingFragmentId+", "
+                    + navController.getCurrentBackStackEntry().getDestination().toString()+";\n"
+                + navController.getCurrentBackStack().getValue().get(navController.getCurrentBackStack().getValue().size()-2));
+            if (!reloaded && callingFragmentId == R.id.homeFragment) {
+                reloaded = true;
+                showLoading();
+            }
+        }
+
         Log.d(TAG,"on resume");
     }
 

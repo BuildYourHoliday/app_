@@ -17,6 +17,7 @@ import com.mapbox.maps.MapView;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.buildyourholiday.MapFragment;
 import it.unimib.buildyourholiday.TravelViewModel;
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
@@ -25,23 +26,28 @@ public class MapUtil {
     public static List<String> getAllCountries(List<Travel> travels) {
         List<String> countries = new ArrayList<>();
         for (Travel t: travels) {
-            if(!countries.contains(t.getCountry())) {
+            if(!countries.contains(t.getCountry()) && t.getCountry()!=null) {
                 countries.add(t.getCountry());
                 Log.d("MapFragment","added value for: "+t.getCountry());
-            }
+            } else
+                Log.d("MapFragment","refused value for: "+t.getCountry());
         }
+        Log.d("MapFragment","total ids: " + countries.size());
         return countries;
     }
 
     public static String getAllCountriesFormatted(List<Travel> travels) {
         List<String> countries = getAllCountries(travels);
+
         String result = "";
         for (String s: countries) {
+            Log.d("MapFragment","analyzing " + s);
             if(countries.indexOf(s)==0)
                 result += "\"" + s + "\"";
             else
                 result += ", \"" + s + "\"";
         }
+        Log.d("MapFragment","built string: "+result);
         return result;
     }
 
@@ -63,7 +69,8 @@ public class MapUtil {
                     @Override
                     public void onChanged(Result result) {
                         String countries = getAllCountriesFormatted(((Result.TravelResponseSuccess)result).getData().getTravelList());
-                        Log.d("MapFragment","ids: "+countries);
+                        Log.d("MapFragment","received "+((Result.TravelResponseSuccess)result).getData().getTravelList().size()+" results");
+                        Log.d("MapFragment","saved ids: "+countries);
                         Expected<String,Value> conv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
                                 "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
                                 "false\n" + "]");
@@ -71,7 +78,7 @@ public class MapUtil {
                         mapView.getMapboxMap().getStyle().setStyleLayerProperty(SAVED_COUNTRIES_LAYER,
                                 "filter",conv.getValue());
                         Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(SAVED_COUNTRIES_LAYER,"filter"));
-
+                        model.getSavedTravelsLiveData(false).removeObserver(this);
                     }
                 });
     }
@@ -83,7 +90,7 @@ public class MapUtil {
                     @Override
                     public void onChanged(Result result) {
                         String countries = getAllCountriesFormatted(((Result.TravelResponseSuccess)result).getData().getTravelList());
-                        Log.d("MapFragment","ids: "+countries);
+                        Log.d("MapFragment","booked ids: "+countries);
                         Expected<String,Value> conv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
                                 "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
                                 "false\n" + "]");
@@ -91,7 +98,7 @@ public class MapUtil {
                         mapView.getMapboxMap().getStyle().setStyleLayerProperty(BOOKED_COUNTRIES_LAYER,
                                 "filter",conv.getValue());
                         Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(BOOKED_COUNTRIES_LAYER,"filter"));
-
+                        model.getBookedTravelsLiveData(false).removeObserver(this);
                     }
                 });
     }

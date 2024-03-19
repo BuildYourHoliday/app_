@@ -16,7 +16,7 @@ public class LuoghiAdapter extends ArrayAdapter<String> {
     private Location[] buffer;
     private static final String[] DEFAULT = new String[] {"foo","foolio","example","Rome"};
     public LuoghiAdapter(@NonNull Context context, int resource) {
-        super(context, resource,DEFAULT);
+        super(context, resource, DEFAULT);
         notifyDataSetChanged();
     }
 
@@ -25,8 +25,8 @@ public class LuoghiAdapter extends ArrayAdapter<String> {
     }
 
     public void setList(Location[] locations) {
-        this.buffer = locations;
         super.clear();
+        this.buffer = locations;
         for (Location l: locations) {
             super.add(l.getName());
         }

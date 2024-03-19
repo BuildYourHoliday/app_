@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
     }
     private final List<Travel> travelList;
     private final OnItemClickListener onItemClickListener;
+    private boolean optionDelete = true;
 
 
 
@@ -53,6 +55,12 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         this.onItemClickListener = onItemClickListener;
     }
 
+    public TravelListAdapter(List<Travel> travelList, OnItemClickListener onItemClickListener, boolean optionDelete) {
+        this.travelList = travelList;
+        this.onItemClickListener = onItemClickListener;
+        this.optionDelete = optionDelete;
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public TravelViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -60,7 +68,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.booked_travels_parent_item, viewGroup, false);
 
-        return new TravelViewHolder(view);
+        return new TravelViewHolder(view,optionDelete);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -115,11 +123,12 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
 
         private final TextView textViewDestination, textViewDeparture, textViewSeparation;
         private final TextView textViewDate, textViewPrice, textViewEndDate, textViewDepartureTime, textViewAdults, textViewNights;
+        private final ImageView bookedImage, savedImage;
         private final Button buttonDelete;
         private final ConstraintLayout constraintLayout, expandableLayout;
         //private final RelativeLayout expandableLayout;
 
-        public TravelViewHolder(@NonNull View itemView) {
+        public TravelViewHolder(@NonNull View itemView, boolean optionDelete) {
             super(itemView);
             textViewDestination = itemView.findViewById(R.id.textview_destination);
             textViewDate = itemView.findViewById(R.id.textview_checkinDate);
@@ -129,10 +138,14 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             textViewDepartureTime = itemView.findViewById(R.id.textView_departureTime);
             textViewSeparation = itemView.findViewById(R.id.textview_separation);
             textViewNights = itemView.findViewById(R.id.textview_nights);
+            bookedImage = itemView.findViewById(R.id.booked_imageView);
+            savedImage = itemView.findViewById(R.id.saved_imageView);
             //toDo
             textViewAdults = itemView.findViewById(R.id.textview_adults);
 
             buttonDelete = itemView.findViewById(R.id.button_delete);
+            if(!optionDelete)
+                buttonDelete.setVisibility(View.GONE);
 
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
@@ -167,6 +180,12 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             date1 = null;
             date2 = null;
             nights = 0;
+
+            // set icon either on booked or saved
+            if(travel.isBooked() && bookedImage != null)
+                bookedImage.setVisibility(View.VISIBLE);
+            else if(savedImage != null)
+                savedImage.setVisibility(View.VISIBLE);
 
             //check null date for saved
             if(travel.getFinishDate() != null)

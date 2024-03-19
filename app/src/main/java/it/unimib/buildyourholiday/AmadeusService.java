@@ -79,16 +79,9 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
     }
 
     public Hotel[] getHotels(String cityCode) throws ResponseException {
-        //get a list of hotels in a given city
-      /*  HotelOfferSearch[] hotelOfferSearches = amadeus.shopping.hotelOffersSearch.get(
-                Params.with("cityCode", "PAR").and("checkInDate","2024-03-01")
-                        .and("checkOutDate","2024-03-08")
-        );
-
-       */
 
         Hotel[] hotels = amadeus.referenceData.locations.hotels.byCity.get(
-                Params.with("cityCode", "PAR").and("ratings",1).and("radius",3));
+                Params.with("cityCode", cityCode).and("radius",3));
 
 
 
@@ -144,7 +137,7 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
     }
 
     // SEARCH WITH PRICE PARAMETER
-    public Observable<HotelOfferSearch[]> fetchRoomsAsync(List<String> hotelCodes, int adults, String checkIn, String checkOut, double price) throws NoHotelsForPriceException {
+    public Observable<HotelOfferSearch[]> fetchRoomsAsync(List<String> hotelCodes, int adults, String checkIn, String checkOut, double price, List<it.unimib.buildyourholiday.model.Hotel> hotels, List<String> links, List<String> descriptions) throws NoHotelsForPriceException {
         return Observable.create((ObservableOnSubscribe<HotelOfferSearch[]>) emitter -> {
             // to not exceed api rate-limit
             Thread.sleep(RATE_LIMIT_TIME);
@@ -157,6 +150,7 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
                 Log.d("AmadeusRepository","going for case price <= 0");
                 result = getRooms(hotelCodes, adults, checkIn, checkOut);
             }
+
 
             // Invia il risultato all'emitter
             if(result[0].getResponse().getStatusCode() == 424) {
@@ -196,9 +190,11 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
                             .and("bestRateOnly",true).and("currency","EUR").and("priceRange","-"+((int)price)));
         }
 
-        if (rooms[0].getResponse().getStatusCode() != 200 && rooms[0].getResponse().getStatusCode() != 424) {
+        if (rooms!=null && rooms.length>0 && rooms[0].getResponse().getStatusCode() != 200 && rooms[0].getResponse().getStatusCode() != 424) {
             System.out.println("Wrong status code: " + rooms[0].getResponse().getStatusCode());
-            System.exit(-1);
+            //System.exit(-1);
+        } else if(rooms==null) {
+            rooms = new HotelOfferSearch[0];
         }
 
         return (rooms);
@@ -238,13 +234,15 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
                             .and("max", TOTAL_FLIGHTS_RESULTS).and("currencyCode","EUR"));
         }
 
-        if (flights==null || flights.length==0) {
-            System.out.println("No result obtained");
-            System.exit(-1);
-        }
-        if (flights!=null && flights[0].getResponse().getStatusCode() != 200) {
+        if (flights!=null && flights.length>0 && flights[0].getResponse().getStatusCode() != 200) {
+            Log.d("AmadeusService","flights not null, length > 0, error code: "+
+                    flights[0].getResponse().getStatusCode());
             System.out.println("Wrong status code: " + flights[0].getResponse().getStatusCode());
-            System.exit(-1);
+            flights = new FlightOfferSearch[0];
+            //System.exit(-1);
+        } else if (flights==null) {
+            Log.d("AmadeusService","flights null");
+            flights = new FlightOfferSearch[0];
         }
 
         return (flights);

@@ -38,10 +38,12 @@ public interface TravelDao {
     @Query("DELETE FROM travel")
     int deleteAll();
 
-
     @Query("SELECT * FROM travel WHERE country = :countryCode")
     List<Travel> getTravels(String countryCode);
 
     @Query("SELECT * FROM travel WHERE is_booked = 1")
     List<Travel> getAllBooked();
+
+    @Query("SELECT * FROM travel")
+    List<Travel> getAll();
 }

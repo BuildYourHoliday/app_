@@ -109,8 +109,18 @@ public class Flight implements Parcelable {
         this.price = price;
     }
 
+    @Override
     public String toString() {
-        return getCode();
+        return "Flight{" +
+                "code='" + code + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                ", departureTime='" + departureTime + '\'' +
+                ", departureAirport='" + departureAirport + '\'' +
+                ", returnalDate='" + returnalDate + '\'' +
+                ", returnalTime='" + returnalTime + '\'' +
+                ", arrivalAirport='" + arrivalAirport + '\'' +
+                ", price=" + price +
+                '}';
     }
 
     @Override

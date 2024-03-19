@@ -48,10 +48,10 @@ public class HotelResultsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private static final String TAG = HotelResultsFragment.class.getSimpleName();
-    private HotelListViewModel hotelListViewModel; private Flight flight;
+    private HotelListViewModel hotelListViewModel; private Flight flight; private String destinationCountry;
     private HotelListAdapter hotelListAdapter; private List<com.amadeus.resources.HotelOfferSearch> hotelOfferSearches;
     private List<Hotel> hotels; private List<String> descriptions; private List<String> links;
-    private HotelOfferSearch hotelOffer = null;
+    private HotelOfferSearch hotelOffer = null; private NavController navController;
     private LinearLayout loadingBar;
     private TextView hotelLabel;
     private RecyclerView hotelsRecyclerView;
@@ -61,6 +61,7 @@ public class HotelResultsFragment extends Fragment {
     private Travel builtTravel = null;
     private Button saveButton; private Button purchaseButton; private ImageButton backButton;
     private UserViewModel userViewModel = null; private TravelViewModel travelViewModel = null;
+    private boolean reloaded = false;
 
 
     public HotelResultsFragment() {
@@ -91,6 +92,7 @@ public class HotelResultsFragment extends Fragment {
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             flight = bundle.getParcelable("flight");
+            destinationCountry = bundle.getString("destinationCountry");
             Log.d(TAG, "flight received");
         }
     }
@@ -106,6 +108,7 @@ public class HotelResultsFragment extends Fragment {
 
         hotelLabel = view.findViewById(R.id.hotel_text);
         hotelsRecyclerView = view.findViewById(R.id.recyclerview_hotel_offers);
+            hotelsRecyclerView.setVisibility(View.GONE);
         resultPriceError = view.findViewById(R.id.error_match_text);
         saveButton = view.findViewById(R.id.save_button);
         purchaseButton = view.findViewById(R.id.purchase_button);
@@ -113,7 +116,7 @@ public class HotelResultsFragment extends Fragment {
 
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
 
         hotelListViewModel = new ViewModelProvider(requireActivity()).get(HotelListViewModel.class);
 
@@ -162,6 +165,8 @@ public class HotelResultsFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hotelListAdapter.externalIntentTriggered = false;
+                reloaded = false;
                 navController.navigate(R.id.flightResultsFragment);
             }
         });
@@ -170,6 +175,9 @@ public class HotelResultsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(builtTravel != null) {
+                    hotelListAdapter.externalIntentTriggered = false;
+                    reloaded = false;
+
                     if(saveTravel(builtTravel)) {
                         Toast.makeText(requireContext(), requireContext().getString(R.string.saved_travel_success), Toast.LENGTH_LONG).show();
                         navController.navigate(R.id.profileFragment);
@@ -187,10 +195,14 @@ public class HotelResultsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(builtTravel != null) {
+                    hotelListAdapter.externalIntentTriggered = false;
+                    reloaded = false;
+
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("travel",builtTravel);
                     hotelListViewModel.setSelectedHotelOfferLiveData(hotelOffer);
                     if (saveTravel(builtTravel)) {
+                        navController.navigate(R.id.homeFragment);
                         navController.navigate(R.id.purchaseFragment,bundle);
                     } else {
                         navController.navigate(R.id.homeFragment);
@@ -210,6 +222,7 @@ public class HotelResultsFragment extends Fragment {
         loadingBar.setVisibility(View.GONE);
 
         hotelLabel.setVisibility(View.VISIBLE);
+        hotelsRecyclerView.setVisibility(View.VISIBLE);
         saveButton.setVisibility(View.VISIBLE);
         purchaseButton.setVisibility(View.VISIBLE);
         Log.d(TAG, "progress bar gone");
@@ -236,7 +249,12 @@ public class HotelResultsFragment extends Fragment {
 
     private void buildTravelInstance() {
         builtTravel = new Travel(flight,hotel);
+        builtTravel.setCountry(destinationCountry);
+
+        Log.d(TAG,flight.toString());
+        Log.d(TAG,hotel.toString());
         Log.d(TAG,"travel created successfully");
+        Log.d(TAG,builtTravel.toString());
     }
 
     private boolean saveTravel(Travel builtTravel) {
@@ -256,6 +274,31 @@ public class HotelResultsFragment extends Fragment {
         } else {
             Log.d(TAG,"user must be logged in order to save a travel!");
             return false;
+        }
+    }
+
+    private void showLoading() {
+        Log.d(TAG,"reset loading view");
+
+        hotelLabel.setVisibility(View.GONE);
+        hotelsRecyclerView.setVisibility(View.GONE);
+
+        resultPriceError.setVisibility(View.GONE);
+        saveButton.setVisibility(View.GONE);
+        purchaseButton.setVisibility(View.GONE);
+
+        loadingBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(navController!=null) {
+            int callingFragmentId = navController.getCurrentBackStack().getValue().get(navController.getCurrentBackStack().getValue().size()-2).getDestination().getId();
+            if (!reloaded && callingFragmentId == R.id.flightResultsFragment && (hotelListAdapter == null || !hotelListAdapter.externalIntentTriggered) ) {
+                reloaded = true;
+                showLoading();
+            }
         }
     }
 }

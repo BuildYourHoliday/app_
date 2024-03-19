@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amadeus.resources.HotelOfferSearch;
 
 import java.util.List;
+import java.util.Random;
 
 import it.unimib.buildyourholiday.R;
 import it.unimib.buildyourholiday.model.Flight;
@@ -41,6 +42,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     private final HotelListAdapter.OnItemClickListener onItemClickListener;
     private int selectedItemPosition = -1;
     private Context context = null;
+    public boolean externalIntentTriggered = false;
 
     public HotelListAdapter(List<Hotel> hotelList, OnItemClickListener onItemClickListener) {
         this.hotelList = hotelList;
@@ -133,6 +135,9 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
         }
 
         public void bind(Hotel hotel, int position) {
+            double samplePrice = 100;
+            Random random = new Random();
+
             if (hotel.getHotel() != null)
                 hotelNameTextView.setText(hotel.getHotel());
             else
@@ -153,10 +158,13 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 checkoutDate.setText(hotel.getCheckoutDate());
             else
                 checkoutDate.setText("");
-            if (hotel.getTotal() > 0)
-                price.setText("€" + String.valueOf(hotel.getTotal()));
-            else
-                price.setText("errorPrice");
+            if (hotel.getTotal() > 0) {
+                price.setText("€" + hotel.getTotal());
+            }
+            else {      //activates for sampleMockHotels
+                hotel.setTotal((samplePrice-50)+50*random.nextInt());
+                price.setText("€" + hotel.getTotal());
+            }
 
             radioButton.setClickable(false);
             Log.d("RadioButton", "position: " + position + "; selected item: " + selectedItemPosition);
@@ -190,7 +198,7 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
                 this.viewOnMap.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO: gestire link a mappa esterna
+                        externalIntentTriggered = true;
                         Uri gmmIntentUri = Uri.parse(link);
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

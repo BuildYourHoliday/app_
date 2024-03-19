@@ -17,7 +17,7 @@
     <string name="password_again">Confirm password</string>
     <string name="need_register">Not subscribed yet? Register</string>
     <string name="need_login">Already subscribed? Login</string>
-    <string name="login_required">Please log in to access this feature</string>
+    <string name="login_required">Please log-in in order to access this feature</string>
     <string name="error_email">The mail is not correct</string>
     <string name="error_password">The password is not correct</string>
     <string name="item_profile">Profile</string>
@@ -151,7 +151,7 @@
     <string name="find_hotel">Find hotel</string>
     <string name="no_limit"> no limit</string>
     <string name="range_people" translatable="false">1 - 9</string>
-    <string name="no_flights_for_budget">No flights were found for your reasearch, please try to modify budget or destination.</string>
+    <string name="no_flights_for_budget">No flights were found for your reasearch, please try to modify budget or destination, either choose a new date range.</string>
     <string name="flights">Flights</string>
     <string name="hotels">Hotels</string>
     <string name="cardNumber">Card number</string>

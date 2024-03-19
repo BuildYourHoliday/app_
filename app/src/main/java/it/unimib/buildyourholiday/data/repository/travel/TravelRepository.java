@@ -180,7 +180,6 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
         }
 
         savedTravelsMutableLiveData.postValue(new Result.TravelResponseSuccess(new TravelResponse(travelList)));
-
     }
 
     @Override

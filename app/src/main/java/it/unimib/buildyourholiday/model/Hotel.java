@@ -100,8 +100,18 @@ public class Hotel implements Parcelable {
         this.total = total;
     }
 
+    @Override
     public String toString() {
-        return getHotel();
+        return "Hotel{" +
+                "hotel='" + hotel + '\'' +
+                ", hotelCode='" + hotelCode + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                ", hotelCity='" + hotelCity + '\'' +
+                ", checkinDate='" + checkinDate + '\'' +
+                ", checkoutDate='" + checkoutDate + '\'' +
+                ", adults=" + adults +
+                ", total=" + total +
+                '}';
     }
 
     @Override

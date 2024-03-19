@@ -69,6 +69,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     public void getSavedTravels() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Travel> savedTravels = travelDao.getAllSaved();
+            Log.d("MapFragment","TRVLLCLDS: "+savedTravels.size());
             travelCallback.onTravelSavedStatusChanged(savedTravels);
         });
     }
@@ -126,25 +127,9 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     public void insertTravels(List<Travel> travelsList) {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
             // Reads the news from the database
-            List<Travel> allTravels = travelDao.getAllSaved();
+            List<Travel> allTravels = travelDao.getAll();
 
             if (travelsList != null) {
-
-                // Checks if the news just downloaded has already been downloaded earlier
-                // in order to preserve the news status (marked as favorite or not)
-                for (Travel travel : allTravels) {
-                    // This check works because News and NewsSource classes have their own
-                    // implementation of equals(Object) and hashCode() methods
-                    if (travelsList.contains(travel)) {
-                        // The primary key and the favorite status is contained only in the News objects
-                        // retrieved from the database, and not in the News objects downloaded from the
-                        // Web Service. If the same news was already downloaded earlier, the following
-                        // line of code replaces the the News object in newsList with the corresponding
-                        // News object saved in the database, so that it has the primary key and the
-                        // favorite status.
-                        travelsList.set(travelsList.indexOf(travel), travel);
-                    }
-                }
 
                 // Writes the news in the database and gets the associated primary keys
                 List<Long> insertedIds = travelDao.insertTravelList(travelsList);
@@ -165,6 +150,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
 
     @Override
     public void insertTravel(Travel travel) {
+        Log.d("TravelRepo","booked: "+travel.isBooked());
         List<Travel> singleTravel = new ArrayList<>();
         singleTravel.add(travel);
         insertTravels(singleTravel);

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragmentdel">
+    tools:context=".HomeFragment"
+    android:screenOrientation="portrait" >
 
 
     <EditText
@@ -57,7 +58,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/settings"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@mipmap/ic_logo" />
 
     <AutoCompleteTextView
         android:id="@+id/depart_place"

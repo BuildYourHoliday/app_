@@ -2,6 +2,7 @@ package it.unimib.buildyourholiday;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.widget.AutoCompleteTextView;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.amadeus.resources.FlightOfferSearch;
@@ -43,18 +45,21 @@ public class AmadeusRepository {
 
     // invoco tramite parametri e passando il listener creato dal fragment, così posso gesitre l'onclick sugli item
     // dopo l'invocazione, assegno l'adapter ritornato alla recycler view
+    @SuppressLint("CheckResult")
     public static void flightSearch(String originCityCode, String destinationCityCode, String departureDate,
                                     String returnDate, int adults, double price, FlightListViewModel viewModel) {
+
          service.fetchFlightsAsync(originCityCode, destinationCityCode, departureDate, returnDate, adults)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                         result -> {
                             Log.d("RxJava", "result");
+                            List<Flight> flights = new ArrayList<>();
+                            List<String> durations = new ArrayList<>();
+                            List<Boolean> directFlight = new ArrayList<>();
+                            List<FlightOfferSearch> flightOfferSearches = new ArrayList<>();
 
-                            if (result != null && result.length > 0) {       // evita caso return sia null
-                                List<Flight> flights = new ArrayList<>();
-                                List<String> durations = new ArrayList<>();
-                                List<Boolean> directFlight = new ArrayList<>();
-                                List<FlightOfferSearch> flightOfferSearches = new ArrayList<>();
+                            if (result != null && result.length > 0) {       // evita caso result sia null
+                                Log.d("RxJava","results not empty");
                                 String out = "";
                                 for (int i = 0; i < result.length; i++) {
 
@@ -80,14 +85,14 @@ public class AmadeusRepository {
                                     }
 
                                 }
-                                Log.d("RxJava", "flights instance: " + (flights != null) + ", flights size: " + flights.size());
 
-                                viewModel.setFlightList(flights);
-                                viewModel.setDurations(durations);
-                                viewModel.setDirectFlight(directFlight);
-                                viewModel.setFlightOffers(flightOfferSearches);
                             }
+                            Log.d("RxJava", "flights instance: " + (flights != null) + ", flights size: " + flights.size());
 
+                            viewModel.setFlightList(flights);
+                            viewModel.setDurations(durations);
+                            viewModel.setDirectFlight(directFlight);
+                            viewModel.setFlightOffers(flightOfferSearches);
                         }
                 );
     }
@@ -109,6 +114,10 @@ public class AmadeusRepository {
 
     public static Disposable hotelSearch(String cityCode, String cityName, int adults, String checkinDate, String checkoutDate,
                                          double price, HotelListViewModel viewModel) throws NoHotelsForPriceException{
+        Log.d(TAG,"seach hotels for: "+cityCode+", "+cityName+", "+adults);
+        List<Hotel> sampleMockHotels = new ArrayList<>();
+        List<String> sampleMockDescriptions = new ArrayList<>(), sampleMockLinks = new ArrayList<>();
+
         return service.fetchHotelAsync(cityCode)
                 .flatMap(hotelResult -> {
                     List<String> listaId = new ArrayList<>();
@@ -118,41 +127,63 @@ public class AmadeusRepository {
                         listaId.add(hotelResult[k].getHotelId());
                     }
                     // testing hotel
-                    listaId.add("HNPARKGU");
+                    // listaId.add("HNPARKGU");
+
+                    for(int i=0;i<hotelResult.length;i++) {
+                        Hotel h = new Hotel(hotelResult[i].getName(),hotelResult[i].getHotelId(),
+                                hotelResult[i].getIataCode(),cityName,checkinDate,checkoutDate,adults,
+                                -1);
+                        sampleMockHotels.add(h);
+                        Log.d("RxJava","googleplaceid: "+ hotelResult[i].getGooglePlaceId());
+                        sampleMockLinks.add("geo:"+hotelResult[i].getGeoCode().getLatitude()+","+hotelResult[i].getGeoCode().getLongitude());
+                        sampleMockDescriptions.add(hotelResult[i].getName());
+                    }
 
                     Log.d(TAG,"price before fetchasync: "+price);
-                    return service.fetchRoomsAsync(listaId, adults, checkinDate, checkoutDate, price);
+                    return service.fetchRoomsAsync(listaId, adults, checkinDate, checkoutDate, price, sampleMockHotels, sampleMockLinks, sampleMockDescriptions);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         roomsResult -> {
                             Log.d("RxJava","Rooms result");
-                            List<Hotel> hotels = null;
-                            List<String> descriptions = null, links = null;
-                            List<HotelOfferSearch> hotelOfferSearches = null;
+                            List<Hotel> hotels = new ArrayList<>();
+                            List<String> descriptions = new ArrayList<>(), links = new ArrayList<>();
+                            List<HotelOfferSearch> hotelOfferSearches = new ArrayList<>();
 
                             if(roomsResult!=null && roomsResult[0]!=null) {
                                 Log.d("RxJava","Not null rooms result");
-                                hotels = new ArrayList<>();
-                                descriptions = new ArrayList<>(); links = new ArrayList<>();
-                                hotelOfferSearches = new ArrayList<>();
 
+                                double priceResult = 0;
                                 for (int i=0; i<roomsResult.length; i++) {
-                                    Hotel h = new Hotel(roomsResult[i].getHotel().getName(),roomsResult[i].getHotel().getHotelId(),
-                                            roomsResult[i].getHotel().getCityCode(),cityName,roomsResult[i].getOffers()[0].getCheckInDate(),
-                                            roomsResult[i].getOffers()[0].getCheckOutDate(),adults,Double.valueOf(roomsResult[i].getOffers()[0].getPrice().getTotal()));
+                                    if(roomsResult[i].getOffers()[0] != null && roomsResult[i].getOffers()[0].getPrice().getTotal() != null) {
+                                        Log.d("RxJava","value to convert: "+ roomsResult[i].getOffers()[0].getPrice().getTotal());
+                                        priceResult = Double.parseDouble(roomsResult[i].getOffers()[0].getPrice().getTotal());
+
+                                    }
+
+                                    Hotel h = new Hotel(roomsResult[i].getHotel().getName(),
+                                            roomsResult[i].getHotel().getHotelId(),
+                                            roomsResult[i].getHotel().getCityCode(),cityName,
+                                            checkinDate,checkoutDate,adults,priceResult);
+                                    Log.d("RxJava","hotel instance built");
                                     hotels.add(h);
                                     links.add("geo:"+roomsResult[i].getHotel().getLatitude()+","+roomsResult[i].getHotel().getLongitude());
                                     descriptions.add(roomsResult[i].getOffers()[0].getRoom().getDescription().getText());
                                     hotelOfferSearches.add(roomsResult[i]);
                                 }
-
-                                viewModel.setHotelListLiveData(hotels);
-                                viewModel.setHotelDescriptionLiveData(descriptions);
-                                viewModel.setHotelLinksLiveData(links);
-                                viewModel.setHotelOffersLiveData(hotelOfferSearches);
                             }
+                            /*
+                            hotels.addAll(sampleMockHotels);
+                            descriptions.addAll(sampleMockDescriptions);
+                            links.addAll(sampleMockLinks);
+
+                             */
+
+                            viewModel.setHotelListLiveData(hotels);
+                            viewModel.setHotelDescriptionLiveData(descriptions);
+                            viewModel.setHotelLinksLiveData(links);
+                            viewModel.setHotelOffersLiveData(hotelOfferSearches);
                         },
                         throwable -> {
                             // Gestisci gli errori qui
@@ -173,33 +204,35 @@ public class AmadeusRepository {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // todo: if statement might be unnecessary
-                if(s.toString().length() > 3) {
-                    service.fetchLocationAsync(s.toString())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    result -> {
-                                        Location[] response = result;
-                                        // todo: getActivity(). working?
-                                        activity.runOnUiThread(() -> luoghiAdapter.setList(response));
-                                        Log.d("RxJava", "Risultato scritto: " + response[0].getName() + "...");
-                                        autoCompleteTextView.invalidate();
-                                    },
-                                    error -> {
-                                        // Gestisci gli errori qui
-                                        Log.e("RxJava", "Errore: " + error.getMessage());
-                                    }
-                            );
-                }
+              //  if(s.toString().length() > 3) {
+
+              //  }
             }
 
+            @SuppressLint("CheckResult")
             @Override
             public void afterTextChanged(Editable s) {
-                // nothing to do
+                service.fetchLocationAsync(s.toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            result -> {
+                                Location[] response = result;
+                                activity.runOnUiThread(() -> luoghiAdapter.setList(response));
+                                Log.d("RxJava", "Risultato scritto: " + response[0].getName() + "...");
+
+                            },
+                            error -> {
+                                // Gestisci gli errori qui
+                                Log.e("RxJava", "Errore: " + error.getMessage());
+                            }
+                    );
+                luoghiAdapter.notifyDataSetChanged();
             }
         });
     }
 
+    @SuppressLint("CheckResult")
     public static void findCityId(String searchQuery, MutableLiveData<String> resultCityCode) {
         // WORKING, giving back city code for an input
         service.fetchLocationAsync(searchQuery)
@@ -218,6 +251,7 @@ public class AmadeusRepository {
                 );
     }
 
+    @SuppressLint("CheckResult")
     public static CompletableFuture<Boolean> bookTravel(FlightOfferSearch flightOfferSearch, FlightOrder.Traveler[] travelers, String email, HotelOfferSearch hotelOfferSearch) {
         CompletableFuture<Boolean> futureResult = new CompletableFuture<>();
 

@@ -29,11 +29,13 @@
 
         <TextView
             android:id="@+id/textview_hotel"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:textAppearance="?attr/textAppearanceTitleMedium"
+            app:layout_constraintEnd_toStartOf="@+id/textview_price"
             app:layout_constraintStart_toEndOf="@+id/imageview_bed"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="hotel name" />
@@ -42,10 +44,10 @@
             android:id="@+id/textview_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintStart_toEndOf="@+id/textview_hotel"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_adults"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="$100" />
 
@@ -53,20 +55,20 @@
             android:id="@+id/imageView_adults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/baseline_person_search_24"
-            app:layout_constraintStart_toEndOf="@+id/textview_price"
+            app:layout_constraintEnd_toStartOf="@+id/textview_adults"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textview_adults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintStart_toEndOf="@+id/imageView_adults"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="2" />
 
@@ -99,7 +101,7 @@
             android:layout_marginTop="8dp"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_bed"
+            app:layout_constraintTop_toBottomOf="@id/textview_city"
             tools:text="YYYY-MM-DD" />
 
 
@@ -111,7 +113,7 @@
             android:layout_marginTop="8dp"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintStart_toEndOf="@+id/textview_checkinDate"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_bed"
+            app:layout_constraintTop_toBottomOf="@id/textview_city"
             tools:text="YYYY-MM-DD" />
 
         <Button

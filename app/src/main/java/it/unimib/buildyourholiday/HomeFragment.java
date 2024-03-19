@@ -1,6 +1,7 @@
 package it.unimib.buildyourholiday;
 
 import android.app.DatePickerDialog;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import android.widget.DatePicker;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,9 +58,9 @@ public class HomeFragment extends Fragment {
     private EditText returnDateEditText;
     private EditText adultsEditText;
     private EditText budgetEditText;
-    private String originCityCode = "MIL";
+    private String originCityCode = "MIL"; // = "MIL"
     private String originCity;
-    private String destinationCityCode = "PAR";
+    private String destinationCityCode = "NYC"; // = "PAR"
     private String destinationCity;
     private String destinationCountryCode;
     private String departDate;
@@ -142,8 +144,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 destinationCityCode = destinationLuoghiAdapter.codeForSelected(position);
+                Log.d(TAG,"destination code: "+destinationCityCode);
                 destinationCity = destinationLuoghiAdapter.nameForSelected(position);
+                Log.d(TAG,"destination city: "+destinationCity);
                 destinationCountryCode = destinationLuoghiAdapter.countryForSelected(position);
+                Log.d(TAG,"destination country: "+destinationCountryCode);
             }
         });
 
@@ -153,7 +158,7 @@ public class HomeFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(retrieveSearchParameters()) {
+                if(retrieveSearchParameters(originLuoghiAdapter,destinationLuoghiAdapter)) {
                     FlightListViewModel flightListViewModel = new ViewModelProvider(requireActivity()).get(FlightListViewModel.class);
                     AmadeusRepository.flightSearch(originCityCode, destinationCityCode, departDate, returnDate, adults, price, flightListViewModel);
 
@@ -162,11 +167,12 @@ public class HomeFragment extends Fragment {
                     // pass to execute SearchResultsFragment
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("price",price);
+                    bundle.putString("destinationCountry",destinationCountryCode);
                     //launchFragmentFlightResults(price);
                     NavOptions navOptions = new NavOptions.Builder()
                             .setPopUpTo(R.id.flightResultsFragment,true).build();
 
-                    navController.navigate(R.id.action_homeFragment_to_flightResultsFragment, bundle, navOptions);
+                    navController.navigate(R.id.flightResultsFragment, bundle);
                 }
             }
         });
@@ -187,7 +193,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public boolean retrieveSearchParameters() {
+    public boolean retrieveSearchParameters(LuoghiAdapter originLuoghiAdapter,LuoghiAdapter destinationLuoghiAdapter) {
         departDate = departDateEditText.getText().toString();
         if(departDate.isEmpty() || !isDateValid(departDate)) {
             Snackbar.make(requireView(), getString(R.string.depart_date_err), Snackbar.LENGTH_SHORT).show();
@@ -234,31 +240,26 @@ public class HomeFragment extends Fragment {
             Snackbar.make(requireView(), getString(R.string.origin_city_err), Snackbar.LENGTH_SHORT).show();
             return false;
         } else
-        // activates in case autocomplete doesn't show up
-        if(originCityCode == null || originCityCode.length() != 3) {
-            MutableLiveData<String> cityCode = new MutableLiveData<>();
-            AmadeusRepository.findCityId(originAutoCompleteTextView.getText().toString(), cityCode);
-            cityCode.observe(getViewLifecycleOwner(), new Observer<String>() {
-                @Override
-                public void onChanged(String s) {
-                    originCityCode = s;
-                }
-            });
-        }
+            // activates in case autocomplete doesn't show up
+            if(originCityCode == null || originCityCode.length() != 3) {
+                originCityCode = originLuoghiAdapter.codeForSelected(0);
+                Log.d(TAG,originCityCode);
+                originCity = originLuoghiAdapter.nameForSelected(0);
+                Log.d(TAG,originCity);
+            }
 
         if(destinationAutoCompleteTextView.getText().toString().isEmpty()) {
             Snackbar.make(requireView(), getString(R.string.destination_city_err), Snackbar.LENGTH_SHORT).show();
             return false;
         } else
-        if(destinationCityCode == null || destinationCityCode.length() != 3) {
-            MutableLiveData<String> cityCode = new MutableLiveData<>();
-            AmadeusRepository.findCityId(destinationAutoCompleteTextView.getText().toString(), cityCode);
-            cityCode.observe(getViewLifecycleOwner(), new Observer<String>() {
-                @Override
-                public void onChanged(String s) {
-                    destinationCityCode = s;
-                }
-            });
+            // activates in case autocomplete doesn't show up
+            if(destinationCityCode == null || destinationCityCode.length() != 3) {
+            destinationCityCode = destinationLuoghiAdapter.codeForSelected(0);
+            Log.d(TAG,destinationCityCode);
+            destinationCity = destinationLuoghiAdapter.nameForSelected(0);
+            Log.d(TAG,destinationCity);
+            destinationCountryCode = destinationLuoghiAdapter.countryForSelected(0);
+            Log.d(TAG,destinationCountryCode);
         }
 
         return true;
@@ -274,19 +275,20 @@ public class HomeFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String selectedDate = year + "-";
-
-                month += 1;
-                if (month<10)   selectedDate += "0"+month+"-";
-                else            selectedDate += month+"-";
-
-                if(dayOfMonth<10)   selectedDate += "0"+dayOfMonth;
-                else                selectedDate += dayOfMonth;
-
-                if(year>=calendar.get(Calendar.YEAR) && month>calendar.get(Calendar.MONTH) && dayOfMonth>day)
-                    dateEditText.setText(selectedDate);
-                else
+                if(year<calendar.get(Calendar.YEAR) || year==calendar.get(Calendar.YEAR) && month<calendar.get(Calendar.MONTH)
+                        || year==calendar.get(Calendar.YEAR) && month==calendar.get(Calendar.MONTH) && dayOfMonth<day) {
                     Snackbar.make(view,getString(R.string.date_picker_err),Snackbar.LENGTH_SHORT).show();
+                } else {
+                    String selectedDate = year + "-";
+
+                    month += 1;
+                    if (month<10)   selectedDate += "0"+month+"-";
+                    else            selectedDate += month+"-";
+
+                    if(dayOfMonth<10)   selectedDate += "0"+dayOfMonth;
+                    else                selectedDate += dayOfMonth;
+                    dateEditText.setText(selectedDate);
+                }
             }
         }, year, month, day);
         datePickerDialog.show();
@@ -301,11 +303,17 @@ public class HomeFragment extends Fragment {
     }
 
     private boolean isDateRangeValid(String firstDate,String secondDate) {
-        if(Integer.parseInt(firstDate.substring(0,4))>Integer.parseInt(secondDate.substring(0,4)))
+        int firstYear = Integer.parseInt(firstDate.substring(0,4));
+        int secondYear = Integer.parseInt(secondDate.substring(0,4));
+        if(firstYear > secondYear)
             return false;
-        if(Integer.parseInt(firstDate.substring(5,7))>Integer.parseInt(secondDate.substring(5,7)))
+        int firstMonth = Integer.parseInt(firstDate.substring(5,7));
+        int secondMonth = Integer.parseInt(secondDate.substring(5,7));
+        if(firstYear == secondYear && firstMonth > secondMonth)
             return false;
-        if(Integer.parseInt(firstDate.substring(8))>Integer.parseInt(secondDate.substring(8)))
+        int firstDay = Integer.parseInt(firstDate.substring(8));
+        int secondDay = Integer.parseInt(secondDate.substring(8));
+        if(firstYear == secondYear && firstMonth == secondMonth && firstDay > secondDay)
             return false;
 
         return true;

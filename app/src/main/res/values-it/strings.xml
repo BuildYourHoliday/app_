@@ -124,7 +124,7 @@
     //email assistenza
     <string name="emailAssistenza">BuildYourHoliday.Assistenza@gmail.com</string>
     <string name="saved_travel_success">Il tuo viaggio è stato salvato!</string>
-    <string name="loading_wait_text">Attendi mentre costruiamo la tua vacanza...</string>
+    <string name="loading_wait_text">Attendi mentre costruiamo la tua vacanza…</string>
     <string name="select_hotel">Seleziona hotel:</string>
     <string name="no_results_for_budget">Non è stata trovata alcuna offerta per il tuo budget indicato, di seguito sono riportate alcune offerte generiche</string>
     <string name="save_travel">Salva viaggio</string>
@@ -132,7 +132,7 @@
     <string name="select_flight">Seleziona volo:</string>
     <string name="find_hotel">Trova hotel</string>
     <string name="no_limit"> no budget</string>
-    <string name="no_flights_for_budget">Non è stato possibile trovare alcun volo per la tua ricerca, prova a modificare il tuo budget o la tua destinazione.</string>
+    <string name="no_flights_for_budget">Non è stato possibile trovare alcun volo per la tua ricerca, prova a modificare il tuo budget o la tua destinazione, oppure seleziona un nuovo range di date.</string>
     <string name="flights">Voli</string>
     <string name="hotels">Hotel</string>
     <string name="cardNumber">Numero carta</string>

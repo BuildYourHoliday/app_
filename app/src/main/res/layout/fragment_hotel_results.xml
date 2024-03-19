@@ -32,17 +32,18 @@
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:tint="@color/icons_text" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
 
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/hotel_text"
@@ -78,8 +79,8 @@
                 android:layout_marginTop="8dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10.0sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/error_match_text"
                 tools:listitem="@layout/hotel_offers_parent_item" />
 
@@ -101,7 +102,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="10dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@mipmap/ic_logo"
                     android:contentDescription="logo" />
 
                 <TextView
@@ -126,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerview_hotel_offers"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -138,7 +139,8 @@
                     android:visibility="gone"
                     app:icon="@drawable/baseline_heart_24"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/save_travel" />
+                    android:text="@string/save_travel"
+                    style="@style/Widget.AppCompat.ButtonBar" />
 
                 <Button
                     android:id="@+id/purchase_button"
@@ -148,13 +150,14 @@
                     android:visibility="gone"
                     app:icon="@drawable/baseline_shopping_cart_checkout_24"
                     android:layout_marginStart="16dp"
-                    android:text="@string/purchase_travel" />
+                    android:text="@string/purchase_travel"
+                    style="@style/Widget.AppCompat.ButtonBar" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

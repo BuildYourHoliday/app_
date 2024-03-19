@@ -269,11 +269,11 @@ public class MapFragment extends Fragment {
                                                                 public void onTravelItemClick(Travel travel){
                                                                     Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
                                                                 }
-
                                                                 public void onDeleteButtonPressed(int position){
-                                                                    Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+
                                                                 }
-                                                            });
+
+                                                            },false);
                                                             recyclerView.setAdapter(travelListAdapter);
                                                         }
                                                     }

@@ -1,6 +1,7 @@
 package it.unimib.buildyourholiday;
 
 import android.content.Context;
+import android.util.Log;
 
 import it.unimib.buildyourholiday.data.database.TravelDao;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
@@ -19,6 +20,7 @@ public class TravelRepository {
     }
 
     public void insertTravel(Travel travel) {
+        Log.d("TravelRepo","booked: "+travel.isBooked());
         travelDao.insertTravel(travel);
     }
 

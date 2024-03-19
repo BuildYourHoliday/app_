@@ -94,11 +94,11 @@
             android:id="@+id/textview_checkinDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
             android:layout_marginTop="52dp"
+            android:layout_marginStart="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/constraintLayout"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/booked_list_item_date" />
 
@@ -121,12 +121,12 @@
             android:id="@+id/cardView"
             android:layout_width="80dp"
             android:layout_height="45dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:cardBackgroundColor="@color/light_primary"
             app:cardCornerRadius="90dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@id/constraintLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -322,13 +322,14 @@
             android:id="@+id/button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
             android:layout_marginBottom="-8dp"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="@android:color/transparent"
             android:text="@string/delete"
             style="@style/BUTTON"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/expandable_layout"
             app:layout_constraintVertical_bias="1.0" />
 
