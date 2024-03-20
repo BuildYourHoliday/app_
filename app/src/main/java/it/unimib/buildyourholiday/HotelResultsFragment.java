@@ -178,15 +178,16 @@ public class HotelResultsFragment extends Fragment {
                     hotelListAdapter.externalIntentTriggered = false;
                     reloaded = false;
 
-                    if(saveTravel(builtTravel)) {
+                    if (saveTravel(builtTravel)) {
                         Toast.makeText(requireContext(), requireContext().getString(R.string.saved_travel_success), Toast.LENGTH_LONG).show();
                         navController.navigate(R.id.profileFragment);
-                    }
-                    else {
+                    } else {
                         navController.navigate(R.id.homeFragment);
                         navController.navigate(R.id.loginActivity);
                         Toast.makeText(requireContext(), requireContext().getString(R.string.login_required), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Snackbar.make(v, getString(R.string.select_hotel_err), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

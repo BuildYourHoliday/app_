@@ -158,7 +158,6 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
                 emitter.onNext(result);
                 emitter.onComplete();
                 throw new NoHotelsForPriceException();
-
             } else {
                 emitter.onNext(result);
 
@@ -183,7 +182,7 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
 
             rooms = amadeus.shopping.hotelOffersSearch.get(
                     Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)
-                            .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currency","EUR").and("priceRange",price));
+                            .and("checkOutDate", checkOut).and("bestRateOnly",true).and("currency","EUR").and("priceRange","-"+((int)price)));
         } else {
             rooms = amadeus.shopping.hotelOffersSearch.get(
                     Params.with("hotelIds", hotelCodes).and("adults",adults).and("checkInDate", checkIn)

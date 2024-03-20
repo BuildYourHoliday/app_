@@ -153,8 +153,7 @@ public class FlightResultsFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Esegui la navigazione al nuovo fragment con le opzioni definite
-                navController.navigate(R.id.homeFragment);
+                navController.popBackStack();
                 reloaded = false;
             }
         });
@@ -175,6 +174,7 @@ public class FlightResultsFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("flight",flight);
                     bundle.putString("destinationCountry",destinationCountry);
+
                     // pass to execute SearchResultsFragment with flight to build Travel instance
                     navController.navigate(R.id.hotelResultsFragment, bundle);
                     reloaded = false;
@@ -246,17 +246,5 @@ public class FlightResultsFragment extends Fragment {
         }
 
         Log.d(TAG,"on resume");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG,"on destroy");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG,"on destroy view");
     }
 }

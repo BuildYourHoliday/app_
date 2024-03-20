@@ -1,7 +1,9 @@
 package it.unimib.buildyourholiday;
 
+import static it.unimib.buildyourholiday.util.Constants.MAP_STYLE_FILE;
 import static it.unimib.buildyourholiday.util.MapUtil.initMap;
 import static it.unimib.buildyourholiday.util.MapUtil.refreshMap;
+import static it.unimib.buildyourholiday.util.MapUtil.setMapTheme;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,6 +49,7 @@ import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.model.Result;
 import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.util.JsonFileReader;
+import it.unimib.buildyourholiday.util.MapUtil;
 import it.unimib.buildyourholiday.util.ServiceLocator;
 
 /**
@@ -67,12 +70,7 @@ public class MapFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    SharedPreferences sharedPreferences;
-    String mapStyle = "map_style.json";
- //   JsonFileReader jsonFileReader;
     private RecyclerView recyclerView;
-    private TravelsRoomDatabase database;
-    TravelListAdapter travelListAdapter;
     private MapView mapView = null;
     private Button refreshMapButton = null;
     private boolean refreshTriggered = false;
@@ -108,8 +106,6 @@ public class MapFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // GeoJSONObject geoJSONObject = GeoJSON.parse();
-
     }
 
     @Override
@@ -137,45 +133,14 @@ public class MapFragment extends Fragment {
         UserViewModel userViewModel= new ViewModelProvider(requireActivity(),
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
-        mapView.getMapboxMap().loadStyleJson(JsonFileReader.readJsonFromAssets(getContext(), mapStyle));
+        mapView.getMapboxMap().loadStyleJson(JsonFileReader.readJsonFromAssets(getContext(), MAP_STYLE_FILE));
 
-        sharedPreferences = getActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE);
-        //if(sharedPreferences.getBoolean("darkMode", false)) {
-        //mapView.getMapboxMap().getStyle().getStyleJSON();
-        mapView.getMapboxMap().addOnStyleLoadedListener(new OnStyleLoadedListener() {
-            @Override
-            public void onStyleLoaded(@NonNull StyleLoadedEventData styleLoadedEventData) {
-                /*Expected<String,Value> styleLayerProperties =
-                mapView.getMapboxMap().getStyle().getStyleLayerProperties("background");
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE);
 
-                Log.d("STYLE-SET", "dopo getStyle " + styleLayerProperties.getValue().toString());
+        setMapTheme(mapView, sharedPreferences);
 
-                Value stringValueExpected =
-                mapView.getMapboxMap().getStyle().getStyleLayerProperty("background","background-color").getValue();
-
-                Log.d("STYLE-SET", "dopo getStyle " + stringValueExpected.toString());
-
-                Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 0%)\"");
-                if(conv != null)
-                Log.d("STYLE-SET","DAJEEE");
-                if(conv.getValue()!=null){
-                    Log.d("STYLE-SET", "prima setStyle ");
-                mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
-                Log.d("STYLE-SET", "dopo setStyle ");}*/
-                if(sharedPreferences.getBoolean("darkMode", true)) {
-                    Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 0%)\"");
-                    mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
-                    Log.d("STYLE-SET", conv.getValue().toString());
-                }
-                else {
-                    Expected<String,Value> conv = ValueConverter.fromJson("\"hsl(0, 0%, 100%)\"");
-                    mapView.getMapboxMap().getStyle().setStyleLayerProperty("background","background-color",conv.getValue());
-                }
-
-                if(userRepository.getLoggedUser() != null)
-                    initMap(mapView, travelViewModel, getViewLifecycleOwner());
-            }
-        });
+        if(userRepository.getLoggedUser() != null)
+            initMap(mapView, travelViewModel, getViewLifecycleOwner());
 
         refreshMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,26 +152,6 @@ public class MapFragment extends Fragment {
 
         TextView selectedCountry = view.findViewById(R.id.textView_selectedCountry);
 
-        //mapView.getMapboxMap().loadStyleUri("asset://map_style.json");
-        //mapView.getMapboxMap().loadStyleJson("asset://map_style.json");
-        //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clplsfl1a00ty01qt1pjsfphc");
-        //mapView.getMapboxMap().loadStyleUri("mapbox://styles/choppadebug/clppp4jot013501o9bowr9776/draft");
-
-        /*try {
-            InputStream is = getActivity().getAssets().open("map_style.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String styleJson = new String(buffer, "UTF-8");
-            mapView.getMapboxMap().loadStyleJson(styleJson);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-
-       // database = TravelsRoomDatabase.getDatabase(requireContext());
-
-
         recyclerView = view.findViewById(R.id.recyclerview_travels);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -216,135 +161,23 @@ public class MapFragment extends Fragment {
             public boolean onMapClick(@NonNull Point point) {
                 refreshTriggered = false;
 
-                ArrayList<String> layers = new ArrayList<>();
-                layers.add("country-non-visited");
+                // listener to be set on created adapter for recyclerview results
+                TravelListAdapter.OnItemClickListener listener = new TravelListAdapter.OnItemClickListener(){
+                    public void onTravelItemClick(Travel travel){
+                        Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                    }
+                    public void onDeleteButtonPressed(int position){ }
+                };
 
-                mapView.getMapboxMap().queryRenderedFeatures(
-                        new RenderedQueryGeometry(mapView.getMapboxMap().pixelForCoordinate(point)),
-                        new RenderedQueryOptions(layers, null),
-                        new QueryFeaturesCallback() {
-                            @Override
-                            public void run(@NonNull Expected<String, List<QueriedFeature>> features) {
-                                Log.d("PRINT-FROM-CALLBACK", "response received");
-                                List<QueriedFeature> queriedFeatures = features.getValue();
-                                Log.d("PRINT-FROM-CALLBACK", "data fetched");
+                MapUtil.selectCountry(mapView,refreshTriggered,point,requireActivity(),getViewLifecycleOwner(),
+                        selectedCountry,recyclerView,listener);
 
-                                String countryName = "", countryCode = "";
-                                if (queriedFeatures != null) {
-                                    Log.d("PRINT-FROM-CALLBACK", "not null");
-                                    for (QueriedFeature queriedFeature : queriedFeatures) {
-                                        Feature feature = queriedFeature.getFeature();
-                                        Log.d("PRINT-FROM-CALLBACK", "got feature");
-                                        JsonObject properties = feature.properties();
-                                        Log.d("PRINT-FROM-CALLBACK", "got properties");
-
-                                        if (properties != null) {
-                                            Log.d("PRINT-FROM-CALLBACK", properties.toString());
-
-                                            countryName = properties.get("name_en").toString();
-                                            countryCode = properties.get("iso_3166_1").toString();
-                                            if (countryName != null && countryCode != null) {
-                                                Log.d("PRINT-FROM-CALLBACK", "name: " + countryName +
-                                                        " code: " + countryCode);
-                                                selectedCountry.setText(countryName +" (" + countryCode + ")");
-
-                                                }
-
-                                                String searchCode = countryCode.substring(1,countryCode.length()-1);
-                                                Log.d("MapFragment", "search: "+searchCode+" vs. ");
-                                                travelViewModel.fetchSavedTravels(searchCode);
-
-                                                travelViewModel.getTravelResponseLiveData().observe(getViewLifecycleOwner(), new Observer<Result>() {
-                                                    @Override
-                                                    public void onChanged(Result result) {
-                                                        if(((Result.TravelResponseSuccess)result).getData().getTravelList()!=null) {
-                                                            Log.d("MapFragment","risultati: "+((Result.TravelResponseSuccess)result).getData().getTravelList().size());
-                                                        //    Log.d("MapFragment","results: "+((Result.TravelResponseSuccess)result).getData().getTravelList().get(0).getCountry());
-                                                        }
-
-                                                        if(!refreshTriggered) {
-                                                            List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
-
-                                                            travelListAdapter = new TravelListAdapter(travelList,new TravelListAdapter.OnItemClickListener(){
-                                                                public void onTravelItemClick(Travel travel){
-                                                                    Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
-                                                                }
-                                                                public void onDeleteButtonPressed(int position){
-
-                                                                }
-
-                                                            },false);
-                                                            recyclerView.setAdapter(travelListAdapter);
-                                                        }
-                                                    }
-                                                });
-
-
-                                                // set border on selected
-                                                Expected<String,Value> conv = ValueConverter.fromJson(
-                                                        "[\"match\", [\"get\", \"iso_3166_1\"], ["+countryCode+"], true, false]");
-                                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(
-                                                        "country-selected","filter",conv.getValue());
-
-                                                // set zoom on selected
-                                                CameraOptions cameraOptions =
-                                                        new CameraOptions.Builder().center(point).zoom(2.0).build();
-                                                mapView.getMapboxMap().setCamera(cameraOptions);
-
-
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                Value stringValueExpected =
-                                        mapView.getMapboxMap().getStyle().getStyleLayerProperty("country-selected","filter").getValue();
-
-                                Log.d("STYLE-SET", "dopo getStyle " + stringValueExpected.toString());
-                               /* Expected<String,Value> conv = ValueConverter.fromJson(
-                                        "[\"match\", [\"get\", \"iso_3166_1\"], [\""+countryCode+"\"], true, false]");
-                                        "[\"match\", [\"get\", \"iso_3166_1\"], [\"IT\"], true, false]");
-                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(
-                                        "country-selected","filter",conv.getValue());*/
-
-                                Log.d("PRINT-FROM-CALLBACK","ended");
-                            }
-                            }
-
-                );
-
-                return false;
+                return true;
 
             }
         });
 
         // Inflate the layout for this fragment
         return view;
-
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mapView.onDestroy();
     }
 }

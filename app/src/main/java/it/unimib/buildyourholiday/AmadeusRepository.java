@@ -10,8 +10,6 @@ import android.util.Log;
 import android.widget.AutoCompleteTextView;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.FlightOrder;
@@ -192,8 +190,8 @@ public class AmadeusRepository {
                 );
     }
 
-    public static void setupBarSearch(Activity activity, AutoCompleteTextView autoCompleteTextView, LuoghiAdapter luoghiAdapter) {
-        autoCompleteTextView.setAdapter(luoghiAdapter);
+    public static void setupBarSearch(Activity activity, AutoCompleteTextView autoCompleteTextView, PlacesAdapter placesAdapter) {
+        autoCompleteTextView.setAdapter(placesAdapter);
 
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -218,7 +216,7 @@ public class AmadeusRepository {
                     .subscribe(
                             result -> {
                                 Location[] response = result;
-                                activity.runOnUiThread(() -> luoghiAdapter.setList(response));
+                                activity.runOnUiThread(() -> placesAdapter.setList(response));
                                 Log.d("RxJava", "Risultato scritto: " + response[0].getName() + "...");
 
                             },
@@ -227,7 +225,7 @@ public class AmadeusRepository {
                                 Log.e("RxJava", "Errore: " + error.getMessage());
                             }
                     );
-                luoghiAdapter.notifyDataSetChanged();
+                placesAdapter.notifyDataSetChanged();
             }
         });
     }

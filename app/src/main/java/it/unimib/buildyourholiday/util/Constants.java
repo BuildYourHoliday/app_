@@ -46,6 +46,8 @@ public class Constants {
     public static final int FRESH_TIMEOUT = 300000;
 
 
+    // Constants for map style file
+    public static final String MAP_STYLE_FILE = "map_style.json";
     public static final String SAVED_COUNTRIES_LAYER = "country-blue";
     public static final String BOOKED_COUNTRIES_LAYER = "country-green";
 }

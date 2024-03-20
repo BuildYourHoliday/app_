@@ -1,10 +1,17 @@
 package it.unimib.buildyourholiday;
 
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 
 import com.amadeus.resources.FlightOfferSearch;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,8 +24,6 @@ public class FlightListViewModel extends ViewModel {
     private MutableLiveData<List<Boolean>> directFlightLiveData = new MutableLiveData<>();
     private MutableLiveData<List<FlightOfferSearch>> flightOffersMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<FlightOfferSearch> selectedFlightOfferMutableLiveData = new MutableLiveData<>();
-
-    // private MediatorLiveData
 
 
 
