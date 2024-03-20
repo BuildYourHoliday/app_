@@ -20,17 +20,17 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".LanguageActivity">
+            android:name=".ui.profile.LanguageActivity">
         </activity>
 
-        <activity android:name=".AssistanceActivity" />
-        <activity android:name=".PrivacyPolicyActivity" />
-        <activity android:name=".ConditionOfUseActivity" />
-        <activity android:name=".InformationActivity" />
-        <activity android:name=".AccountActivity" />
-        <activity android:name=".ChangeEmailActivity" />
-        <activity android:name=".ChangePasswordActivity" />
-        <activity android:name=".LoginActivity"
+        <activity android:name=".ui.profile.AssistanceActivity" />
+        <activity android:name=".ui.profile.PrivacyPolicyActivity" />
+        <activity android:name=".ui.profile.ConditionOfUseActivity" />
+        <activity android:name=".ui.profile.InformationActivity" />
+        <activity android:name=".ui.profile.AccountActivity" />
+        <activity android:name=".ui.profile.ChangeEmailActivity" />
+        <activity android:name=".ui.profile.ChangePasswordActivity" />
+        <activity android:name=".ui.welcome.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,12 +41,12 @@
 
 
         <activity
-            android:name= ".MainActivity"
+            android:name= ".ui.main.MainActivity"
             android:exported="true">
 
         </activity>
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ui.profile.ProfileActivity"
             android:exported="true" />
 
 

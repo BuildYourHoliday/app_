@@ -11,7 +11,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/activity_horizontal_margin"
-            tools:context=".RegisterFragment">
+            tools:context=".ui.welcome.RegisterFragment">
 
                 <TextView
                     android:id="@+id/textView_Register"

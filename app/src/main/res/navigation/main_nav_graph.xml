@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="it.unimib.buildyourholiday.HomeFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -20,36 +20,36 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="it.unimib.buildyourholiday.MapFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="it.unimib.buildyourholiday.MyFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.MyFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_my" />
     <activity
         android:id="@+id/profileActivity"
-        android:name="it.unimib.buildyourholiday.ProfileActivity"
+        android:name="it.unimib.buildyourholiday.ui.profile.ProfileActivity"
         android:label="activity_profile"
         tools:layout="@layout/activity_profile" />
     <activity
         android:id="@+id/loginActivity"
-        android:name="it.unimib.buildyourholiday.LoginActivity" />
+        android:name="it.unimib.buildyourholiday.ui.welcome.LoginActivity" />
     <fragment
         android:id="@+id/flightResultsFragment"
-        android:name="it.unimib.buildyourholiday.FlightResultsFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.FlightResultsFragment"
         android:label="fragment_flight_results"
         tools:layout="@layout/fragment_flight_results" />
     <fragment
         android:id="@+id/hotelResultsFragment"
-        android:name="it.unimib.buildyourholiday.HotelResultsFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.HotelResultsFragment"
         android:label="fragment_hotel_results"
         tools:layout="@layout/fragment_hotel_results" />
     <fragment
         android:id="@+id/purchaseFragment"
-        android:name="it.unimib.buildyourholiday.PurchaseFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.PurchaseFragment"
         android:label="fragment_purchase"
         tools:layout="@layout/fragment_purchase" />
 

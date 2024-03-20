@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/myFragment"
-        android:name="it.unimib.buildyourholiday.MyFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.MyFragment"
         android:label="activity_my"
         tools:layout="@layout/fragment_my" >
         <action
@@ -20,13 +20,13 @@
 
     <fragment
         android:id="@+id/bookedFragment"
-        android:name="it.unimib.buildyourholiday.BookedFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.BookedFragment"
         android:label="activity_my"
         tools:layout="@layout/fragment_booked" />
 
     <fragment
         android:id="@+id/savedFragment"
-        android:name="it.unimib.buildyourholiday.SavedFragment"
+        android:name="it.unimib.buildyourholiday.ui.main.SavedFragment"
         android:label="activity_my"
         tools:layout="@layout/fragment_saved" />
 </navigation>

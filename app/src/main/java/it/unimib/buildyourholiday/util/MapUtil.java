@@ -3,9 +3,6 @@ package it.unimib.buildyourholiday.util;
 import static it.unimib.buildyourholiday.util.Constants.BOOKED_COUNTRIES_LAYER;
 import static it.unimib.buildyourholiday.util.Constants.SAVED_COUNTRIES_LAYER;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.TextView;
@@ -17,7 +14,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 import com.mapbox.bindgen.Expected;
 import com.mapbox.bindgen.Value;
@@ -36,10 +32,8 @@ import com.mapbox.maps.plugin.delegates.listeners.OnStyleLoadedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.buildyourholiday.MapFragment;
-import it.unimib.buildyourholiday.R;
-import it.unimib.buildyourholiday.TravelViewModel;
-import it.unimib.buildyourholiday.TravelViewModelFactory;
+import it.unimib.buildyourholiday.ui.main.TravelViewModel;
+import it.unimib.buildyourholiday.ui.main.TravelViewModelFactory;
 import it.unimib.buildyourholiday.adapter.TravelListAdapter;
 import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.model.Result;

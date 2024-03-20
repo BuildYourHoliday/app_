@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="80dp"
-    tools:context=".FlightResultsFragment">
+    tools:context=".ui.main.FlightResultsFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

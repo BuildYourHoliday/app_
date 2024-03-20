@@ -8,10 +8,9 @@ import android.app.Application;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-import it.unimib.buildyourholiday.AmadeusService;
+import it.unimib.buildyourholiday.data.service.AmadeusService;
 import it.unimib.buildyourholiday.data.database.TravelsRoomDatabase;
 import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
-import it.unimib.buildyourholiday.data.repository.travel.TravelMockRepository;
 import it.unimib.buildyourholiday.data.repository.travel.TravelRepository;
 import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.data.repository.user.UserRepository;

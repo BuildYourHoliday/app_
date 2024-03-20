@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
@@ -23,11 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import it.unimib.buildyourholiday.R;
-import it.unimib.buildyourholiday.TravelViewModel;
-import it.unimib.buildyourholiday.TravelViewModelFactory;
-import it.unimib.buildyourholiday.data.repository.travel.ITravelRepository;
 import it.unimib.buildyourholiday.model.Travel;
-import it.unimib.buildyourholiday.util.ServiceLocator;
 
 public class TravelSavedAdapter extends RecyclerView.Adapter<TravelSavedAdapter.TravelViewHolder> {
 

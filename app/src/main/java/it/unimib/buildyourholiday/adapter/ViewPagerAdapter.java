@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import it.unimib.buildyourholiday.BookedFragment;
-import it.unimib.buildyourholiday.MyFragment;
-import it.unimib.buildyourholiday.SavedFragment;
+import it.unimib.buildyourholiday.ui.main.BookedFragment;
+import it.unimib.buildyourholiday.ui.main.MyFragment;
+import it.unimib.buildyourholiday.ui.main.SavedFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull MyFragment fragmentActivity) {
