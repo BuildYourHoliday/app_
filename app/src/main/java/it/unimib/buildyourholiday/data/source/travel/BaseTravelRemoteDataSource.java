@@ -16,6 +16,4 @@ public abstract class BaseTravelRemoteDataSource {
 
     public void getTravels(String country, int page) {
     }
-
-//    public abstract void getTravel(String country, int page);
 }

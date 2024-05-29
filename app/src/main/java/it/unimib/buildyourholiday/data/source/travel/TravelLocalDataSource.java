@@ -48,23 +48,6 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
         });
     }
 
-    /**
-     * Gets the news from the local database.
-     * The method is executed with an ExecutorService defined in TravelsRoomDatabase class
-     * because the database access cannot been executed in the main thread.
-     */
-/*    @Override
-    public void getTravel() {
-        TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            //TODO Fix this instruction
-            NewsApiResponse newsApiResponse = new NewsApiResponse();
-            newsApiResponse.setNewsList(travelDao.getAll());
-            travelCallback.onSuccessFromLocal(newsApiResponse);
-        });
-    }
-
- */
-
     @Override
     public void getSavedTravels() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
@@ -88,7 +71,6 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
                 }
             } else {
                 // When the user deleted all favorite news from remote
-                //TODO Check if it works fine and there are not drawbacks
                 List<Travel> allTravels = travelDao.getAllSaved();
                 for (Travel t : allTravels) {
                     t.setSynchronized(false);
@@ -105,10 +87,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             for (Travel travel : savedTravels) {
                 travelDao.delete(travel);      //TODO va bene???
             }
-            //int updatedRowsNumber = travelDao.updateListFavoriteNews(favoriteNews);
 
-            // It means that the update succeeded because the number of updated rows is
-            // equal to the number of the original favorite news
             if (travelDao.getAllSaved().size()==0) {
                 travelCallback.onDeleteFavoriteTravelSuccess(savedTravels);
             } else {
@@ -181,8 +160,6 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             int travelsDeleted = travelList.size();
 
             if (travelsCounter != travelsDeleted) {
-                //sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
-                //dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
                 travelCallback.onDeleteFavoriteTravelSuccess(travelList, travel);
             }
 

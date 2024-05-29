@@ -173,13 +173,10 @@ public class PurchaseFragment extends Fragment {
         }
         cardNumber.setText("4111111111111111");
         cardNumber.setClickable(false);
-        //view.findViewById(R.id.card_number_inputLayout).setBackgroundColor(requireActivity().getColor(com.mapbox.maps.plugin.overlay.R.color.material_grey_600));
         expiration.setText("2025-01");
         expiration.setClickable(false);
-        //view.findViewById(R.id.card_expiration_inputLayout).setBackgroundColor(requireActivity().getColor(com.mapbox.maps.plugin.overlay.R.color.material_grey_600));
         cvv.setText("123");
         cvv.setClickable(false);
-        //view.findViewById(R.id.card_cvv_inputLayout).setBackgroundColor(requireActivity().getColor(com.mapbox.maps.plugin.overlay.R.color.material_grey_600));
     }
 
     private void processPayment(Travel travel, FlightOfferSearch flightOfferSearch, FlightOrder.Traveler[] travelers, String email, HotelOfferSearch hotelOfferSearch) {
