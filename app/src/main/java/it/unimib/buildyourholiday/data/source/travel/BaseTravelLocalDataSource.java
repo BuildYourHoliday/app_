@@ -5,7 +5,7 @@ import java.util.List;
 import it.unimib.buildyourholiday.model.Travel;
 
 /**
- * Base class to get news from a local source.
+ * Base class to get travels from a local source.
  */
 public abstract class BaseTravelLocalDataSource {
 
