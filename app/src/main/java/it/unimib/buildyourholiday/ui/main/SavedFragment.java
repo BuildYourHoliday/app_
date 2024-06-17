@@ -104,6 +104,9 @@ public class SavedFragment extends Fragment {
                                         Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
                                     }
 
+                                    @Override
+                                    public void onSearchButtonPressed(String destination, String departure, String startDate, String endDate, String adults) { }
+
                                     public void onDeleteButtonPressed(Travel deletedTravel) {
                                         for (int i=0;i<travelList.size();i++) {
                                             Log.d(TAG,"travel "+i+": "+travelList.get(i).getCity());
