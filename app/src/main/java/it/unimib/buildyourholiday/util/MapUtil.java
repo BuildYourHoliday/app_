@@ -94,10 +94,15 @@ public class MapUtil {
                         Expected<String,Value> conv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
                                 "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
                                 "false\n" + "]");
-                        Log.d("MapFragment", Objects.requireNonNull(conv.getValue()).toString());
-                        Objects.requireNonNull(mapView.getMapboxMap().getStyle()).setStyleLayerProperty(SAVED_COUNTRIES_LAYER,
-                                "filter",conv.getValue());
-                        Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(SAVED_COUNTRIES_LAYER,"filter"));
+                        Log.d("MapFragment", conv.getValue().toString());
+                        mapView.getMapboxMap().addOnStyleLoadedListener(new OnStyleLoadedListener() {
+                            @Override
+                            public void onStyleLoaded(@NonNull StyleLoadedEventData styleLoadedEventData) {
+                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(SAVED_COUNTRIES_LAYER,
+                                        "filter",conv.getValue());
+                                Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(SAVED_COUNTRIES_LAYER,"filter"));
+                            }
+                        });
                         model.getSavedTravelsLiveData(false).removeObserver(this);
                     }
                 });
@@ -115,10 +120,15 @@ public class MapUtil {
                                 "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
                                 "false\n" + "]");
                         Log.d("MapFragment",conv.getValue().toString());
-                        mapView.getMapboxMap().getStyle().setStyleLayerProperty(BOOKED_COUNTRIES_LAYER,
-                                "filter",conv.getValue());
-                        Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(BOOKED_COUNTRIES_LAYER,"filter"));
-                        model.getBookedTravelsLiveData(false).removeObserver(this);
+                        mapView.getMapboxMap().addOnStyleLoadedListener(new OnStyleLoadedListener() {
+                            @Override
+                            public void onStyleLoaded(@NonNull StyleLoadedEventData styleLoadedEventData) {
+                                mapView.getMapboxMap().getStyle().setStyleLayerProperty(BOOKED_COUNTRIES_LAYER,
+                                        "filter",conv.getValue());
+                                Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(BOOKED_COUNTRIES_LAYER,"filter"));
+                            }
+                        });
+                       model.getBookedTravelsLiveData(false).removeObserver(this);
                     }
                 });
     }
