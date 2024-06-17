@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +27,7 @@ import it.unimib.buildyourholiday.model.Travel;
 public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.TravelViewHolder> {
 
     public interface OnItemClickListener{
-        void onDeleteButtonPressed(int position);
+        void onDeleteButtonPressed(Travel position);
         void onTravelItemClick(Travel travel);
     }
     private final List<Travel> travelList;
@@ -242,9 +241,10 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.button_delete) {
+                Travel t = travelList.get(getAdapterPosition());
                 travelList.remove(getAdapterPosition());
                 notifyItemRemoved(getAdapterPosition());
-                onItemClickListener.onDeleteButtonPressed(getAdapterPosition());
+                onItemClickListener.onDeleteButtonPressed(t);
             }
             else{
                 Travel travel = travelList.get(getAdapterPosition());

@@ -165,8 +165,8 @@ public class TravelViewModel extends ViewModel {
     public LiveData<Result> getBookedTravelsLiveData(boolean isFirstLoading) {
         if (bookedTravelListLiveData == null) {
             bookedTravelListLiveData = new MutableLiveData<>();
-            getBookedTravels(isFirstLoading);
         }
+        getBookedTravels(isFirstLoading);
         return bookedTravelListLiveData;
     }
 

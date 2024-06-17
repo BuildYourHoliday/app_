@@ -14,12 +14,6 @@ public class Constants {
 
     // Constants for SharedPreferences
     public static final String SHARED_PREFERENCES_FILE_NAME = "it.unimib.buildyourholiday.preferences";
-  /*  public static final String SHARED_PREFERENCES_COUNTRY_OF_INTEREST = "country_of_interest";
-    public static final String SHARED_PREFERENCES_TOPICS_OF_INTEREST = "topics_of_interest";
-    public static final String SHARED_PREFERENCES_FIRST_LOADING = "first_loading";
-
-   */
-
 
     // Dao Database
     public static final String TRAVELS_DATABASE_NAME = "travel_db";

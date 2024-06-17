@@ -78,10 +78,6 @@ public class AmadeusService extends BaseTravelRemoteDataSource {
                 Params.with("cityCode", cityCode).and("radius",3));
 
 
-
-        // hotelOfferSearches[0].getOffers()[0].getPrice().getTotal();
-       // if (hotelOfferSearches[0].getResponse().getStatusCode() != 200 ) {
-       //     System.out.println("Wrong status code: " + hotelOfferSearches[0].getResponse().getStatusCode());
         if (hotels[0].getResponse().getStatusCode() != 200) {
             System.out.println("Wrong status code: " + hotels[0].getResponse().getStatusCode());
             System.exit(-1);

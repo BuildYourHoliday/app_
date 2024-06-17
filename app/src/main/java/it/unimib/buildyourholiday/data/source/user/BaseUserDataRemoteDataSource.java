@@ -18,7 +18,4 @@ public abstract class BaseUserDataRemoteDataSource {
 
     public abstract void saveUserData(User user);
     public abstract void getUserSavedTravels(String idToken);
-   // public abstract void saveUserSavedTravels(List<Travel> travelList, String idToken);
-  //  public abstract void getUserPreferences(String idToken);
-  //  public abstract void saveUserTravel(Travel travel, String idToken);
 }

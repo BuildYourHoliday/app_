@@ -13,7 +13,7 @@
 
         <item name="colorControlNormal">#C5CAE9</item>
 
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/primary</item>
 
 
 

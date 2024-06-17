@@ -146,7 +146,7 @@ public class SavedTravelDataSource extends BaseSavedTravelDataSource {
     @Override
     public void deleteSavedTravel(Travel travel) {
         databaseReference.child(FIREBASE_USERS_COLLECTION).child(idToken)
-                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.hashCode()))
+                .child(FIREBASE_SAVED_TRAVELS_COLLECTION).child(String.valueOf(travel.getId()))
                 .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

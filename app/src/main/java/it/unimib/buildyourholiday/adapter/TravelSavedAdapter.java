@@ -31,7 +31,7 @@ import it.unimib.buildyourholiday.ui.main.FragmentCommunication;
 public class TravelSavedAdapter extends RecyclerView.Adapter<TravelSavedAdapter.TravelViewHolder> {
 
     public interface OnItemClickListener{
-        void onDeleteButtonPressed(int position);
+        void onDeleteButtonPressed(Travel position);
         void onTravelItemClick(Travel travel);
         void onSearchButtonPressed(String destination, String departure, String startDate, String endDate, String adults);
     }
@@ -239,12 +239,13 @@ public class TravelSavedAdapter extends RecyclerView.Adapter<TravelSavedAdapter.
         public void onClick(View v) {
             if (v.getId() == R.id.button_delete) {
                 int position = getAdapterPosition();
+                Travel t = travelList.get(position);
                 Log.d("SavedFragment","adapter size: "+ travelList.size());
                 Log.d("SavedFragment","adapter: " + travelList.get(position).getFlight().getDepartureAirport());
                 for (int i=0;i<travelList.size();i++) {
                     Log.d("SavedFragment","(adapter) travel "+i+": "+travelList.get(i).getCity());
                 }
-                onItemClickListener.onDeleteButtonPressed(position);
+                onItemClickListener.onDeleteButtonPressed(t);
                 travelList.remove(position);
                 notifyItemRemoved(position);
             } else if (v.getId() == R.id.button_search) {

@@ -104,44 +104,15 @@ public class SavedFragment extends Fragment {
                                         Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
                                     }
 
-                                    @Override
-                                    public void onSearchButtonPressed(String destination, String departure, String startDate, String endDate, String adults) {
-                                        //prova implementando delete
-                                        Fragment newFragment = new HomeFragment();
-
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("destination", destination);
-                                        bundle.putString("departure", departure);
-                                        bundle.putString("startDate", startDate);
-                                        bundle.putString("endDate", endDate);
-                                        bundle.putString("adults", adults);
-
-                                        //getParentFragmentManager().setFragmentResult("destination", destination);
-
-                                        newFragment.setArguments(bundle);
-
-                                        // Navigate to the new fragment (assuming you're using the Navigation component)
-                                        /*getParentFragmentManager().beginTransaction()
-                                                .replace(R.id.homeFragment, newFragment)
-                                                .addToBackStack(null)
-                                                .commit();*/
-                                    }
-
-
-                                    public void onDeleteButtonPressed(int position) {
+                                    public void onDeleteButtonPressed(Travel deletedTravel) {
                                         for (int i=0;i<travelList.size();i++) {
                                             Log.d(TAG,"travel "+i+": "+travelList.get(i).getCity());
                                         }
                                         Log.d(TAG,"size: "+travelList.size());
-                                        Log.d(TAG,"position: " + position);
-                                        
-                                        /* TODO: test once saving is possible */
-                                        Travel delete = travelList.get(position);
-                                        Log.d(TAG,"pos: "+travelList.get(position).getFlight().getDepartureAirport());
-                                        travelViewModel.deleteTravel(delete);
 
+                                        travelViewModel.deleteTravel(deletedTravel);
 
-                                        Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(view, R.string.action_deleted, Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
 

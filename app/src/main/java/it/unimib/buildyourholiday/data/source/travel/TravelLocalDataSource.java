@@ -17,7 +17,7 @@ import it.unimib.buildyourholiday.util.DataEncryptionUtil;
 import it.unimib.buildyourholiday.util.SharedPreferencesUtil;
 
 /**
- * Class to get news from local database using Room.
+ * Class to get travels from local database using Room.
  */
 public class TravelLocalDataSource extends BaseTravelLocalDataSource {
 
@@ -48,23 +48,6 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
         });
     }
 
-    /**
-     * Gets the news from the local database.
-     * The method is executed with an ExecutorService defined in TravelsRoomDatabase class
-     * because the database access cannot been executed in the main thread.
-     */
-/*    @Override
-    public void getTravel() {
-        TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            //TODO Fix this instruction
-            NewsApiResponse newsApiResponse = new NewsApiResponse();
-            newsApiResponse.setNewsList(travelDao.getAll());
-            travelCallback.onSuccessFromLocal(newsApiResponse);
-        });
-    }
-
- */
-
     @Override
     public void getSavedTravels() {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
@@ -87,8 +70,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
                     travelCallback.onFailureFromLocal(new Exception(GENERIC_ERROR));
                 }
             } else {
-                // When the user deleted all favorite news from remote
-                //TODO Check if it works fine and there are not drawbacks
+                // When the user deleted all favorite travels from remote
                 List<Travel> allTravels = travelDao.getAllSaved();
                 for (Travel t : allTravels) {
                     t.setSynchronized(false);
@@ -105,10 +87,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             for (Travel travel : savedTravels) {
                 travelDao.delete(travel);      //TODO va bene???
             }
-            //int updatedRowsNumber = travelDao.updateListFavoriteNews(favoriteNews);
 
-            // It means that the update succeeded because the number of updated rows is
-            // equal to the number of the original favorite news
             if (travelDao.getAllSaved().size()==0) {
                 travelCallback.onDeleteFavoriteTravelSuccess(savedTravels);
             } else {
@@ -118,7 +97,7 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     }
 
     /**
-     * Saves the news in the local database.
+     * Saves the travels in the local database.
      * The method is executed with an ExecutorService defined in TravelsRoomDatabase class
      * because the database access cannot been executed in the main thread.
      * @param travelsList the list of travels to be written in the local database.
@@ -126,17 +105,17 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
     @Override
     public void insertTravels(List<Travel> travelsList) {
         TravelsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            // Reads the news from the database
+            // Reads the travels from the database
             List<Travel> allTravels = travelDao.getAll();
 
             if (travelsList != null) {
 
-                // Writes the news in the database and gets the associated primary keys
+                // Writes the travels in the database and gets the associated primary keys
                 List<Long> insertedIds = travelDao.insertTravelList(travelsList);
                 for (int i = 0; i < travelsList.size(); i++) {
-                    // Adds the primary key to the corresponding object News just downloaded so that
-                    // if the user marks the news as favorite (and vice-versa), we can use its id
-                    // to know which news in the database must be marked as favorite/not favorite
+                    // Adds the primary key to the corresponding object Travel just downloaded so that
+                    // if the user marks the travels as favorite (and vice-versa), we can use its id
+                    // to know which travels in the database must be marked as favorite/not favorite
                     travelsList.get(i).setId(insertedIds.get(i));
                 }
 
@@ -181,8 +160,6 @@ public class TravelLocalDataSource extends BaseTravelLocalDataSource {
             int travelsDeleted = travelList.size();
 
             if (travelsCounter != travelsDeleted) {
-                //sharedPreferencesUtil.deleteAll(SHARED_PREFERENCES_FILE_NAME);
-                //dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
                 travelCallback.onDeleteFavoriteTravelSuccess(travelList, travel);
             }
 

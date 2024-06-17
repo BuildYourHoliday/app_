@@ -43,25 +43,6 @@ public class UserViewModel extends ViewModel {
         return userSavedTravelsMutableLiveData;
     }
 
-
-    /*
-    public void saveUserPreferences(String favoriteCountry, Set<String> favoriteTopics, String idToken) {
-        if (idToken != null) {
-            userRepository.saveUserPreferences(favoriteCountry, favoriteTopics, idToken);
-        }
-    }
-
-     */
-
-    /*
-    public MutableLiveData<Result> getUserPreferences(String idToken) {
-        if (idToken != null) {
-            userPreferencesMutableLiveData = userRepository.getUserPreferences(idToken);
-        }
-        return userPreferencesMutableLiveData;
-    }
-     */
-
     public User getLoggedUser() {
         return userRepository.getLoggedUser();
     }

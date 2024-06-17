@@ -18,7 +18,7 @@ import it.unimib.buildyourholiday.model.Travel;
 import it.unimib.buildyourholiday.model.TravelResponse;
 
 /**
- * Repository class to get the news from local or from a remote source.
+ * Repository class to get the travels from local or from a remote source.
  */
 public class TravelRepository implements ITravelRepository, TravelCallback {
 
@@ -60,8 +60,8 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     public MutableLiveData<Result> getSavedTravels(String country, int page, long lastUpdate) {
         long currentTime = System.currentTimeMillis();
 
-        // It gets the news from the Web Service if the last download
-        // of the news has been performed more than FRESH_TIMEOUT value ago
+        // It gets the travel from the Web Service if the last download
+        // of the travel has been performed more than FRESH_TIMEOUT value ago
         if (currentTime - lastUpdate > FRESH_TIMEOUT) {
             travelRemoteDataSource.getTravels(country, page);
         } else {
@@ -113,7 +113,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
     @Override
     public MutableLiveData<Result> getBookedTravels(boolean firstLoading) {
         // The first time the user launches the app, check if she
-        // has previously saved favorite news on the cloud
+        // has previously saved favorite travel on the cloud
         if (firstLoading) {
             backupDataSource.getBookedTravels();
         } else {
@@ -228,7 +228,7 @@ public class TravelRepository implements ITravelRepository, TravelCallback {
 
     @Override
     public void onSuccessSynchronization() {
-        Log.d(TAG, "News synchronized from remote");
+        Log.d(TAG, "Travels synchronized from remote");
     }
 
     @Override
