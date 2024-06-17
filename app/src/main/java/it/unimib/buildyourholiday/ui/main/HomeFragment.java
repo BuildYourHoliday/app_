@@ -87,6 +87,17 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_profileActivity);
         });
 
+        /*getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                // We use a String here, but any type that can be put in a Bundle is supported.
+                String result = bundle.getString("bundleKey");
+                // Do something with the result.
+            }
+        });*/
+
+
+
         originAutoCompleteTextView = view.findViewById(R.id.depart_place);
         destinationAutoCompleteTextView = view.findViewById(R.id.destination_place);
 
@@ -109,6 +120,15 @@ public class HomeFragment extends Fragment {
         departDateEditText.setOnClickListener(v -> searchViewModel.showDatePickerDialog(requireContext(),departDateEditText));
         returnDateEditText.setOnClickListener(v -> searchViewModel.showDatePickerDialog(requireContext(),returnDateEditText));
 
+        if (getArguments() != null) {
+            destinationAutoCompleteTextView.setText(getArguments().getString("destination"));
+            originAutoCompleteTextView.setText(getArguments().getString("departure"));
+            departDateEditText.setText(getArguments().getString("startDate"));
+            returnDateEditText.setText(getArguments().getString("endDate"));
+            adultsEditText.setText(getArguments().getString("adults"));
+
+            // Use the data to populate your views or perform necessary actions
+        }
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -133,7 +133,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:background="?android:selectableItemBackground"
@@ -281,8 +281,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/expandable_layout"
-            android:layout_width="364dp"
-            android:layout_height="128dp"
+            android:layout_width="341dp"
+            android:layout_height="144dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -328,7 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="72dp"
                 android:text="06:10 - 07:30"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -339,7 +339,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="48dp"
                 android:text="12:25 - 13:50"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -349,8 +349,8 @@
                 android:id="@+id/textview_textNights"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="120dp"
                 android:text="@string/nights"
                 android:textSize="16sp"
                 app:layout_constraintBaseline_toBaselineOf="@id/textview_nights"
@@ -362,7 +362,7 @@
                 android:layout_width="21dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="96dp"
+                android:layout_marginBottom="104dp"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView_textAdults"
@@ -374,7 +374,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="-81dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="96dp"
+                android:layout_marginBottom="120dp"
                 android:textSize="16sp"
                 app:layout_constraintBaseline_toBaselineOf="@id/textview_adults"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -388,7 +388,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="156dp"
-                android:layout_marginBottom="96dp"
+                android:layout_marginBottom="104dp"
                 android:src="@drawable/baseline_person_black_24"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -398,23 +398,39 @@
                 android:id="@+id/textView_textPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="36dp"
                 android:layout_marginBottom="3dp"
                 android:text="Total Price:"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_returnalTime"
+                app:layout_constraintVertical_bias="0.454" />
 
             <TextView
                 android:id="@+id/textview_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="11dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="16dp"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView_textPrice"
                 tools:text="$100" />
+
+            <Button
+                android:id="@+id/button_delete"
+                style="@style/BUTTON"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:text="@string/delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/textview_price"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.974" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -423,53 +439,45 @@
             android:id="@+id/cardViewSavedBooked"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             app:cardBackgroundColor="@color/light_primary"
             app:cardCornerRadius="90dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/constraintLayout2"
+                android:layout_width="47dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toTopOf="@+id/button_delete"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
+
                 <ImageView
                     android:id="@+id/saved_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_favorite_24"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/baseline_favorite_24" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <ImageView
                     android:id="@+id/booked_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_paid_24"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/baseline_paid_24" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/button_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="-8dp"
-            android:backgroundTint="@android:color/transparent"
-            android:text="@string/delete"
-            style="@style/BUTTON"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewSavedBooked"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -491,6 +499,7 @@
             app:layout_constraintStart_toEndOf="@+id/textview_checkinDate"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             tools:text="-" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
