@@ -166,8 +166,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/expandable_layout"
-            android:layout_width="369dp"
-            android:layout_height="72dp"
+            android:layout_width="347dp"
+            android:layout_height="67dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -245,13 +245,13 @@
 
             <ImageView
                 android:id="@+id/textView_textAdults"
+                style="@style/IMAGEVIEW"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="140dp"
                 android:layout_marginBottom="36dp"
                 android:src="@drawable/baseline_person_black_24"
                 android:textSize="16sp"
-                style="@style/IMAGEVIEW"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -302,31 +302,31 @@
                 app:layout_constraintStart_toEndOf="@+id/textView_textPrice"
                 tools:text="$100" />
 
-            <!--            pass data to search fragment-->
-            <!--<ImageView
+            <!--            pass data to home fragment-->
+            <ImageButton
                 android:id="@+id/button_search"
                 android:layout_width="54dp"
                 android:layout_height="53dp"
-                android:layout_marginStart="140dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="84dp"
+                android:layout_marginTop="4dp"
                 android:backgroundTint="@android:color/transparent"
                 android:padding="16dp"
                 android:src="@drawable/baseline_search_24"
                 app:layout_constraintStart_toEndOf="@+id/textview_price"
-                app:layout_constraintTop_toTopOf="parent" />-->
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/button_delete"
+            style="@style/BUTTON"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-8dp"
             android:layout_marginEnd="8dp"
             android:backgroundTint="@android:color/transparent"
             android:text="@string/delete"
-            style="@style/BUTTON"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"

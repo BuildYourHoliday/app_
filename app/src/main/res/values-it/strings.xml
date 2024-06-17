@@ -36,8 +36,6 @@
     <string name="error_login_user_message">Utente non valido</string>
     <string name="error_registration_password_message">Password non valida</string>
     <string name="error_collision_user_message">Utente già associato ad un account esistente</string>
-    <string name="error_form_message">Prego inserisci le tue informazion</string>
-    <string name="error_check_password">Controlli la sua password</string>
     <string name="italian_language">Italiano</string>
     <string name="english_language">Inglese</string>
     <string name="login_or_sign_up">Accedi / iscriviti</string>
@@ -68,23 +66,6 @@
     <string name="change_password_error">Errore, la password non è stata modificata</string>
     <string name="change_email_successs">Invio email modifica indirizzo</string>
     <string name="fail_login">Accesso fallito</string>
-    <string name="saved">Salvati</string>
-    <string name="info_content_description">espandi</string>
-    <string name="refreshes_description">Ricarica lo stile della mappa</string>
-    <string name="delete">Elimina</string>
-    <string name="no_data">Seleziona un paese</string>
-    <string name="your_travels_for">"I Tuoi Viaggi per: "</string>
-    <string name="view_on_map">Vedi sulla mappa</string>
-    <string name="direct_flight">"Volo diretto: "</string>
-    <string name="nights">notti</string>
-    <string name="your_destination">La tua destinazione</string>
-    <string name="depart_date">Data partenza:</string>
-    <string name="return_date">Data ritorno:</string>
-    <string name="date">AAAA-MM-GG</string>
-    <string name="reset">Azzera parametri</string>
-    <string name="people">Persone:</string>
-    <string name="departure_place">Luogo di partenza</string>
-    <string name="find_journey">Trova il viaggio</string>
 
     //Stringhe riguardanti le condizioni d'uso
     <string name="condition_of_use_title">Condizioni d\'uso</string>
@@ -123,35 +104,4 @@
 
     //email assistenza
     <string name="emailAssistenza">BuildYourHoliday.Assistenza@gmail.com</string>
-    <string name="saved_travel_success">Il tuo viaggio è stato salvato!</string>
-    <string name="loading_wait_text">Attendi mentre costruiamo la tua vacanza…</string>
-    <string name="select_hotel">Seleziona hotel:</string>
-    <string name="no_results_for_budget">Non è stata trovata alcuna offerta per il tuo budget indicato, di seguito sono riportate alcune offerte generiche</string>
-    <string name="save_travel">Salva viaggio</string>
-    <string name="purchase_travel">Acquista viaggio</string>
-    <string name="select_flight">Seleziona volo:</string>
-    <string name="find_hotel">Trova hotel</string>
-    <string name="no_limit"> no budget</string>
-    <string name="no_flights_for_budget">Non è stato possibile trovare alcun volo per la tua ricerca, prova a modificare il tuo budget o la tua destinazione, oppure seleziona un nuovo range di date.</string>
-    <string name="flights">Voli</string>
-    <string name="hotels">Hotel</string>
-    <string name="cardNumber">Numero carta</string>
-    <string name="expirationDate">Data di scadenza</string>
-    <string name="travelerFirstName">Nome</string>
-    <string name="travelerLastName">Cognome</string>
-    <string name="travelerPhone">Numero di telefono</string>
-    <string name="travelerInfo">Dati personali viaggiatore:</string>
-    <string name="cardInfo">Metodo di pagamento:</string>
-    <string name="purchased_travel_success">Il tuo viaggio è stato prenotato con successo!</string>
-    <string name="depart_date_err">Controlla la tua data di partenza prima di proseguire</string>
-    <string name="return_date_err">Controlla la tua data di partenza prima di ritorno</string>
-    <string name="people_err">Inserisci un numero di persone prima di continuare</string>
-    <string name="people_number_err">Inserisci un numero di persone valido</string>
-    <string name="budget_err">Controlla la cifra inserita per il tuo bugdet prima di proseguire</string>
-    <string name="origin_city_err">Controlla la tua città di partenza prima di proseguire</string>
-    <string name="destination_city_err">Controlla la tua destinazione prima di proseguire</string>
-    <string name="date_picker_err">Inserisci una data non passata</string>
-    <string name="date_range_err">Scegli un range di date valido prima di proseguire</string>
-    <string name="select_flight_err">Scegli un volo prima di proseguire</string>
-    <string name="select_hotel_err">Scegli un hotel prima di proseguire</string>
 </resources>
