@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import it.unimib.buildyourholiday.util.ServiceLocator;
 
 public class BookedFragment extends Fragment {
 
+    private static final String TAG = BookedFragment.class.getSimpleName();
     private List<Travel> bookedList;
 
     private RecyclerView recyclerView;
@@ -67,8 +69,15 @@ public class BookedFragment extends Fragment {
                                     Snackbar.make(v, travel.getCity(), Snackbar.LENGTH_SHORT).show();
                                 }
 
-                                public void onDeleteButtonPressed(int position){
-                                    Snackbar.make(v, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
+                                public void onDeleteButtonPressed(Travel deletedTravel){
+                                    for (int i=0;i<travelList.size();i++) {
+                                        Log.d(TAG,"travel "+i+": "+travelList.get(i).getCity());
+                                    }
+                                    Log.d(TAG,"size: "+travelList.size());
+
+                                    travelViewModel.deleteTravel(deletedTravel);
+
+                                    Snackbar.make(v, R.string.action_deleted, Snackbar.LENGTH_SHORT).show();
                                 }
                             });
 

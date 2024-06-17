@@ -9,8 +9,6 @@
     <string name="mapbox_access_token" translatable="false">
         pk.eyJ1IjoiY2hvcHBhZGVidWciLCJhIjoiY2xwbGc1Nzh6MDRjMzJqb3RnYWt1dmN5cCJ9.t8v24xXETiXI0wIyYa7OSw
     </string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="email" translatable="false">E-Mail</string>
     <string name="password" translatable="false">Password</string>
@@ -174,4 +172,5 @@
     <string name="date_range_err">Please make sure to pick a valid date range!</string>
     <string name="select_flight_err">Please select a flight</string>
     <string name="select_hotel_err">Please select a hotel</string>
+    <string name="action_deleted">Element deleted successfully!</string>
 </resources>

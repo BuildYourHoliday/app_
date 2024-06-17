@@ -31,6 +31,7 @@ import com.mapbox.maps.plugin.delegates.listeners.OnStyleLoadedListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.unimib.buildyourholiday.ui.main.TravelViewModel;
 import it.unimib.buildyourholiday.ui.main.TravelViewModelFactory;
@@ -93,8 +94,8 @@ public class MapUtil {
                         Expected<String,Value> conv = ValueConverter.fromJson("[\n" +"\"match\",\n" +
                                 "[\"get\", \"iso_3166_1\"],\n" + "["+ (countries) +"],\n" + "true,\n" +
                                 "false\n" + "]");
-                        Log.d("MapFragment",conv.getValue().toString());
-                        mapView.getMapboxMap().getStyle().setStyleLayerProperty(SAVED_COUNTRIES_LAYER,
+                        Log.d("MapFragment", Objects.requireNonNull(conv.getValue()).toString());
+                        Objects.requireNonNull(mapView.getMapboxMap().getStyle()).setStyleLayerProperty(SAVED_COUNTRIES_LAYER,
                                 "filter",conv.getValue());
                         Log.d("MapFragment","property: "+mapView.getMapboxMap().getStyle().getStyleLayerProperty(SAVED_COUNTRIES_LAYER,"filter"));
                         model.getSavedTravelsLiveData(false).removeObserver(this);
