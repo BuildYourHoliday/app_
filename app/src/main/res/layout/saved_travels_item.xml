@@ -286,7 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginBottom="3dp"
-                android:text="Total Price:"
+                android:text="@string/total_price"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -310,6 +310,7 @@
                 android:layout_marginStart="84dp"
                 android:layout_marginTop="4dp"
                 android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/search_button"
                 android:padding="16dp"
                 android:src="@drawable/baseline_search_24"
                 app:layout_constraintStart_toEndOf="@+id/textview_price"

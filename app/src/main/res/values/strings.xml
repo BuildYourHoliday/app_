@@ -142,14 +142,14 @@
     <string name="saved_travel_success">Your travel has been saved!</string>
     <string name="loading_wait_text">Please wait while we Build Your Holiday...</string>
     <string name="select_hotel">Select your hotel:</string>
-    <string name="no_results_for_budget">No results were found for your selected buget, here are some generic offers</string>
+    <string name="no_results_for_budget">No results were found for your selected budget, here are some generic offers</string>
     <string name="save_travel">Save travel</string>
     <string name="purchase_travel">Purchase travel</string>
     <string name="select_flight">Select your flight:</string>
     <string name="find_hotel">Find hotel</string>
     <string name="no_limit"> no limit</string>
     <string name="range_people" translatable="false">1 - 9</string>
-    <string name="no_flights_for_budget">No flights were found for your reasearch, please try to modify budget or destination, either choose a new date range.</string>
+    <string name="no_flights_for_budget">No flights were found for your research, please try to modify budget or destination, either choose a new date range.</string>
     <string name="flights">Flights</string>
     <string name="hotels">Hotels</string>
     <string name="cardNumber">Card number</string>
@@ -173,4 +173,6 @@
     <string name="select_flight_err">Please select a flight</string>
     <string name="select_hotel_err">Please select a hotel</string>
     <string name="action_deleted">Element deleted successfully!</string>
+    <string name="search_button">Search </string>
+    <string name="total_price">Total Price:</string>
 </resources>
