@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import it.unimib.buildyourholiday.data.source.travel.BaseSavedTravelDataSource;
 import it.unimib.buildyourholiday.data.source.travel.BaseTravelLocalDataSource;
 import it.unimib.buildyourholiday.data.source.travel.TravelCallback;
 import it.unimib.buildyourholiday.model.Result;
@@ -27,7 +26,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
     private final BaseUserDataRemoteDataSource userDataRemoteDataSource;
     private final BaseTravelLocalDataSource travelLocalDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
-    private final MutableLiveData<Result> userFavoriteNewsMutableLiveData;
+    private final MutableLiveData<Result> userFavoritesMutableLiveData;
     private final MutableLiveData<Result> userPreferencesMutableLiveData;
 
     public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource,
@@ -38,7 +37,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
         this.travelLocalDataSource = travelLocalDataSource;
         this.userMutableLiveData = new MutableLiveData<>();
         this.userPreferencesMutableLiveData = new MutableLiveData<>();
-        this.userFavoriteNewsMutableLiveData = new MutableLiveData<>();
+        this.userFavoritesMutableLiveData = new MutableLiveData<>();
         this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);
         this.travelLocalDataSource.setTravelCallback(this);
@@ -63,7 +62,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Tr
     @Override
     public MutableLiveData<Result> getUserSavedTravels(String idToken) {
         userDataRemoteDataSource.getUserSavedTravels(idToken);
-        return userFavoriteNewsMutableLiveData;
+        return userFavoritesMutableLiveData;
     }
 
 

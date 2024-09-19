@@ -102,6 +102,4 @@ public class MyFragment extends Fragment {
         return view;
     }
 
-
-
 }

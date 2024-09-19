@@ -4,9 +4,8 @@ import java.util.List;
 
 import it.unimib.buildyourholiday.model.Travel;
 
-/** CAMBIATA
+/**
  * Interface to send data from DataSource to Repositories
- * that implement INewsRepositoryWithLiveData interface.
  */
 public interface TravelCallback {
     void onSuccessFromRemote(List<Travel> travelList, long lastUpdate);

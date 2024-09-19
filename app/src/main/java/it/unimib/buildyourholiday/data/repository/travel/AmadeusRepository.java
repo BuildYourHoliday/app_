@@ -41,14 +41,12 @@ import static it.unimib.buildyourholiday.util.Constants.TOTAL_HOTEL_RESULTS;
 public class AmadeusRepository {
     private static final AmadeusService service = new AmadeusService();
     private static final String TAG = AmadeusRepository.class.getSimpleName();
-   // private static FlightListViewModel flightListViewModel;       posso evitare di passare vm come parametro????
     private FlightListAdapter flightListAdapter = null;
     private HotelListAdapter hotelListAdapter = null;
     private static String cityCodeHolder; private static String cityNameHolder;
     private static int adultsHolder; private static String checkoutDateHolder;
 
-    // invoco tramite parametri e passando il listener creato dal fragment, così posso gesitre l'onclick sugli item
-    // dopo l'invocazione, assegno l'adapter ritornato alla recycler view
+
     @SuppressLint("CheckResult")
     public static void flightSearch(String originCityCode, String destinationCityCode, String departureDate,
                                     String returnDate, int adults, double price, FlightListViewModel viewModel) {

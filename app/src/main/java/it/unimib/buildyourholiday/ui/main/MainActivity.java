@@ -3,6 +3,7 @@ package it.unimib.buildyourholiday.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -18,7 +19,7 @@ import it.unimib.buildyourholiday.data.repository.user.IUserRepository;
 import it.unimib.buildyourholiday.util.AuthenticationInterceptor;
 import it.unimib.buildyourholiday.util.ServiceLocator;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentCommunication  {
     private UserViewModel userViewModel;
 
     @Override
@@ -43,5 +44,18 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new AuthenticationInterceptor(this,userViewModel));
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
+
+    @Override
+    public void onSearchButtonPressed(String destination, String departure, String startDate, String endDate, String adults) {
+        Bundle bundle = new Bundle();
+        bundle.putString("destination", destination);
+        bundle.putString("departure", departure);
+        bundle.putString("startDate", startDate);
+        bundle.putString("endDate", endDate);
+        bundle.putString("adults", adults);
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.navigate(R.id.homeFragment, bundle);
     }
 }

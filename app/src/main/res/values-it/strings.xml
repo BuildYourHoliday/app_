@@ -154,4 +154,7 @@
     <string name="date_range_err">Scegli un range di date valido prima di proseguire</string>
     <string name="select_flight_err">Scegli un volo prima di proseguire</string>
     <string name="select_hotel_err">Scegli un hotel prima di proseguire</string>
+    <string name="action_deleted">Elemento eliminato con successo</string>
+    <string name="search_button">Cerca</string>
+    <string name="total_price">Prezzo totale:</string>
 </resources>

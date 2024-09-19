@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,9 +44,7 @@ public class SavedFragment extends Fragment {
     // TODO: Rename and change types of parameters
 
     private static final String TAG = SavedFragment.class.getSimpleName();
-    private List<Travel> newList;
-//    private TravelListAdapter travelListAdapter;
-    private ProgressBar progressBar;
+    //    private TravelListAdapter travelListAdapter;
     //private TravelViewModel travelViewModel;
 
     private RecyclerView recyclerView;
@@ -56,15 +53,6 @@ public class SavedFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SavedFragment newInstance(String param1, String param2) {
         SavedFragment fragment = new SavedFragment();
         Bundle args = new Bundle();
@@ -94,40 +82,45 @@ public class SavedFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         travelViewModel.fetchAllSavedTravels();
         travelViewModel.getSavedTravelsLiveData(false).observe(getViewLifecycleOwner(),
-                new Observer<Result>() {
-                    @Override
-                    public void onChanged(Result result) {
-                        List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
-                        TravelSavedAdapter travelSavedAdapter = new TravelSavedAdapter(travelList,
-                                new TravelSavedAdapter.OnItemClickListener(){
-                                    public void onTravelItemClick(Travel travel){
-                                        Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                result -> {
+                    List<Travel> travelList = ((Result.TravelResponseSuccess)result).getData().getTravelList();
+                    TravelSavedAdapter travelSavedAdapter = new TravelSavedAdapter(travelList,
+                            new TravelSavedAdapter.OnItemClickListener(){
+                               /* public void onTravelItemClick(Travel travel){
+                                    Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
+                                }*/
+                                @Override
+                                public void onSearchButtonPressed(String destination, String departure, String startDate, String endDate, String adults) {
+
+                                    Fragment newFragment = new HomeFragment();
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("destination", destination);
+                                    bundle.putString("departure", departure);
+                                    bundle.putString("startDate", startDate);
+                                    bundle.putString("endDate", endDate);
+                                    bundle.putString("adults", adults);
+
+                                    newFragment.setArguments(bundle);
+                                }
+
+                                public void onDeleteButtonPressed(Travel deletedTravel) {
+                                    for (int i=0;i<travelList.size();i++) {
+                                        Log.d(TAG,"travel "+i+": "+travelList.get(i).getCity());
                                     }
+                                    Log.d(TAG,"size: "+travelList.size());
 
-                                    public void onDeleteButtonPressed(int position) {
-                                        for (int i=0;i<travelList.size();i++) {
-                                            Log.d(TAG,"travel "+i+": "+travelList.get(i).getCity());
-                                        }
-                                        Log.d(TAG,"size: "+travelList.size());
-                                        Log.d(TAG,"position: " + position);
-                                        
-                                        /* TODO: test once saving is possible */
-                                        Travel delete = travelList.get(position);
-                                        Log.d(TAG,"pos: "+travelList.get(position).getFlight().getDepartureAirport());
-                                        travelViewModel.deleteTravel(delete);
+                                    travelViewModel.deleteTravel(deletedTravel);
 
+                                    Snackbar.make(view, R.string.action_deleted, Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
 
-                                        Snackbar.make(view, getString(R.string.list_size_message) + travelList.size(), Snackbar.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                        recyclerView.setAdapter(travelSavedAdapter);
-                    }
+                    recyclerView.setAdapter(travelSavedAdapter);
                 });
 
 
         return view;
-        //////////////////////////
 
         /*
         recyclerView = view.findViewById(R.id.recyclerview_saved_trip);
@@ -164,7 +157,7 @@ public class SavedFragment extends Fragment {
 
     private void initData(){
 
-        newList = new ArrayList<>();
+        List<Travel> newList = new ArrayList<>();
         Flight flight = new Flight("COD","12-02-25", "16:00 - 17:30", "Roma", "24-02-24", "9:00 - 10:00", "Barcelona", 1000.00);
 
         newList.add(new Travel(flight));
@@ -173,13 +166,7 @@ public class SavedFragment extends Fragment {
         newList.add(new Travel(flight));
         newList.add(new Travel(flight));
         newList.add(new Travel(flight));
-       /* newList = new ArrayList<>();
 
-        newList.add(new Travel("Milano", "12-02-24", "24-02-24", 120.00));
-        newList.add(new Travel("Parigi", "15-04-24", "24-04-24", 620.50));
-        newList.add(new Travel("Londra", "14-05-24", "23-05-24", 150.50));
-        newList.add(new Travel("Mosca", "19-06-24", "26-06-24", 1200.00));
-        newList.add(new Travel("NY", "11-07-24", "22-07-24", 1320.50));*/
     }
 
 }

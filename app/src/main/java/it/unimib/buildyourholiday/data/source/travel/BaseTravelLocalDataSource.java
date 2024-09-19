@@ -5,7 +5,7 @@ import java.util.List;
 import it.unimib.buildyourholiday.model.Travel;
 
 /**
- * Base class to get news from a local source.
+ * Base class to get travels from a local source.
  */
 public abstract class BaseTravelLocalDataSource {
 
@@ -19,7 +19,6 @@ public abstract class BaseTravelLocalDataSource {
     public abstract void getSavedTravels();
     public abstract void updateTravel(Travel travel);
     public abstract void deleteSavedTravels();
-    //public abstract void insertNews(NewsApiResponse newsApiResponse);
     public abstract void insertTravels(List<Travel> travelsList);
     public abstract void insertTravel(Travel travel);
     public abstract void deleteAll();

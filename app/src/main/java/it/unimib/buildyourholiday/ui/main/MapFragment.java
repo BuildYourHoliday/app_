@@ -156,7 +156,7 @@ public class MapFragment extends Fragment {
                     public void onTravelItemClick(Travel travel){
                         Snackbar.make(view, travel.getCity(), Snackbar.LENGTH_SHORT).show();
                     }
-                    public void onDeleteButtonPressed(int position){ }
+                    public void onDeleteButtonPressed(Travel position){ }
                 };
 
                 MapUtil.selectCountry(mapView,refreshTriggered,point,requireActivity(),getViewLifecycleOwner(),
